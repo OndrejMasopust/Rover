@@ -25,10 +25,9 @@ public class Main extends Application {
 	}
 
 	@Override
-	public void start(Stage loadingStage) throws Exception {
+	public void start(Stage mainStage) throws Exception {
 		// TODO: Splash screen
-
-		Stage mainStage = new Stage();
+		
 		mainStage.setTitle("Rover Control Panel");
 
 		numberOfLines = 30; // FIXME
@@ -36,8 +35,11 @@ public class Main extends Application {
 		lines = new ArrayList<>();
 		endDots = new ArrayList<>();
 		screenBounds = Screen.getPrimary().getVisualBounds();
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("windowView.fxml"));
 
-		Parent root = FXMLLoader.load(getClass().getResource("windowView.fxml"));
+		Parent root = loader.load();
 
 		scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
 
@@ -49,5 +51,10 @@ public class Main extends Application {
 
 		mainStage.setScene(scene);
 		mainStage.show();
+		
+		//using this object, it is possible to access objects in the FXML controller provided that they have setters or getters
+		Controller controller = loader.getController();
+
+		
 	}
 }
