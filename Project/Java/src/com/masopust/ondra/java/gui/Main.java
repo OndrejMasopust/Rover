@@ -19,9 +19,11 @@ public class Main extends Application {
 	public static int numberOfLines;
 	public static ArrayList<Line> lines;
 	public static ArrayList<Rectangle> endDots;
+	private RoverConnection roverConnection;
 
 	public static void main(String[] args) {
 		launch(args);
+
 	}
 
 	@Override
@@ -46,7 +48,9 @@ public class Main extends Application {
 		mainStage.show();
 
 		// TODO: connect to rover while in the preloader
-
+		roverConnection = new RoverConnection();
+		connectToRover();
+		/*
 		FXMLLoader mainStageLoader = new FXMLLoader();
 		mainStageLoader.setLocation(getClass().getResource("mainLayout/MainLayout.fxml"));
 
@@ -67,5 +71,30 @@ public class Main extends Application {
 		// provided that they have setters or getters
 		MainLayoutController controller = mainStageLoader.getController();
 
+		// close rover connection socket on closing the window
+		*/
+	}
+
+	private void connectToRover() {
+		Thread connectionThread = new Thread(() -> {
+			while (true) {
+				// try to establish connection
+				roverConnection.connect();
+
+				if (roverConnection.connectionEstablished()) {
+					break;
+				} else {
+					// wait 300ms
+					try {
+						Thread.sleep(300);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println("Slept for 300ms");
+				}
+			}
+		}, "connectionThread");
+		connectionThread.start();
 	}
 }

@@ -5,7 +5,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class TCPCommunication extends Thread {
@@ -31,11 +33,12 @@ public class TCPCommunication extends Thread {
 
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws UnknownHostException, IOException {
 		int port = 5321;
 		String host = "192.168.0.1";
 
-		clientSocket = new Socket(host, port);
+		clientSocket = new Socket();
+		clientSocket.connect(new InetSocketAddress(host, port), 1000);
 		System.out.println("Client launched correctly.");
 
 		Scanner stdInput = new Scanner(System.in);

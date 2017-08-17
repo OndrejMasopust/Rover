@@ -1,5 +1,24 @@
 package com.masopust.ondra.java.gui.preloader;
 
-public class PreloaderController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.text.TextFlow;
+
+public class PreloaderController implements Initializable {
+
+	@FXML
+	TextFlow consolArea;
+
+	@FXML
+	Button closeButton;
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+	}
 
 }
