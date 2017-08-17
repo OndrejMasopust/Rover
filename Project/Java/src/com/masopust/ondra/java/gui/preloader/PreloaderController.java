@@ -14,7 +14,7 @@ public class PreloaderController implements Initializable {
 	TextFlow consolArea;
 
 	@FXML
-	Button closeButton; //must halt all of the threads
+	Button closeButton; //must halt all of the threads (some of them are set as Daemon so they will halt automatically)
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

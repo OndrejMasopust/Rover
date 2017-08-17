@@ -3,6 +3,8 @@ package com.masopust.ondra.java.gui;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.masopust.ondra.java.tcpCommunication.RoverConnection;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;

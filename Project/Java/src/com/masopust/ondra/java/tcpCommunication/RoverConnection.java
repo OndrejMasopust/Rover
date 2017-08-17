@@ -1,5 +1,6 @@
-package com.masopust.ondra.java.gui;
+package com.masopust.ondra.java.tcpCommunication;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -14,7 +15,7 @@ import javafx.stage.Screen;
 
 import com.masopust.ondra.java.gui.Main;
 
-public class RoverConnection extends Task<Void>{
+public class RoverConnection extends Task<Void> {
 
 	private int port;
 	private String host;
@@ -59,9 +60,11 @@ public class RoverConnection extends Task<Void>{
 
 	@Override
 	protected Void call() throws Exception {
-		// TODO check if task is cancelled
-		int i = 0;
+		this.updateTitle("Connection thread");
+		int i = 0; // FIXME delete this before sharp run
 		while (true) {
+			if (this.isCancelled())
+				break;
 			// try to establish connection
 			Main.roverConnection.connect();
 
@@ -74,22 +77,24 @@ public class RoverConnection extends Task<Void>{
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					if (this.isCancelled())
+						break;
 				}
 				System.out.println("Slept for 300ms");
 				i++;
 			}
 		}
 
-		// change the scene
+		// change the scene of the mainStage
 		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
 		Main.mainStageLoader = new FXMLLoader();
 		Main.mainStageLoader.setLocation(getClass().getResource("mainLayout/MainLayout.fxml"));
 
-		
 		Platform.runLater(() -> {
 			try {
-				Main.mainStageLayout = Main.mainStageLoader.load();
+				Main.mainStageLayout = Main.mainStageLoader.load(new FileInputStream(
+						"/Users/Ondra/Documents/Programming/Maturita/Project/Java/src/com/masopust/ondra/java/gui/mainLayout/MainLayout.fxml")); // FIXME
 				Scene mainScene = new Scene(Main.mainStageLayout);
 				Main.mainStage.setScene(mainScene);
 			} catch (IOException e) {
