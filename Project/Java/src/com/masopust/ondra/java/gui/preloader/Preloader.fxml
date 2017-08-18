@@ -16,7 +16,7 @@
 			prefWidth="558.0">
 			<children>
 				<ProgressIndicator />
-				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connecting To Rover"
+				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connecting To The Rover"
 					textAlignment="CENTER" wrappingWidth="292.21875">
 					<font>
 						<Font size="26.0" />

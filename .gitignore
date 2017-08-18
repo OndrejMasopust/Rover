@@ -3,3 +3,6 @@ Maturitni-otazky-z-IVT.pdf
 
 #ignore compiled files
 Project/Java/bin/
+
+#ignore .DS_Store
+.DS_Store
