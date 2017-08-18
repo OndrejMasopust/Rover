@@ -6,3 +6,8 @@ Project/Java/bin/
 
 #ignore .DS_Store
 .DS_Store
+
+Project/Java/.classpath
+Project/Java/.project
+Project/Python/.project
+Project/Python/.pydevproject
