@@ -15,22 +15,24 @@ import javafx.stage.Screen;
 
 import com.masopust.ondra.java.gui.Main;
 
-public class RoverConnection extends Task<Void> {
+public class RoverConnection extends Task<String> {
 
-	private int port;
-	private String host;
+	private int port = 5321;
+	private String host = "192.168.0.2";
 	private Socket clientSocket;
 
 	public RoverConnection() {
-		this(5321, "192.168.0.1");
+		clientSocket = new Socket();
 	}
 
 	public RoverConnection(int port) {
-		this(port, "192.168.0.1");
+		this.port = port;
+		clientSocket = new Socket();
 	}
 
 	public RoverConnection(String host) {
-		this(5321, host);
+		this.host = host;
+		clientSocket = new Socket();
 	}
 
 	public RoverConnection(int port, String host) {
@@ -39,18 +41,27 @@ public class RoverConnection extends Task<Void> {
 		clientSocket = new Socket();
 	}
 
-	public void connect() {
+	public void connect(StringBuilder errors) {
 		try {
 			clientSocket.connect(new InetSocketAddress(host, port), 1000);
 		} catch (SocketTimeoutException e) {
-			System.out.print("Connection attempt failed: ");
-			System.out.println(e.getMessage());
+			String error = "Connection attempt failed: " + e.getMessage() + " \n";
+			System.out.print(error);
+			errors.append(error);
 			clientSocket = new Socket();
-			// TODO write the message to the TextArea in the preloader
+			// write the message to the preloader
+			this.updateValue(errors.toString());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			// TODO write the message to the TextArea in the preloader
-			e.printStackTrace();
+			String error = e.getMessage() + "\n";
+			System.out.print(error);
+			errors.append(error);
+			clientSocket = new Socket();
+			// write the message to the preloader
+			this.updateValue(errors.toString());
+		} catch (Exception e) {
+			e.printStackTrace(System.out);
+			errors.append(e.getMessage() + "\n");
+			this.updateValue(errors.toString());
 		}
 	}
 
@@ -59,28 +70,30 @@ public class RoverConnection extends Task<Void> {
 	}
 
 	@Override
-	protected Void call() throws Exception {
+	protected String call() throws Exception {
 		this.updateTitle("Connection thread");
 		int i = 0; // FIXME delete this before sharp run
+		StringBuilder errors = new StringBuilder();
 		while (true) {
 			if (this.isCancelled())
 				break;
 			// try to establish connection
-			Main.roverConnection.connect();
+			Main.roverConnection.connect(errors);
 
 			if (Main.roverConnection.connectionEstablished() || i == 5) {
 				break;
 			} else {
-				// wait 300ms
+				// wait 500ms
+				int sleepTime = 500;
 				try {
-					Thread.sleep(300);
+					Thread.sleep(sleepTime);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					if (this.isCancelled())
 						break;
 				}
-				System.out.println("Slept for 300ms");
+				System.out.printf("Slept for %dms\n", sleepTime);
 				i++;
 			}
 		}

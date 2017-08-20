@@ -37,6 +37,8 @@ public class Main extends Application {
 
 		lines = new ArrayList<>();
 		endDots = new ArrayList<>();
+		
+		roverConnection = new RoverConnection();
 
 		FXMLLoader preloader = new FXMLLoader();
 		preloader.setLocation(getClass().getResource("preloader/Preloader.fxml"));
@@ -49,16 +51,15 @@ public class Main extends Application {
 		mainStage.show();
 
 		// connect to rover while in the preloader
-		roverConnection = new RoverConnection();
 		connectToRover();
-		/*
-		 * // using this object, it is possible to access objects in the FXML
-		 * mainStageController provided that they have setters or getters
-		 * 
-		 * MainLayoutController controller = mainStageLoader.getController();
-		 * 
-		 * // close rover connection socket on closing the window
-		 */
+
+		// using this object, it is possible to access objects in the FXML
+		// mainStageController provided that they have setters or getters
+
+		//MainLayoutController controller = mainStageLoader.getController();
+
+		// close rover connection socket on closing the window
+
 	}
 
 	private void connectToRover() {
