@@ -48,12 +48,6 @@ public class IPSelectionLayoutController implements Initializable {
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
-		/*else {
-			// TODO write to file what user typed (must be after he presses Connect) and maybe create a new file
-		}*/
 	}
 	
 	public void handleCancel() {
@@ -61,7 +55,6 @@ public class IPSelectionLayoutController implements Initializable {
 	}
 	
 	public void handleConnect() throws IOException {
-		// TODO invoke other scene
 		Main.roverConnection = new RoverConnection(ipField.getText(), Integer.parseInt(portField.getText()));
 
 		FXMLLoader preloader = new FXMLLoader();

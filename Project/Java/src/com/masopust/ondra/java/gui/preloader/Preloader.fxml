@@ -7,14 +7,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<!-- TODO delete all visual properties, design belongs to css -->
-
-<VBox alignment="CENTER" minWidth="558.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.preloader.PreloaderController">
+<VBox alignment="CENTER" maxHeight="272.0" minWidth="558.0" prefHeight="272.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.preloader.PreloaderController">
 	<children>
-		<HBox alignment="CENTER" prefHeight="86.0" prefWidth="558.0">
+		<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="558.0" prefHeight="86.0" prefWidth="558.0">
 			<children>
 				<ProgressIndicator />
-				<Text text="Connecting To The Rover" textAlignment="CENTER" wrappingWidth="315.21875" styleClass="textTitle"> <!--  strokeType="OUTSIDE" strokeWidth="0.0"  this was there -->
+				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connecting To The Rover" textAlignment="CENTER" wrappingWidth="315.21875">
 					<font>
 						<Font size="26.0" />
 					</font>
@@ -24,7 +22,11 @@
             <Insets top="15.0" />
          </VBox.margin>
 		</HBox>
-      <TextArea fx:id="errorsTextArea" editable="false" minWidth="558.0" prefWidth="558.0" styleClass="textArea"/>
+      <ScrollPane fx:id="scrollPane" fitToWidth="true" hvalue="1.0" minHeight="20.0" prefViewportHeight="10.0" prefViewportWidth="550.0" styleClass="textScrollPane" VBox.vgrow="SOMETIMES">
+         <content>
+            <Text fx:id="text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" wrappingWidth="550.0" />
+         </content>
+      </ScrollPane>
 		<Button fx:id="closeButton" alignment="CENTER" mnemonicParsing="false" styleClass="but" text="Close">
 			<VBox.margin>
 				<Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
