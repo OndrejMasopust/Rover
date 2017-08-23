@@ -3,6 +3,8 @@ package com.masopust.ondra.java.gui.preloader;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.masopust.ondra.java.gui.Main;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -23,10 +25,10 @@ public class PreloaderController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		text.textProperty().bind(PreloaderTestLaunch.wt.valueProperty());
+		text.textProperty().bind(Main.roverConnection.valueProperty());
 		
 		//autoscroll ScrollPane to bottom
-		PreloaderTestLaunch.wt.progressProperty().addListener((observable, oldValue, newValue) -> {	
+		Main.roverConnection.progressProperty().addListener((observable, oldValue, newValue) -> {	
 			scrollPane.setVvalue(1);
 		});
 	}
