@@ -7,12 +7,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
+<!-- TODO delete all visual properties, design belongs to css -->
+
 <VBox alignment="CENTER" minWidth="558.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.preloader.PreloaderController">
 	<children>
-		<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="558.0" prefHeight="86.0" prefWidth="558.0">
+		<HBox alignment="CENTER" prefHeight="86.0" prefWidth="558.0">
 			<children>
 				<ProgressIndicator />
-				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connecting To The Rover" textAlignment="CENTER" wrappingWidth="292.21875">
+				<Text text="Connecting To The Rover" textAlignment="CENTER" wrappingWidth="315.21875" styleClass="textTitle"> <!--  strokeType="OUTSIDE" strokeWidth="0.0"  this was there -->
 					<font>
 						<Font size="26.0" />
 					</font>
@@ -22,7 +24,7 @@
             <Insets top="15.0" />
          </VBox.margin>
 		</HBox>
-      <TextArea fx:id="errorsTextArea" editable="false" minHeight="0.0" minWidth="558.0" prefWidth="558.0" snapToPixel="false" />
+      <TextArea fx:id="errorsTextArea" editable="false" minWidth="558.0" prefWidth="558.0" styleClass="textArea"/>
 		<Button fx:id="closeButton" alignment="CENTER" mnemonicParsing="false" styleClass="but" text="Close">
 			<VBox.margin>
 				<Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

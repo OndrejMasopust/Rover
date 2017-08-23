@@ -21,12 +21,23 @@ public class PreloaderController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		/*
+		 * this is the correct code
 		errorsTextArea.textProperty().bind(Main.roverConnection.valueProperty());
 
 		// autoscroll errorsTextArea to bottom when text is added
 		Main.roverConnection.valueProperty().addListener((observable, oldValue, newValue) -> {
 			errorsTextArea.setScrollTop(Double.MAX_VALUE);
 		});
+		*/
+		
+		errorsTextArea.textProperty().bind(PreloaderTestLaunch.wt.valueProperty());
+
+		// autoscroll errorsTextArea to bottom when text is added
+		PreloaderTestLaunch.wt.valueProperty().addListener((observable, oldValue, newValue) -> {
+			errorsTextArea.setScrollTop(Double.MAX_VALUE);
+		});
+		
 	}
 
 }

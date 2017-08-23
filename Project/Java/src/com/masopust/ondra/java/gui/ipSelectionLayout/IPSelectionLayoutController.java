@@ -33,10 +33,11 @@ public class IPSelectionLayoutController implements Initializable {
 	Button connectBut;
 	
 	public static List<String> lines;
+	public static File ipHostPrompt;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		File ipHostPrompt = new File("com/masopust/ondra/java/gui/ipSelectionLayout/IPHostPrompt.txt");
+		ipHostPrompt = new File("com/masopust/ondra/java/gui/ipSelectionLayout/IPHostPrompt.txt");
 		if (ipHostPrompt.exists()) {
 			try {
 				lines = Files.readAllLines(ipHostPrompt.toPath());

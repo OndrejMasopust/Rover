@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -14,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 
 import com.masopust.ondra.java.gui.Main;
+import com.masopust.ondra.java.gui.ipSelectionLayout.IPSelectionLayoutController;
 
 public class RoverConnection extends Task<String> {
 
@@ -52,10 +56,10 @@ public class RoverConnection extends Task<String> {
 			this.handleConnectionException(e, errors, counter);
 		}
 	}
-	
+
 	private void handleConnectionException(Exception e, StringBuilder errors, int counter) {
-		//counter++; FIXME counter does not increment larger than 1
-		String error = counter + " Connection attempt failed: " + e.getMessage() + " \n";
+		// counter++; FIXME counter does not increment larger than 1
+		String error = counter + ". Connection attempt failed: " + e.getMessage() + " \n";
 		System.out.print(error);
 		errors.append(error);
 		clientSocket = new Socket();
@@ -97,8 +101,25 @@ public class RoverConnection extends Task<String> {
 				i++;
 			}
 		}
-		
-		//write the IP and Port to txt file
+
+		// write the IP and Port to txt file
+		boolean needToChangeFile = false;
+		boolean fileExists = true;
+		ArrayList<String> newLines = new ArrayList<>();
+		newLines.add(host);
+		newLines.add(Integer.toString(port));
+		try {
+			if (!IPSelectionLayoutController.lines.get(0).equals(host)
+					|| !IPSelectionLayoutController.lines.get(1).equals(String.valueOf(0)))
+				needToChangeFile = true;
+		} catch (NullPointerException e) {
+			fileExists = false;
+		}
+
+		if (needToChangeFile || !fileExists) {
+			Files.write(IPSelectionLayoutController.ipHostPrompt.toPath(), newLines, StandardOpenOption.WRITE,
+					StandardOpenOption.CREATE);
+		}
 
 		// change the scene of the mainStage
 		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();

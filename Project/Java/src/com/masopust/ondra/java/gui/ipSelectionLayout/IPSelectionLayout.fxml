@@ -6,6 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.VBox?>
 
+<!-- TODO delete all visual properties, design belongs to css -->
+
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.ipSelectionLayout.IPSelectionLayoutController">
    <children>
       <HBox prefHeight="81.0" prefWidth="269.0">
