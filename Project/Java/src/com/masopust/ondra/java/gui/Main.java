@@ -37,7 +37,18 @@ public class Main extends Application {
 
 		lines = new ArrayList<>();
 		endDots = new ArrayList<>();
+
+		FXMLLoader ipSelection = new FXMLLoader();
+		ipSelection.setLocation(getClass().getResource("ipSelectionLayout/IPSelectionLayout.fxml"));
 		
+		Parent ipSelectionLayout = ipSelection.load();
+		
+		Scene ipSelectionScene = new Scene(ipSelectionLayout);
+		
+		mainStage.setScene(ipSelectionScene);
+		mainStage.show();
+		
+		/*
 		roverConnection = new RoverConnection();
 
 		FXMLLoader preloader = new FXMLLoader();
@@ -46,23 +57,36 @@ public class Main extends Application {
 		Parent preloaderLayout = preloader.load();
 
 		Scene preloaderScene = new Scene(preloaderLayout);
+		preloaderScene.getStylesheets().add("com/masopust/ondra/java/gui/preloader/PreloaderStyle.css"); // FIXME
 
 		mainStage.setScene(preloaderScene);
 		mainStage.show();
 
 		// connect to rover while in the preloader
-		connectToRover();
+		this.connectToRover();
 
 		// using this object, it is possible to access objects in the FXML
 		// mainStageController provided that they have setters or getters
 
-		//MainLayoutController controller = mainStageLoader.getController();
+		// MainLayoutController controller = mainStageLoader.getController();
 
 		// close rover connection socket on closing the window
-
+	*/
 	}
 
-	private void connectToRover() {
+	public void connectToRover() throws IOException {
+		roverConnection = new RoverConnection(); //FIXME add ip and host
+
+		FXMLLoader preloader = new FXMLLoader();
+		preloader.setLocation(getClass().getResource("preloader/Preloader.fxml"));
+
+		Parent preloaderLayout = preloader.load();
+
+		Scene preloaderScene = new Scene(preloaderLayout);
+		preloaderScene.getStylesheets().add("com/masopust/ondra/java/gui/preloader/PreloaderStyle.css"); // FIXME
+		
+		mainStage.setScene(preloaderScene);
+		
 		Thread connectionThread = new Thread(roverConnection, "connectionThread");
 		connectionThread.setDaemon(true);
 		connectionThread.start();

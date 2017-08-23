@@ -11,3 +11,5 @@ Project/Java/.classpath
 Project/Java/.project
 Project/Python/.project
 Project/Python/.pydevproject
+
+*.txt

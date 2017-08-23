@@ -18,7 +18,7 @@ import com.masopust.ondra.java.gui.Main;
 public class RoverConnection extends Task<String> {
 
 	private int port = 5321;
-	private String host = "192.168.0.2";
+	private String host = "192.168.0.1";
 	private Socket clientSocket;
 
 	public RoverConnection() {
@@ -35,34 +35,32 @@ public class RoverConnection extends Task<String> {
 		clientSocket = new Socket();
 	}
 
-	public RoverConnection(int port, String host) {
+	public RoverConnection(String host, int port) {
 		this.port = port;
 		this.host = host;
 		clientSocket = new Socket();
 	}
 
-	public void connect(StringBuilder errors) {
+	public void connect(StringBuilder errors, int counter) {
 		try {
 			clientSocket.connect(new InetSocketAddress(host, port), 1000);
 		} catch (SocketTimeoutException e) {
-			String error = "Connection attempt failed: " + e.getMessage() + " \n";
-			System.out.print(error);
-			errors.append(error);
-			clientSocket = new Socket();
-			// write the message to the preloader
-			this.updateValue(errors.toString());
+			this.handleConnectionException(e, errors, counter);
 		} catch (IOException e) {
-			String error = e.getMessage() + "\n";
-			System.out.print(error);
-			errors.append(error);
-			clientSocket = new Socket();
-			// write the message to the preloader
-			this.updateValue(errors.toString());
+			this.handleConnectionException(e, errors, counter);
 		} catch (Exception e) {
-			e.printStackTrace(System.out);
-			errors.append(e.getMessage() + "\n");
-			this.updateValue(errors.toString());
+			this.handleConnectionException(e, errors, counter);
 		}
+	}
+	
+	private void handleConnectionException(Exception e, StringBuilder errors, int counter) {
+		//counter++; FIXME counter does not increment larger than 1
+		String error = counter + " Connection attempt failed: " + e.getMessage() + " \n";
+		System.out.print(error);
+		errors.append(error);
+		clientSocket = new Socket();
+		// write the message to the preloader
+		this.updateValue(errors.toString());
 	}
 
 	public boolean connectionEstablished() {
@@ -74,11 +72,13 @@ public class RoverConnection extends Task<String> {
 		this.updateTitle("Connection thread");
 		int i = 0; // FIXME delete this before sharp run
 		StringBuilder errors = new StringBuilder();
+		int errorCounter = 1;
 		while (true) {
 			if (this.isCancelled())
 				break;
 			// try to establish connection
-			Main.roverConnection.connect(errors);
+			Main.roverConnection.connect(errors, errorCounter);
+			errorCounter++;
 
 			if (Main.roverConnection.connectionEstablished() || i == 5) {
 				break;
@@ -97,6 +97,8 @@ public class RoverConnection extends Task<String> {
 				i++;
 			}
 		}
+		
+		//write the IP and Port to txt file
 
 		// change the scene of the mainStage
 		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
