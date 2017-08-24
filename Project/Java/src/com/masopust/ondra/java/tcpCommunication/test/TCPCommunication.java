@@ -1,4 +1,4 @@
-package com.masopust.ondra.java.tcpCommunication;
+package com.masopust.ondra.java.tcpCommunication.test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

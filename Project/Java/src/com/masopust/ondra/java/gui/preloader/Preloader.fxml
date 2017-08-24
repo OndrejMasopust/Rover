@@ -12,7 +12,7 @@
 		<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="558.0" prefHeight="86.0" prefWidth="558.0">
 			<children>
 				<ProgressIndicator />
-				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connecting To The Rover" textAlignment="CENTER" wrappingWidth="315.21875">
+				<Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textTitle" text="Connecting To The Rover" textAlignment="CENTER" wrappingWidth="315.21875">
 					<font>
 						<Font size="26.0" />
 					</font>

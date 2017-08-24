@@ -1,14 +1,12 @@
 package com.masopust.ondra.java.gui.ipSelectionLayout;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import com.masopust.ondra.java.gui.Main;
+import com.masopust.ondra.java.gui.preloader.PreloaderController;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
+import com.masopust.ondra.java.tcpCommunication.ipHostPrompt.IPHostPrompt;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,22 +30,15 @@ public class IPSelectionLayoutController implements Initializable {
 	@FXML
 	Button connectBut;
 	
-	public static List<String> lines;
-	public static File ipHostPrompt;
+	public static Scene ipSelectionScene;
+	public static IPSelectionLayoutController ipSelectionLayoutConstroller;
+	
+	private static FXMLLoader ipSelectionLayoutLoader;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		ipHostPrompt = new File("com/masopust/ondra/java/gui/ipSelectionLayout/IPHostPrompt.txt");
-		if (ipHostPrompt.exists()) {
-			try {
-				lines = Files.readAllLines(ipHostPrompt.toPath());
-				ipField.setText(lines.get(0));
-				portField.setText(lines.get(1));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		ipSelectionLayoutConstroller = ipSelectionLayoutLoader.getController();
+		IPHostPrompt.setIPHostText();
 	}
 	
 	public void handleCancel() {
@@ -55,22 +46,27 @@ public class IPSelectionLayoutController implements Initializable {
 	}
 	
 	public void handleConnect() throws IOException {
-		Main.roverConnection = new RoverConnection(ipField.getText(), Integer.parseInt(portField.getText()));
-
-		FXMLLoader preloader = new FXMLLoader();
-		preloader.setLocation(IPSelectionLayoutController.class.getResource("/com/masopust/ondra/java/gui/preloader/Preloader.fxml")); // FIXME link
-
-		Parent preloaderLayout = preloader.load();
-
-		Scene preloaderScene = new Scene(preloaderLayout);
-		preloaderScene.getStylesheets().add("/com/masopust/ondra/java/gui/preloader/PreloaderStyle.css"); // FIXME link
+		RoverConnection.startRoverConnectionThread();
+		PreloaderController.loadPreloaderScene();
+	}
+	
+	public static Scene loadIPSelectionScene() throws IOException {
+		ipSelectionLayoutLoader = new FXMLLoader();
+		ipSelectionLayoutLoader.setLocation(IPSelectionLayoutController.class.getResource("/com/masopust/ondra/java/gui/ipSelectionLayout/IPSelectionLayout.fxml"));
 		
-		Main.mainStage.setScene(preloaderScene);
-		Main.mainStage.centerOnScreen();
+		Parent ipSelectionLayout = ipSelectionLayoutLoader.load();
 		
-		Thread connectionThread = new Thread(Main.roverConnection, "connectionThread");
-		connectionThread.setDaemon(true);
-		connectionThread.start();
+		ipSelectionScene = new Scene(ipSelectionLayout);
+		
+		return ipSelectionScene;
+	}
+	
+	public TextField getIPField() {
+		return ipField;
+	}
+	
+	public TextField getPortField() {
+		return portField;
 	}
 
 }
