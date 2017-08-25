@@ -1,0 +1,13 @@
+/*
+ * This css file consists of style features in the main layout.
+ * 
+ * @author Ondrej Masopust
+ */
+.infoButton{
+	-fx-background-color: green;
+	-fx-background-radius: 15;
+}
+
+.consoleSubmitButton{
+	/*-fx-background-image: url("/com/masopust/ondra/java/gui/mainLayout/arrow.svg");*/
+}

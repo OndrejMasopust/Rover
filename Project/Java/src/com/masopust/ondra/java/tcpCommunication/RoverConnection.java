@@ -107,7 +107,8 @@ public class RoverConnection extends Task<String> {
 	 * The {@code handleConnectionException} method wraps the code to handle
 	 * exceptions that are thrown during the attempt to connect to the host.
 	 * 
-	 * @param e exception that was thrown
+	 * @param e
+	 *            exception that was thrown
 	 */
 	private void handleConnectionException(Exception e) {
 		String error = errorCounter + ". Connection attempt failed: " + e.getMessage() + " \n";
@@ -154,6 +155,14 @@ public class RoverConnection extends Task<String> {
 	 */
 	public String getHost() {
 		return host;
+	}
+
+	/**
+	 * 
+	 * @return {@link Socket} instance that is used in the connection
+	 */
+	public Socket getClientSocket() {
+		return clientSocket;
 	}
 
 	@Override

@@ -28,24 +28,18 @@ width: 569.0
 height: 500.0
 -->
 
-<BorderPane prefHeight="${screen.visualBounds.height}" prefWidth="${screen.visualBounds.width}" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.mainLayout.MainLayoutController">
-	<fx:define>
-   		<Screen fx:factory="getPrimary" fx:id="screen" />
-	</fx:define>
+<BorderPane prefHeight="500.0" prefWidth="569.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.mainLayout.MainLayoutController">
 	<left>
-		<VBox fx:id="leftSection" BorderPane.alignment="CENTER" >
-			<fx:define>
-				<Double fx:id="submitButDim" fx:value="40.0"/>
-			</fx:define>
+		<VBox fx:id="leftSection" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane fx:id="consoleOutput" prefHeight="${leftSection.height - submitButDim}">
-            		<content>
-                		<Text strokeType="OUTSIDE" strokeWidth="0.0" />
-            		</content></ScrollPane>
+            <ScrollPane fx:id="consoleOutput">
+               <content>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+               </content></ScrollPane>
             <HBox fx:id="consoleInputBox">
                <children>
-                  <TextField fx:id="consoleInput" prefHeight="${submitButDim}"/>
-                  <Button fx:id="consoleSubmit" defaultButton="true" mnemonicParsing="false" prefHeight="${submitButDim}" prefWidth="${submitButDim}" styleClass="consoleSubmitButton" />
+                  <TextField fx:id="consoleInput" />
+                  <Button fx:id="consoleSubmit" defaultButton="true" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="consoleSubmitButton" />
                </children>
             </HBox>
          </children>

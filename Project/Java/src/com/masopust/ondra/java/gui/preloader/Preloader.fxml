@@ -22,21 +22,27 @@ This fxml file consists of elements that are in the preloader layout.
 					<font>
 						<Font size="26.0" />
 					</font>
+               <HBox.margin>
+                  <Insets left="15.0" />
+               </HBox.margin>
 				</Text>
 			</children>
          <VBox.margin>
-            <Insets top="15.0" />
+            <Insets />
          </VBox.margin>
 		</HBox>
       <ScrollPane fx:id="scrollPane" fitToWidth="true" hvalue="1.0" minHeight="20.0" prefViewportHeight="10.0" prefViewportWidth="550.0" styleClass="textScrollPane" VBox.vgrow="SOMETIMES">
          <content>
-            <Text fx:id="text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" wrappingWidth="550.0" />
+            <Text fx:id="text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textErrors" wrappingWidth="550.0" />
          </content>
       </ScrollPane>
-		<Button fx:id="closeButton" alignment="CENTER" mnemonicParsing="false" styleClass="but" text="Close">
+		<Button fx:id="closeButton" alignment="CENTER" cancelButton="true" defaultButton="true" mnemonicParsing="false" onAction="#handleCancel" styleClass="but" text="Close">
 			<VBox.margin>
 				<Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
 			</VBox.margin>
+         <font>
+            <Font size="15.0" />
+         </font>
 		</Button>
 	</children>
 </VBox>

@@ -3,6 +3,7 @@ package com.masopust.ondra.java.gui;
 import java.io.IOException;
 
 import com.masopust.ondra.java.gui.ipSelectionLayout.IPSelectionLayoutController;
+import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -25,6 +26,8 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+		// TODO adjust build.xml not to include test classes and to work properly
+		// TODO consider making preloader as described in docs.oracle so that the app launches more smoothly
 	}
 
 	@Override
@@ -33,16 +36,30 @@ public class Main extends Application {
 		mainStage.setTitle("Rover Control Panel");
 		mainStage.setScene(IPSelectionLayoutController.loadIPSelectionScene());
 		mainStage.show();
-
-		// TODO close rover connection socket on closing the window
+	}
+	
+	@Override
+	public void stop() throws Exception {
+		try {
+			RoverConnection.roverConnection.getClientSocket().close(); // TODO check if only this is sufficient
+		} catch (NullPointerException e) {
+			// TODO
+			System.out.println("NullPointerException thrown.");
+		} catch (IOException e) {
+			// TODO
+			System.out.println("IOException thrown.");
+		}
+		super.stop();
 	}
 
 	/**
 	 * This method sets the mainStage to be full screen wide and high.
+	 * TODO delete this method if really not used
+	 * 
+	 * @deprecated
 	 * 
 	 * @return void
 	 */
-
 	public static void setFullScreen() {
 		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 

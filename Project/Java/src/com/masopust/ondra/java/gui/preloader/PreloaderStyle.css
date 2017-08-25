@@ -4,17 +4,17 @@
  * @author Ondrej Masopust
  */
 .but{
-	-fx-background-color: blue ;
+	
 }
 
 .textTitle{
 	
 }
 
-.text{
-	
+.textErrors{
+	-fx-fill: white;
 }
 
 .textScrollPane{
-	
+	-fx-background: black;
 }

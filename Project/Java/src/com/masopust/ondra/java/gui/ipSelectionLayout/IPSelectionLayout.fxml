@@ -16,16 +16,16 @@ This fxml file consists of elements that are in the IP Selection Layout.
    <children>
       <HBox prefHeight="81.0" prefWidth="269.0">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="IP Address">
+                  <Label text="IP Address:">
                      <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Port">
+                  <Label text="Port:">
                      <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                </children>
@@ -33,14 +33,14 @@ This fxml file consists of elements that are in the IP Selection Layout.
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="84.0" prefWidth="146.0">
                <children>
-                  <TextField fx:id="ipField">
+                  <TextField fx:id="ipField" onAction="#handleConnect">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </TextField>
-                  <TextField fx:id="portField">
+                  <TextField fx:id="portField" onAction="#handleConnect">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -54,12 +54,12 @@ This fxml file consists of elements that are in the IP Selection Layout.
       </HBox>
       <HBox alignment="CENTER" prefHeight="36.0" prefWidth="269.0">
          <children>
-            <Button fx:id="cancelBut" mnemonicParsing="false" onAction="#handleCancel" text="Cancel">
+            <Button fx:id="cancelBut" cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" text="Cancel">
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="connectBut" mnemonicParsing="false" onAction="#handleConnect" text="Connect">
+            <Button fx:id="connectBut" defaultButton="true" mnemonicParsing="false" onAction="#handleConnect" text="Connect">
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>

@@ -26,8 +26,7 @@ import javafx.scene.text.Text;
 public class PreloaderController implements Initializable {
 
 	@FXML
-	Button closeButton; // TODO must halt all of the threads (some of them are set as Daemon so they
-						// will halt automatically)
+	Button closeButton;
 
 	@FXML
 	Text text;
@@ -45,6 +44,19 @@ public class PreloaderController implements Initializable {
 		RoverConnection.roverConnection.progressProperty().addListener((observable, oldValue, newValue) -> {
 			scrollPane.setVvalue(1);
 		});
+		
+		/*
+		 * Only for testing purposes:
+		 * text.textProperty().bind(PreloaderTestLaunch.wt.valueProperty());
+		 */
+	}
+	
+	/**
+	 * The {@code handleCancel} method wraps the code to be executed after the
+	 * <b>Cancel</b> button is pressed.
+	 */
+	public void handleCancel() {
+		Main.mainStage.close();
 	}
 
 	/**

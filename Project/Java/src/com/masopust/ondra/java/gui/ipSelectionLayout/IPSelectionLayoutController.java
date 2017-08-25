@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.masopust.ondra.java.gui.Main;
 import com.masopust.ondra.java.gui.preloader.PreloaderController;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 import com.masopust.ondra.java.tcpCommunication.ipHostPrompt.IPHostPrompt;
@@ -61,7 +62,7 @@ public class IPSelectionLayoutController implements Initializable {
 	 * <b>Cancel</b> button is pressed.
 	 */
 	public void handleCancel() {
-		// TODO
+		Main.mainStage.close();
 	}
 
 	/**

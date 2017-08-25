@@ -13,7 +13,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -27,16 +33,51 @@ import javafx.scene.shape.Rectangle;
 
 public class MainLayoutController implements Initializable {
 
+	// TODO check if these variables are used and if not, delete them
 	@FXML
 	Pane centerSection;
 
-	// This variable defines number of lines that are generated in the center
-	// section.
+	@FXML
+	VBox leftSection;
+
+	@FXML
+	ScrollPane consoleOutput;
+
+	@FXML
+	HBox consoleInputBox;
+
+	@FXML
+	TextField consoleInput;
+
+	@FXML
+	Button consoleSubmit;
+
+	@FXML
+	BorderPane rightSection;
+	
+	@FXML
+	VBox zoomBox;
+
+	@FXML
+	Button zoomIn;
+
+	@FXML
+	Button zommOut;
+
+	@FXML
+	Button info;
+
+	/*
+	 * This variable defines number of lines that are generated in the center
+	 * section.
+	 */
 	private static int numberOfLines = 30; // FIXME
+
 	/**
 	 * This list holds all of the lines that are generated in the center section.
 	 */
 	public static ArrayList<Line> lines = new ArrayList<>();
+
 	/**
 	 * This list holds all of the dots that are at the end of each of the lines.
 	 */
@@ -44,8 +85,9 @@ public class MainLayoutController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// Main.setFullScreen();
 		buildCenterSection();
-		Main.setFullScreen();
+		
 	}
 
 	/**
@@ -56,7 +98,6 @@ public class MainLayoutController implements Initializable {
 	 * 
 	 * @return void
 	 */
-
 	public static void loadMainScene() throws IOException {
 		FXMLLoader mainStageLoader = new FXMLLoader();
 		mainStageLoader.setLocation(
@@ -75,7 +116,6 @@ public class MainLayoutController implements Initializable {
 	 * 
 	 * @return void
 	 */
-
 	private void buildCenterSection() {
 		int lineLength = 200; // FIXME
 		double startX = centerSection.getWidth() / 2;
