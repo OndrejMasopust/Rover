@@ -6,7 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.VBox?>
 
-<!-- TODO delete all visual properties, design belongs to css -->
+<!--
+This fxml file consists of elements that are in the IP Selection Layout.
+
+@author Ondrej Masopust
+-->
 
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.ipSelectionLayout.IPSelectionLayoutController">
    <children>

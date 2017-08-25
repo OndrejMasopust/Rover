@@ -1,6 +1,7 @@
 package com.masopust.ondra.java.tcpCommunication.test;
 
 import java.io.BufferedReader;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +11,13 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+/**
+ * The {@code TCPCommunication} class was used to test TCP communication with
+ * the rover.
+ * 
+ * @author Ondrej Masopust
+ *
+ */
 public class TCPCommunication extends Thread {
 
 	private static Socket clientSocket;
@@ -44,7 +52,7 @@ public class TCPCommunication extends Thread {
 		Scanner stdInput = new Scanner(System.in);
 
 		BufferedWriter outputTCP = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-		
+
 		TCPCommunication TCPreader = new TCPCommunication("TCPreader");
 		TCPreader.start();
 

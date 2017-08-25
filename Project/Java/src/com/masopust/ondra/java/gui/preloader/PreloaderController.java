@@ -16,38 +16,56 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 
+/**
+ * This class holds the logic behind the preloader scene.
+ * 
+ * @author Ondrej Masopust
+ *
+ */
+
 public class PreloaderController implements Initializable {
 
 	@FXML
-	Button closeButton; // must halt all of the threads (some of them are set as Daemon so they will
-						// halt automatically)
-	
+	Button closeButton; // TODO must halt all of the threads (some of them are set as Daemon so they
+						// will halt automatically)
+
 	@FXML
 	Text text;
-	
+
 	@FXML
 	ScrollPane scrollPane;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		while (RoverConnection.roverConnection == null);
+		while (RoverConnection.roverConnection == null)
+			;
 		text.textProperty().bind(RoverConnection.roverConnection.valueProperty());
-		
-		//autoscroll ScrollPane to bottom
-		RoverConnection.roverConnection.progressProperty().addListener((observable, oldValue, newValue) -> {	
+
+		// autoscroll ScrollPane to bottom
+		RoverConnection.roverConnection.progressProperty().addListener((observable, oldValue, newValue) -> {
 			scrollPane.setVvalue(1);
 		});
 	}
-	
+
+	/**
+	 * This method loads the preloader layout from Preloader.fxml and sets the scene
+	 * in the main stage.
+	 * 
+	 * @throws IOException
+	 * 
+	 * @return void
+	 */
+
 	public static void loadPreloaderScene() throws IOException {
 		FXMLLoader preloader = new FXMLLoader();
-		preloader.setLocation(PreloaderController.class.getResource("/com/masopust/ondra/java/gui/preloader/Preloader.fxml"));
+		preloader.setLocation(
+				PreloaderController.class.getResource("/com/masopust/ondra/java/gui/preloader/Preloader.fxml"));
 
 		Parent preloaderLayout = preloader.load();
 
 		Scene preloaderScene = new Scene(preloaderLayout);
 		preloaderScene.getStylesheets().add("/com/masopust/ondra/java/gui/preloader/PreloaderStyle.css");
-		
+
 		Main.mainStage.setScene(preloaderScene);
 		Main.mainStage.centerOnScreen();
 	}

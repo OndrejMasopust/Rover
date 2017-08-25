@@ -18,13 +18,28 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * This class holds the logic behind the main scene.
+ * 
+ * @author Ondrej Masopust
+ *
+ */
+
 public class MainLayoutController implements Initializable {
 
 	@FXML
 	Pane centerSection;
-	
+
+	// This variable defines number of lines that are generated in the center
+	// section.
 	private static int numberOfLines = 30; // FIXME
+	/**
+	 * This list holds all of the lines that are generated in the center section.
+	 */
 	public static ArrayList<Line> lines = new ArrayList<>();
+	/**
+	 * This list holds all of the dots that are at the end of each of the lines.
+	 */
 	public static ArrayList<Rectangle> dots = new ArrayList<>();
 
 	@Override
@@ -33,18 +48,34 @@ public class MainLayoutController implements Initializable {
 		Main.setFullScreen();
 	}
 
+	/**
+	 * This method loads the main scene from MainLayout.fxml and sets the scene in
+	 * the main stage.
+	 * 
+	 * @throws IOException
+	 * 
+	 * @return void
+	 */
+
 	public static void loadMainScene() throws IOException {
 		FXMLLoader mainStageLoader = new FXMLLoader();
-		mainStageLoader.setLocation(MainLayoutController.class.getResource("/com/masopust/ondra/java/gui/mainLayout/MainLayout.fxml"));
-		
+		mainStageLoader.setLocation(
+				MainLayoutController.class.getResource("/com/masopust/ondra/java/gui/mainLayout/MainLayout.fxml"));
+
 		Parent mainStageLayout = mainStageLoader.load();
-		
+
 		Scene mainScene = new Scene(mainStageLayout);
 		Platform.runLater(() -> {
 			Main.mainStage.setScene(mainScene);
 		});
 	}
-	
+
+	/**
+	 * This method builds the lines and dots in the center section.
+	 * 
+	 * @return void
+	 */
+
 	private void buildCenterSection() {
 		int lineLength = 200; // FIXME
 		double startX = centerSection.getWidth() / 2;

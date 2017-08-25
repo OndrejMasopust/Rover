@@ -3,8 +3,9 @@ package com.masopust.ondra.java.gui.preloader.test;
 import javafx.concurrent.Task;
 
 /**
- * Class only for testing purposes of the preloader 
- *
+ * The {@code PreloaderTestWorkingThread} class is only for testing purposes of the preloader.
+ * 
+ *@author Ondrej Masopust
  */
 public class PreloaderTestWorkingThread extends Task<String>{
 

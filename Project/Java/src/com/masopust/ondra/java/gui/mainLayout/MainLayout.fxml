@@ -6,7 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<!-- TODO delete all visual properties, design belongs to css -->
+<!--
+This fxml file consists of elements that are in the main layout.
+
+@author Ondrej Masopust
+-->
 
 <BorderPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.mainLayout.MainLayoutController">
 	<left>
