@@ -32,10 +32,11 @@ height: 500.0
 	<left>
 		<VBox fx:id="leftSection" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane fx:id="consoleOutput">
+            <ScrollPane fx:id="consoleOutputSP">
                <content>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" />
-               </content></ScrollPane>
+                  <VBox />
+               </content>
+            </ScrollPane>
             <HBox fx:id="consoleInputBox">
                <children>
                   <TextField fx:id="consoleInput" />

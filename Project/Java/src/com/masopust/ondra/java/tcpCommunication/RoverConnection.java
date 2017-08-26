@@ -1,6 +1,10 @@
 package com.masopust.ondra.java.tcpCommunication;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -32,6 +36,8 @@ public class RoverConnection extends Task<String> {
 	private int timeout = 1000;
 	private int errorCounter = 1;
 	private StringBuilder errors = new StringBuilder();
+	private BufferedWriter outputTCP;
+	private BufferedReader inputTCP;
 
 	/**
 	 * Creates instance of the {@code RoverConnection} class with default values:
@@ -142,7 +148,6 @@ public class RoverConnection extends Task<String> {
 	}
 
 	/**
-	 * 
 	 * @return port number
 	 */
 	public int getPort() {
@@ -150,7 +155,6 @@ public class RoverConnection extends Task<String> {
 	}
 
 	/**
-	 * 
 	 * @return host IP address
 	 */
 	public String getHost() {
@@ -158,15 +162,48 @@ public class RoverConnection extends Task<String> {
 	}
 
 	/**
-	 * 
 	 * @return {@link Socket} instance that is used in the connection
 	 */
 	public Socket getClientSocket() {
 		return clientSocket;
 	}
 
+	/**
+	 * The {@code sendData} method sends message to the Rover
+	 * 
+	 * @param message
+	 *            {@link String} that is to be sent
+	 */
+	public void sendData(String message) {
+		try {
+			outputTCP.write(message);
+			outputTCP.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * The {@code readLine} method reads a line from the Rover. For more info, see
+	 * {@link BufferedReader}.readLine.
+	 * 
+	 * @return {@link String} containing the received line
+	 */
+	public String readLine() {
+		String message = "";
+		try {
+			message = inputTCP.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			message = e.getMessage();
+		}
+		return message;
+	}
+
 	@Override
-	protected String call() throws Exception {
+	protected String call() throws IOException {
 		int i = 0; // FIXME delete this before sharp run
 		while (true) {
 			if (this.isCancelled())
@@ -176,6 +213,13 @@ public class RoverConnection extends Task<String> {
 			errorCounter++;
 
 			if (roverConnection.connectionEstablished() || i == 1) {
+				try {
+					outputTCP = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+					inputTCP = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				} catch (IOException e) {
+					// TODO
+					e.printStackTrace();
+				}
 				break;
 			} else {
 				// wait 500ms

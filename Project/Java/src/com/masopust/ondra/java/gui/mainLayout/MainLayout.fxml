@@ -26,6 +26,8 @@ This fxml file consists of elements that are in the main layout.
 width: 569.0
 
 height: 500.0
+
+<Text fx:id="consoleOutputText" strokeType="OUTSIDE" strokeWidth="0.0" />
 -->
 
 <BorderPane prefHeight="${screen.visualBounds.height}" prefWidth="${screen.visualBounds.width}" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.mainLayout.MainLayoutController">
@@ -38,14 +40,15 @@ height: 500.0
 				<Double fx:id="submitButDim" fx:value="40.0"/>
 			</fx:define>
          <children>
-            <ScrollPane fx:id="consoleOutput" prefHeight="${leftSection.height - submitButDim}">
+            <ScrollPane fx:id="consoleOutputSP" prefHeight="${leftSection.height - submitButDim}">
             		<content>
-                		<Text strokeType="OUTSIDE" strokeWidth="0.0" />
-            		</content></ScrollPane>
+                		<VBox fx:id="consoleOutputTextBox" prefWidth="${consoleOutputSP.width - 5}"/>
+            		</content>
+            	</ScrollPane>
             <HBox fx:id="consoleInputBox">
                <children>
-                  <TextField fx:id="consoleInput" prefHeight="${submitButDim}"/>
-                  <Button fx:id="consoleSubmit" defaultButton="true" mnemonicParsing="false" prefHeight="${submitButDim}" prefWidth="${submitButDim}" styleClass="consoleSubmitButton" />
+                  <TextField fx:id="consoleInput" prefHeight="${submitButDim}" onAction="#handleSubmit"/>
+                  <Button fx:id="consoleSubmit" defaultButton="true" mnemonicParsing="false" prefHeight="${submitButDim}" prefWidth="${submitButDim}" onAction="#handleSubmit" styleClass="consoleSubmitButton" />
                </children>
             </HBox>
          </children>
@@ -59,13 +62,13 @@ height: 500.0
          <top>
             <VBox fx:id="zoomBox" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="zoomIn" mnemonicParsing="false" text="+" />
-                  <Button fx:id="zommOut" mnemonicParsing="false" text="-" />
+                  <Button fx:id="zoomIn" mnemonicParsing="false" onAction="#handleZoomIn" text="+" />
+                  <Button fx:id="zommOut" mnemonicParsing="false" onAction="#handleZoomOut" text="-" />
                </children>
             </VBox>
          </top>
          <bottom>
-            <Button fx:id="info" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="infoButton" text="?" BorderPane.alignment="CENTER" />
+            <Button fx:id="info" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="infoButton" onAction="#handleInfo" text="?" BorderPane.alignment="CENTER" />
          </bottom>
       </BorderPane>
    </right>

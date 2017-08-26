@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.masopust.ondra.java.gui.Main;
+import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -23,6 +24,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 /**
  * This class holds the logic behind the main scene.
@@ -41,7 +44,10 @@ public class MainLayoutController implements Initializable {
 	VBox leftSection;
 
 	@FXML
-	ScrollPane consoleOutput;
+	ScrollPane consoleOutputSP;
+
+	@FXML
+	VBox consoleOutputTextBox;
 
 	@FXML
 	HBox consoleInputBox;
@@ -54,7 +60,7 @@ public class MainLayoutController implements Initializable {
 
 	@FXML
 	BorderPane rightSection;
-	
+
 	@FXML
 	VBox zoomBox;
 
@@ -71,7 +77,16 @@ public class MainLayoutController implements Initializable {
 	 * This variable defines number of lines that are generated in the center
 	 * section.
 	 */
-	private static int numberOfLines = 30; // FIXME
+	private int numberOfLines = 30; // FIXME
+
+	private StringBuilder sb = new StringBuilder();;
+	private ArrayList<Text> textList = new ArrayList<>();
+	private int i;
+
+	/**
+	 * This boolean tells if the previous record in the console output was form you.
+	 */
+	private static boolean previousTextYou = false;
 
 	/**
 	 * This list holds all of the lines that are generated in the center section.
@@ -85,9 +100,66 @@ public class MainLayoutController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// Main.setFullScreen();
+		// FIXME delete Main.setFullScreen();
 		buildCenterSection();
-		
+	}
+
+	/**
+	 * The {@code handleSubmit} method wraps code that is executed if the submit
+	 * button is pressed or enter is hit while in the console text input.
+	 */
+	public void handleSubmit() {
+		// RoverConnection.roverConnection.sendData(consoleInput.getText());
+
+		if (!previousTextYou) {
+			sb = new StringBuilder();
+
+			textList.add(new Text(consoleInput.getText()));
+			i = textList.size() - 1;
+			textList.get(i).setTextAlignment(TextAlignment.RIGHT);
+			textList.get(i).setFill(Color.BLUE);
+			sb.append("You:\n");
+			
+		}
+
+		sb.append(consoleInput.getText());
+		sb.append("\n");
+		textList.get(i).setText(sb.toString());
+
+		if (!previousTextYou) {
+			consoleOutputTextBox.getChildren().add(textList.get(i));
+			previousTextYou = true;
+		}
+
+		consoleInput.setText("");
+	}
+
+	/**
+	 * The {@code handleZoomIn} method wraps code that is executed when the zoom in
+	 * button is pressed.
+	 */
+	public void handleZoomIn() {
+
+	}
+
+	/**
+	 * The {@code handleZoomIn} method wraps code that is executed when the zoom out
+	 * button is pressed.
+	 */
+	public void handleZoomOut() {
+
+	}
+
+	/**
+	 * The {@code handleInfo} method wraps code that is executed when the info
+	 * button is pressed.
+	 */
+	public void handleInfo() {
+
+	}
+
+	public static boolean getPreviousTextBol() {
+		return previousTextYou;
 	}
 
 	/**
