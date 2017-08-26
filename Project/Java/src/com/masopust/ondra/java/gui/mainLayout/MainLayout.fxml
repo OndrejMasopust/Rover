@@ -40,9 +40,9 @@ height: 500.0
 				<Double fx:id="submitButDim" fx:value="40.0"/>
 			</fx:define>
          <children>
-            <ScrollPane fx:id="consoleOutputSP" prefHeight="${leftSection.height - submitButDim}">
+            <ScrollPane fx:id="consoleOutputSP" prefHeight="${leftSection.height - submitButDim}" fitToWidth="true">
             		<content>
-                		<VBox fx:id="consoleOutputTextBox" prefWidth="${consoleOutputSP.width - 5}"/>
+                		<VBox fx:id="consoleOutputTextBox" fillWidth="true" snapToPixel="false"/>
             		</content>
             	</ScrollPane>
             <HBox fx:id="consoleInputBox">

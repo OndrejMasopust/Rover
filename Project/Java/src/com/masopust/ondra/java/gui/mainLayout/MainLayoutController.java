@@ -12,9 +12,11 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -24,7 +26,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 /**
@@ -80,7 +81,8 @@ public class MainLayoutController implements Initializable {
 	private int numberOfLines = 30; // FIXME
 
 	private StringBuilder sb = new StringBuilder();;
-	private ArrayList<Text> textList = new ArrayList<>();
+	private ArrayList<HBox> messageList = new ArrayList<>();
+	private ArrayList<Label> textList = new ArrayList<>();
 	private int i;
 
 	/**
@@ -114,12 +116,16 @@ public class MainLayoutController implements Initializable {
 		if (!previousTextYou) {
 			sb = new StringBuilder();
 
-			textList.add(new Text(consoleInput.getText()));
-			i = textList.size() - 1;
+			messageList.add(new HBox());
+			i = messageList.size() - 1;
+			textList.add(new Label(consoleInput.getText()));
 			textList.get(i).setTextAlignment(TextAlignment.RIGHT);
-			textList.get(i).setFill(Color.BLUE);
-			sb.append("You:\n");
+			textList.get(i).setWrapText(true);
+			textList.get(i).setPrefWidth(consoleOutputTextBox.getWidth()/2);
+			messageList.get(i).getChildren().add(textList.get(i));
+			messageList.get(i).setAlignment(Pos.BASELINE_RIGHT);
 			
+			sb.append("You:\n");
 		}
 
 		sb.append(consoleInput.getText());
@@ -127,7 +133,7 @@ public class MainLayoutController implements Initializable {
 		textList.get(i).setText(sb.toString());
 
 		if (!previousTextYou) {
-			consoleOutputTextBox.getChildren().add(textList.get(i));
+			consoleOutputTextBox.getChildren().add(messageList.get(i));
 			previousTextYou = true;
 		}
 
