@@ -26,7 +26,7 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
-		// TODO adjust build.xml not to include test classes and to work properly
+		// TODO adjust build.xml to work properly
 		// TODO consider making preloader as described in docs.oracle so that the app launches more smoothly
 	}
 

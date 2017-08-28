@@ -11,3 +11,36 @@
 .consoleSubmitButton{
 	/*-fx-background-image: url("/com/masopust/ondra/java/gui/mainLayout/arrow.svg");*/
 }
+
+.consoleOutputTextBox{
+	-fx-border-width: 3px;
+	-fx-border-color: black;
+}
+
+.messageList{
+	-fx-border-width: 2px;
+	-fx-border-color: green;
+}
+
+.textList{
+	-fx-border-width: 2px;
+	-fx-border-color: blue;
+}
+
+.centerSection{
+	-fx-border-width: 2px;
+	-fx-border-color: red;
+	-fx-background-color: white;
+}
+
+.rightSection{
+	-fx-background-color: white;
+}
+
+.leftSection{
+	-fx-background-color: white;
+}
+
+.infoSPane{
+	-fx-background: black;
+}

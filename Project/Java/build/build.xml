@@ -24,6 +24,7 @@
 		<copy todir="project">
 			<fileset dir="/Users/Ondra/Documents/Programming/Maturita/Project/Java">
 				<include name="src/**" />
+				<exclude name="src/**/test/**"/>
 			</fileset>
 		</copy>
 	

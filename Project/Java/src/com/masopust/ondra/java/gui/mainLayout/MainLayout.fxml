@@ -1,75 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.stage.Screen?>
+<?import java.lang.Double?>
 
-<!--
-This fxml file consists of elements that are in the main layout.
+<!-- This fxml file consists of elements that are in the main layout. @author 
+	Ondrej Masopust <fx:define> <Screen fx:factory="getPrimary" fx:id="screen" 
+	/> </fx:define> ${screen.visualBounds.height} ${screen.visualBounds.width} 
+	${hroot.width*0.15} hroot is parent element's id width: 569.0 height: 500.0 
+	<Text fx:id="consoleOutputText" strokeType="OUTSIDE" strokeWidth="0.0" /> 
+	<ScrollPane fx:id="infoSPane" opacity="0.5" prefHeight="${stackPane.height}"
+			prefWidth="${stackPane.width}" styleClass="infoSPane">
+			<content>
+            		<Label fx:id="infoLabel" text="" />
+         	</content>
+         </ScrollPane>
+	-->
 
-@author Ondrej Masopust
-
-   	<fx:define>
-   		<Screen fx:factory="getPrimary" fx:id="screen" />
-	</fx:define>
-	
-	${screen.visualBounds.height}
-	${screen.visualBounds.width}
-	
-	${hroot.width*0.15}
-	hroot is parent element's id
-	
-width: 569.0
-
-height: 500.0
-
-<Text fx:id="consoleOutputText" strokeType="OUTSIDE" strokeWidth="0.0" />
--->
-
-<BorderPane prefHeight="${screen.visualBounds.height}" prefWidth="${screen.visualBounds.width}" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.mainLayout.MainLayoutController">
-	<fx:define>
-   		<Screen fx:factory="getPrimary" fx:id="screen" />
-	</fx:define>
-	<left>
-		<VBox fx:id="leftSection" BorderPane.alignment="CENTER" >
-			<fx:define>
-				<Double fx:id="submitButDim" fx:value="40.0"/>
-			</fx:define>
-         <children>
-            <ScrollPane fx:id="consoleOutputSP" prefHeight="${leftSection.height - submitButDim}" fitToWidth="true">
-            		<content>
-                		<VBox fx:id="consoleOutputTextBox" fillWidth="true" snapToPixel="false"/>
-            		</content>
-            	</ScrollPane>
-            <HBox fx:id="consoleInputBox">
-               <children>
-                  <TextField fx:id="consoleInput" prefHeight="${submitButDim}" onAction="#handleSubmit"/>
-                  <Button fx:id="consoleSubmit" defaultButton="true" mnemonicParsing="false" prefHeight="${submitButDim}" prefWidth="${submitButDim}" onAction="#handleSubmit" styleClass="consoleSubmitButton" />
-               </children>
-            </HBox>
-         </children>
-		</VBox>
-	</left>
-	<center>
-		<Pane fx:id="centerSection" BorderPane.alignment="CENTER" />
-	</center>
-   <right>
-      <BorderPane fx:id="rightSection" BorderPane.alignment="CENTER">
-         <top>
-            <VBox fx:id="zoomBox" BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="zoomIn" mnemonicParsing="false" onAction="#handleZoomIn" text="+" />
-                  <Button fx:id="zommOut" mnemonicParsing="false" onAction="#handleZoomOut" text="-" />
-               </children>
-            </VBox>
-         </top>
-         <bottom>
-            <Button fx:id="info" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="infoButton" onAction="#handleInfo" text="?" BorderPane.alignment="CENTER" />
-         </bottom>
-      </BorderPane>
-   </right>
-</BorderPane>
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="${screen.visualBounds.height}"
+	prefWidth="${screen.visualBounds.width}" xmlns="http://javafx.com/javafx/8.0.111"
+	xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.mainLayout.MainLayoutController">
+	<children>
+		<fx:define>
+			<Screen fx:factory="getPrimary" fx:id="screen" />
+		</fx:define>
+		<ScrollPane prefHeight="${stackPane.height}" prefWidth="${stackPane.width}" opacity="0.8" fx:id="infoSPane" styleClass="infoSPane"/>
+		<BorderPane fx:id="controlPane" prefHeight="${stackPane.height}"
+			prefWidth="${stackPane.width}">
+			<center>
+				<Pane fx:id="centerSectionPane" BorderPane.alignment="CENTER"
+					styleClass="centerSection">
+					<children>
+						<Group fx:id="centerSectionGroup" />
+					</children>
+				</Pane>
+			</center>
+			<right>
+				<BorderPane fx:id="rightSection" BorderPane.alignment="CENTER" styleClass="rightSection">
+					<top>
+						<VBox fx:id="zoomBox" BorderPane.alignment="CENTER">
+							<children>
+								<Button fx:id="zoomIn" mnemonicParsing="false" onAction="#handleZoomIn"
+									text="+" />
+								<Button fx:id="zommOut" mnemonicParsing="false" onAction="#handleZoomOut"
+									text="-" />
+							</children>
+						</VBox>
+					</top>
+					<bottom>
+						<Button fx:id="info" alignment="CENTER" mnemonicParsing="false"
+							prefHeight="30.0" prefWidth="30.0" styleClass="infoButton"
+							onAction="#handleInfo" text="?" BorderPane.alignment="CENTER" />
+					</bottom>
+				</BorderPane>
+			</right>
+			<left>
+				<VBox fx:id="leftSection" BorderPane.alignment="CENTER" styleClass="leftSection">
+					<fx:define>
+						<Double fx:id="submitButDim" fx:value="40.0" />
+					</fx:define>
+					<children>
+						<ScrollPane fx:id="consoleOutputSP"
+							prefHeight="${leftSection.height - submitButDim}" fitToWidth="true">
+							<content>
+								<VBox fx:id="consoleOutputTextBox" fillWidth="true"
+									snapToPixel="false" styleClass="consoleOutputTextBox" />
+							</content>
+						</ScrollPane>
+						<HBox fx:id="consoleInputBox">
+							<children>
+								<TextField fx:id="consoleInput" prefHeight="${submitButDim}"
+									onAction="#handleSubmit" />
+								<Button fx:id="consoleSubmit" defaultButton="true"
+									mnemonicParsing="false" prefHeight="${submitButDim}" prefWidth="${submitButDim}"
+									onAction="#handleSubmit" styleClass="consoleSubmitButton" />
+							</children>
+						</HBox>
+					</children>
+				</VBox>
+			</left>
+		</BorderPane>
+	</children>
+</StackPane>

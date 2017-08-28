@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.masopust.ondra.java.gui.Main;
+import com.masopust.ondra.java.info.Info;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 
 import javafx.application.Platform;
@@ -13,20 +14,25 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 /**
  * This class holds the logic behind the main scene.
@@ -39,7 +45,22 @@ public class MainLayoutController implements Initializable {
 
 	// TODO check if these variables are used and if not, delete them
 	@FXML
-	Pane centerSection;
+	StackPane stackPane;
+	
+	@FXML
+	Label infoLabel;
+	
+	@FXML
+	BorderPane controlPane;
+	
+	@FXML
+	ScrollPane infoSPane;
+	
+	@FXML
+	Pane centerSectionPane;
+
+	@FXML
+	Group centerSectionGroup;
 
 	@FXML
 	VBox leftSection;
@@ -84,6 +105,7 @@ public class MainLayoutController implements Initializable {
 	private ArrayList<HBox> messageList = new ArrayList<>();
 	private ArrayList<Label> textList = new ArrayList<>();
 	private int i;
+	private double scale = 0.2;
 
 	/**
 	 * This boolean tells if the previous record in the console output was form you.
@@ -119,23 +141,32 @@ public class MainLayoutController implements Initializable {
 			messageList.add(new HBox());
 			i = messageList.size() - 1;
 			textList.add(new Label(consoleInput.getText()));
-			textList.get(i).setTextAlignment(TextAlignment.RIGHT);
+			textList.get(i).setTextAlignment(TextAlignment.LEFT);
 			textList.get(i).setWrapText(true);
-			textList.get(i).setPrefWidth(consoleOutputTextBox.getWidth()/2);
+			textList.get(i).setPrefWidth(consoleOutputTextBox.getWidth() / 2);
+			textList.get(i).getStyleClass().add("textList");
 			messageList.get(i).getChildren().add(textList.get(i));
-			messageList.get(i).setAlignment(Pos.BASELINE_RIGHT);
-			
-			sb.append("You:\n");
+			messageList.get(i).setAlignment(Pos.CENTER_RIGHT);
+			messageList.get(i).setPrefWidth(consoleOutputTextBox.getWidth());
+			messageList.get(i).getStyleClass().add("messageList");
 		}
 
-		sb.append(consoleInput.getText());
-		sb.append("\n");
-		textList.get(i).setText(sb.toString());
+		if (!consoleInput.getText().equals("")) {
+			sb.append(consoleInput.getText());
+			sb.append("\n");
+			textList.get(i).setText(sb.toString());
+		}
 
 		if (!previousTextYou) {
 			consoleOutputTextBox.getChildren().add(messageList.get(i));
 			previousTextYou = true;
 		}
+
+		/*
+		 * System.out.println(consoleOutputSP.getWidth());
+		 * System.out.println(consoleOutputTextBox.getWidth());
+		 * System.out.println(messageList.get(i).getWidth());
+		 */
 
 		consoleInput.setText("");
 	}
@@ -145,7 +176,8 @@ public class MainLayoutController implements Initializable {
 	 * button is pressed.
 	 */
 	public void handleZoomIn() {
-
+		centerSectionGroup.setScaleX(centerSectionGroup.getScaleX() + scale);
+		centerSectionGroup.setScaleY(centerSectionGroup.getScaleY() + scale);
 	}
 
 	/**
@@ -153,7 +185,10 @@ public class MainLayoutController implements Initializable {
 	 * button is pressed.
 	 */
 	public void handleZoomOut() {
-
+		if ((centerSectionGroup.getScaleX() - scale) > 0) {
+			centerSectionGroup.setScaleX(centerSectionGroup.getScaleX() - scale);
+			centerSectionGroup.setScaleY(centerSectionGroup.getScaleY() - scale);
+		}
 	}
 
 	/**
@@ -161,7 +196,8 @@ public class MainLayoutController implements Initializable {
 	 * button is pressed.
 	 */
 	public void handleInfo() {
-
+		//infoLabel.setText(Info.readInfo());
+		infoSPane.toFront();
 	}
 
 	public static boolean getPreviousTextBol() {
@@ -196,8 +232,8 @@ public class MainLayoutController implements Initializable {
 	 */
 	private void buildCenterSection() {
 		int lineLength = 200; // FIXME
-		double startX = centerSection.getWidth() / 2;
-		double startY = centerSection.getHeight() / 2;
+		double startX = centerSectionPane.getWidth() / 2;
+		double startY = centerSectionPane.getHeight() / 2;
 		double baseAngle = (double) 360 / numberOfLines;
 		float dotSize = 3;
 
@@ -216,18 +252,18 @@ public class MainLayoutController implements Initializable {
 			lines.get(i).setEndY(endY);
 
 			// set start and end points to be relative to the pane dimensions
-			lines.get(i).startXProperty().bind(centerSection.widthProperty().divide(2));
-			lines.get(i).startYProperty().bind(centerSection.heightProperty().divide(2));
+			lines.get(i).startXProperty().bind(centerSectionPane.widthProperty().divide(2));
+			lines.get(i).startYProperty().bind(centerSectionPane.heightProperty().divide(2));
 			lines.get(i).endXProperty().bind(lines.get(i).startXProperty().add(xSide));
 			lines.get(i).endYProperty().bind(lines.get(i).startYProperty().add(ySide));
-			centerSection.getChildren().add(lines.get(i));
+			centerSectionGroup.getChildren().add(lines.get(i));
 
 			dots.add(new Rectangle(dotSize, dotSize, Color.BLUE));
 			dots.get(i).setX(endX - dotSize / 2);
 			dots.get(i).setY(endY - dotSize / 2);
 			dots.get(i).xProperty().bind(lines.get(i).endXProperty().subtract(dotSize / 2));
 			dots.get(i).yProperty().bind(lines.get(i).endYProperty().subtract(dotSize / 2));
-			centerSection.getChildren().add(dots.get(i));
+			centerSectionGroup.getChildren().add(dots.get(i));
 
 			/*
 			 * System.out.printf("Angle: %f\n", angleInDeg);
