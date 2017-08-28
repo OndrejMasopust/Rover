@@ -30,7 +30,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -56,6 +59,9 @@ public class MainLayoutController implements Initializable {
 	@FXML
 	ScrollPane infoSPane;
 	
+	@FXML
+	TextFlow infoTF;
+
 	@FXML
 	Pane centerSectionPane;
 
@@ -197,6 +203,12 @@ public class MainLayoutController implements Initializable {
 	 */
 	public void handleInfo() {
 		//infoLabel.setText(Info.readInfo());
+		Text text = new Text(Info.readInfo());
+		text.setFont(new Font(20));
+		text.setFill(Color.ALICEBLUE);
+		infoTF.setTextAlignment(TextAlignment.LEFT);
+		infoTF.setLineSpacing(5.0);
+		infoTF.getChildren().add(text);
 		infoSPane.toFront();
 	}
 

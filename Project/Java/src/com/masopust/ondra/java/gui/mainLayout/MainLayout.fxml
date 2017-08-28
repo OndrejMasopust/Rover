@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
 <?import javafx.stage.Screen?>
 <?import java.lang.Double?>
 
@@ -34,7 +35,11 @@
 		<fx:define>
 			<Screen fx:factory="getPrimary" fx:id="screen" />
 		</fx:define>
-		<ScrollPane prefHeight="${stackPane.height}" prefWidth="${stackPane.width}" opacity="0.8" fx:id="infoSPane" styleClass="infoSPane"/>
+		<ScrollPane prefHeight="${stackPane.height}" prefWidth="${stackPane.height}" opacity="0.8" fx:id="infoSPane" styleClass="infoSPane">
+			<content>
+           		<TextFlow prefHeight="${infoSPane.height - 2}" prefWidth="${infoSPane.height - 2}" fx:id="infoTF"/>
+         	</content>
+		</ScrollPane>
 		<BorderPane fx:id="controlPane" prefHeight="${stackPane.height}"
 			prefWidth="${stackPane.width}">
 			<center>
