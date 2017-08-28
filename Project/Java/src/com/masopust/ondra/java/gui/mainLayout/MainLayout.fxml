@@ -19,13 +19,9 @@
 	/> </fx:define> ${screen.visualBounds.height} ${screen.visualBounds.width} 
 	${hroot.width*0.15} hroot is parent element's id width: 569.0 height: 500.0 
 	<Text fx:id="consoleOutputText" strokeType="OUTSIDE" strokeWidth="0.0" /> 
-	<ScrollPane fx:id="infoSPane" opacity="0.5" prefHeight="${stackPane.height}"
-			prefWidth="${stackPane.width}" styleClass="infoSPane">
-			<content>
-            		<Label fx:id="infoLabel" text="" />
-         	</content>
-         </ScrollPane>
-	-->
+	<ScrollPane fx:id="infoSPane" opacity="0.5" prefHeight="${stackPane.height}" 
+	prefWidth="${stackPane.width}" styleClass="infoSPane"> <content> <Label fx:id="infoLabel" 
+	text="" /> </content> </ScrollPane> -->
 
 <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="${screen.visualBounds.height}"
@@ -35,10 +31,12 @@
 		<fx:define>
 			<Screen fx:factory="getPrimary" fx:id="screen" />
 		</fx:define>
-		<ScrollPane prefHeight="${stackPane.height}" prefWidth="${stackPane.height}" opacity="0.8" fx:id="infoSPane" styleClass="infoSPane">
+		<ScrollPane prefHeight="${stackPane.height}" prefWidth="${stackPane.height}"
+			opacity="0.8" fx:id="infoSPane" styleClass="infoSPane">
 			<content>
-           		<TextFlow prefHeight="${infoSPane.height - 2}" prefWidth="${infoSPane.height - 2}" fx:id="infoTF"/>
-         	</content>
+				<TextFlow prefHeight="${infoSPane.height - 2}" prefWidth="${infoSPane.height - 2}"
+					fx:id="infoTF" />
+			</content>
 		</ScrollPane>
 		<BorderPane fx:id="controlPane" prefHeight="${stackPane.height}"
 			prefWidth="${stackPane.width}">
@@ -51,7 +49,8 @@
 				</Pane>
 			</center>
 			<right>
-				<BorderPane fx:id="rightSection" BorderPane.alignment="CENTER" styleClass="rightSection">
+				<BorderPane fx:id="rightSection" BorderPane.alignment="CENTER"
+					styleClass="rightSection">
 					<top>
 						<VBox fx:id="zoomBox" BorderPane.alignment="CENTER">
 							<children>
@@ -70,7 +69,8 @@
 				</BorderPane>
 			</right>
 			<left>
-				<VBox fx:id="leftSection" BorderPane.alignment="CENTER" styleClass="leftSection">
+				<VBox fx:id="leftSection" BorderPane.alignment="CENTER"
+					styleClass="leftSection">
 					<fx:define>
 						<Double fx:id="submitButDim" fx:value="40.0" />
 					</fx:define>

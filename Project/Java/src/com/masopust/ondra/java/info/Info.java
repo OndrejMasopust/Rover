@@ -3,7 +3,10 @@ package com.masopust.ondra.java.info;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
+
+import javafx.scene.text.Text;
 
 /**
  * The {@code Info} class wraps one static method that reads the content of the
@@ -17,11 +20,13 @@ public class Info {
 	private static File info = new File(Info.class.getResource("/com/masopust/ondra/java/info/Info.txt").getPath()); //"/Users/Ondra/Documents/Programming/Maturita/Project/Java/bin/com/masopust/ondra/java/info/Info.txt"
 	private static StringBuilder sb = new StringBuilder();
 	private static List<String> lines;
+	private static ArrayList<Text> texts;
 
 	/**
 	 * The {@code readInfo} method reads content of the <b>Info.txt</b> file.
 	 * 
 	 * @return {@link String} containing the content of the <b>Info.txt</b> file
+	 * @deprecated
 	 */
 	public static String readInfo() {
 		if (sb.toString().equals("")) {
@@ -41,5 +46,10 @@ public class Info {
 			}
 		}
 		return sb.toString();
+	}
+	
+	public static ArrayList<Text> getInfo(){
+		// TODO
+		return texts;
 	}
 }

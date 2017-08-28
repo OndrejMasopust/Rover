@@ -21,7 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -30,12 +29,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 
 /**
  * This class holds the logic behind the main scene.
@@ -49,16 +44,13 @@ public class MainLayoutController implements Initializable {
 	// TODO check if these variables are used and if not, delete them
 	@FXML
 	StackPane stackPane;
-	
-	@FXML
-	Label infoLabel;
-	
+
 	@FXML
 	BorderPane controlPane;
-	
+
 	@FXML
 	ScrollPane infoSPane;
-	
+
 	@FXML
 	TextFlow infoTF;
 
@@ -111,7 +103,7 @@ public class MainLayoutController implements Initializable {
 	private ArrayList<HBox> messageList = new ArrayList<>();
 	private ArrayList<Label> textList = new ArrayList<>();
 	private int i;
-	private double scale = 0.2;
+	private double zoomScale = 0.2;
 
 	/**
 	 * This boolean tells if the previous record in the console output was form you.
@@ -182,8 +174,8 @@ public class MainLayoutController implements Initializable {
 	 * button is pressed.
 	 */
 	public void handleZoomIn() {
-		centerSectionGroup.setScaleX(centerSectionGroup.getScaleX() + scale);
-		centerSectionGroup.setScaleY(centerSectionGroup.getScaleY() + scale);
+		centerSectionGroup.setScaleX(centerSectionGroup.getScaleX() + zoomScale);
+		centerSectionGroup.setScaleY(centerSectionGroup.getScaleY() + zoomScale);
 	}
 
 	/**
@@ -191,9 +183,9 @@ public class MainLayoutController implements Initializable {
 	 * button is pressed.
 	 */
 	public void handleZoomOut() {
-		if ((centerSectionGroup.getScaleX() - scale) > 0) {
-			centerSectionGroup.setScaleX(centerSectionGroup.getScaleX() - scale);
-			centerSectionGroup.setScaleY(centerSectionGroup.getScaleY() - scale);
+		if ((centerSectionGroup.getScaleX() - zoomScale) > 0) {
+			centerSectionGroup.setScaleX(centerSectionGroup.getScaleX() - zoomScale);
+			centerSectionGroup.setScaleY(centerSectionGroup.getScaleY() - zoomScale);
 		}
 	}
 
@@ -202,14 +194,12 @@ public class MainLayoutController implements Initializable {
 	 * button is pressed.
 	 */
 	public void handleInfo() {
-		//infoLabel.setText(Info.readInfo());
-		Text text = new Text(Info.readInfo());
-		text.setFont(new Font(20));
-		text.setFill(Color.ALICEBLUE);
-		infoTF.setTextAlignment(TextAlignment.LEFT);
-		infoTF.setLineSpacing(5.0);
-		infoTF.getChildren().add(text);
-		infoSPane.toFront();
+		if (infoTF.getChildren().size() == 0) {
+			infoTF.setTextAlignment(TextAlignment.LEFT);
+			infoTF.setLineSpacing(5.0); // FIXME
+			infoTF.getChildren().addAll(Info.getInfo());
+			infoSPane.toFront();
+		}
 	}
 
 	public static boolean getPreviousTextBol() {
