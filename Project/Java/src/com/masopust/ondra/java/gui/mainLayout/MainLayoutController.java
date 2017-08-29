@@ -13,6 +13,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -122,7 +123,6 @@ public class MainLayoutController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// FIXME delete Main.setFullScreen();
 		buildCenterSection();
 	}
 
@@ -196,14 +196,23 @@ public class MainLayoutController implements Initializable {
 	public void handleInfo() {
 		if (infoTF.getChildren().size() == 0) {
 			infoTF.setTextAlignment(TextAlignment.LEFT);
-			infoTF.setLineSpacing(5.0); // FIXME
+			infoTF.setPadding(new Insets(8, 10, 8, 10));
+			infoTF.setLineSpacing(5.0);
 			infoTF.getChildren().addAll(Info.getInfo());
 			infoSPane.toFront();
 		}
 	}
 
-	public static boolean getPreviousTextBol() {
-		return previousTextYou;
+	/**
+	 * The {@code writeConsoleRPi} method writes the given message to the console
+	 * output in the main layout.
+	 * 
+	 * @param input
+	 *            {@link String} that contains the message that is to be written to
+	 *            the console output
+	 */
+	public static void writeConsoleRPi(String input) {
+		// TODO Auto-generated method stub
 	}
 
 	/**

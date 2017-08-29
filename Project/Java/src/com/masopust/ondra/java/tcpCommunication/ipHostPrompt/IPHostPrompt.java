@@ -53,8 +53,8 @@ public class IPHostPrompt {
 				IPSelectionLayoutController.ipSelectionLayoutConstroller.getIPField().setText(lines.get(0));
 				IPSelectionLayoutController.ipSelectionLayoutConstroller.getPortField().setText(lines.get(1));
 			} catch (IOException e) {
-				// TODO print message to the layout
-				e.printStackTrace();
+				System.out.println("IOException thrown during reading IPHostPrompt.txt (com.masopust.ondra.java.tcpCommunication.ipHostPrompt.IPHostPrompt.setIPHostText):");
+				System.out.println(e.getMessage());
 			}
 		}
 	}

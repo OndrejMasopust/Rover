@@ -238,6 +238,13 @@ public class RoverConnection extends Task<String> {
 		}
 		IPHostPrompt.writeOptions();
 		MainLayoutController.loadMainScene();
+		while (true) {
+			if (this.isCancelled())
+				break;
+			String input = inputTCP.readLine();
+			if (!input.equals(""))
+				MainLayoutController.writeConsoleRPi(input);
+		}
 		return null;
 	}
 }
