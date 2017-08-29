@@ -68,7 +68,7 @@ public class MainLayoutController implements Initializable {
 	ScrollPane consoleOutputSP;
 
 	@FXML
-	VBox consoleOutputTextBox;
+	VBox consoleOutputTextBoxx;
 
 	@FXML
 	HBox consoleInputBox;
@@ -100,11 +100,12 @@ public class MainLayoutController implements Initializable {
 	 */
 	private int numberOfLines = 30; // FIXME
 
-	private StringBuilder sb = new StringBuilder();;
-	private ArrayList<HBox> messageList = new ArrayList<>();
-	private ArrayList<Label> textList = new ArrayList<>();
-	private int i;
+	private static StringBuilder sb = new StringBuilder();;
+	private static ArrayList<HBox> messageList = new ArrayList<>();
+	private static ArrayList<Label> textList = new ArrayList<>();
+	private static int i;
 	private double zoomScale = 0.2;
+	private static VBox consoleOutputTextBox;
 
 	/**
 	 * This boolean tells if the previous record in the console output was form you.
@@ -124,6 +125,7 @@ public class MainLayoutController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		buildCenterSection();
+		consoleOutputTextBox = consoleOutputTextBoxx;
 	}
 
 	/**
@@ -138,7 +140,7 @@ public class MainLayoutController implements Initializable {
 
 			messageList.add(new HBox());
 			i = messageList.size() - 1;
-			textList.add(new Label(consoleInput.getText()));
+			textList.add(new Label());
 			textList.get(i).setTextAlignment(TextAlignment.LEFT);
 			textList.get(i).setWrapText(true);
 			textList.get(i).setPrefWidth(consoleOutputTextBox.getWidth() / 2);
@@ -212,7 +214,28 @@ public class MainLayoutController implements Initializable {
 	 *            the console output
 	 */
 	public static void writeConsoleRPi(String input) {
-		// TODO Auto-generated method stub
+		if (previousTextYou) {
+			sb = new StringBuilder();
+
+			messageList.add(new HBox());
+			i = messageList.size() - 1;
+			textList.add(new Label());
+			textList.get(i).setTextAlignment(TextAlignment.LEFT);
+			textList.get(i).setWrapText(true);
+			textList.get(i).setPrefWidth(consoleOutputTextBox.getWidth() / 2);
+			textList.get(i).getStyleClass().add("textList");
+			messageList.get(i).getChildren().add(textList.get(i));
+			messageList.get(i).setAlignment(Pos.CENTER_LEFT);
+			messageList.get(i).setPrefWidth(consoleOutputTextBox.getWidth());
+			messageList.get(i).getStyleClass().add("messageList");
+		}
+
+		textList.get(i).setText(sb.toString());
+		
+		if (previousTextYou) {
+			consoleOutputTextBox.getChildren().add(messageList.get(i));
+			previousTextYou = false;
+		}
 	}
 
 	/**

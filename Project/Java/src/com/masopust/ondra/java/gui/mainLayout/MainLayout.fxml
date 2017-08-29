@@ -78,7 +78,7 @@
 						<ScrollPane fx:id="consoleOutputSP"
 							prefHeight="${leftSection.height - submitButDim}" fitToWidth="true">
 							<content>
-								<VBox fx:id="consoleOutputTextBox" fillWidth="true"
+								<VBox fx:id="consoleOutputTextBoxx" fillWidth="true"
 									snapToPixel="false" styleClass="consoleOutputTextBox" />
 							</content>
 						</ScrollPane>

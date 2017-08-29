@@ -41,13 +41,16 @@ public class Main extends Application {
 	@Override
 	public void stop() throws Exception {
 		try {
+			RoverConnection.roverConnection.cancel();
 			RoverConnection.roverConnection.getClientSocket().close(); // TODO check if only this is sufficient
 		} catch (NullPointerException e) {
 			// TODO
-			System.out.println("NullPointerException thrown.");
+			System.out.println("NullPointerException thrown while terminating this program:");
+			System.out.println(e.getMessage());
 		} catch (IOException e) {
 			// TODO
-			System.out.println("IOException thrown.");
+			System.out.println("IOException thrown while terminating this program:");
+			System.out.println(e.getMessage());
 		}
 		super.stop();
 	}
