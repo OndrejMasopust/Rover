@@ -110,7 +110,7 @@ public class MainLayoutController implements Initializable {
 	/**
 	 * This boolean tells if the previous record in the console output was form you.
 	 */
-	private static boolean previousTextYou = false;
+	private static Boolean previousMessageFromRPi = null;
 
 	/**
 	 * This list holds all of the lines that are generated in the center section.
@@ -126,6 +126,10 @@ public class MainLayoutController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		buildCenterSection();
 		consoleOutputTextBox = consoleOutputTextBoxx;
+		consoleOutputSP.heightProperty().addListener((observable, oldValue, newValue) -> { // FIXME scrolling doesn't work
+			consoleOutputSP.setVvalue(1);
+			System.out.println("listener called");
+		});
 	}
 
 	/**
@@ -133,34 +137,9 @@ public class MainLayoutController implements Initializable {
 	 * button is pressed or enter is hit while in the console text input.
 	 */
 	public void handleSubmit() {
+		// FIXME uncomment:
 		// RoverConnection.roverConnection.sendData(consoleInput.getText());
-
-		if (!previousTextYou) {
-			sb = new StringBuilder();
-
-			messageList.add(new HBox());
-			i = messageList.size() - 1;
-			textList.add(new Label());
-			textList.get(i).setTextAlignment(TextAlignment.LEFT);
-			textList.get(i).setWrapText(true);
-			textList.get(i).setPrefWidth(consoleOutputTextBox.getWidth() / 2);
-			textList.get(i).getStyleClass().add("textList");
-			messageList.get(i).getChildren().add(textList.get(i));
-			messageList.get(i).setAlignment(Pos.CENTER_RIGHT);
-			messageList.get(i).setPrefWidth(consoleOutputTextBox.getWidth());
-			messageList.get(i).getStyleClass().add("messageList");
-		}
-
-		if (!consoleInput.getText().equals("")) {
-			sb.append(consoleInput.getText());
-			sb.append("\n");
-			textList.get(i).setText(sb.toString());
-		}
-
-		if (!previousTextYou) {
-			consoleOutputTextBox.getChildren().add(messageList.get(i));
-			previousTextYou = true;
-		}
+		addMessageToConsole(false, consoleInput.getText());
 
 		/*
 		 * System.out.println(consoleOutputSP.getWidth());
@@ -169,6 +148,56 @@ public class MainLayoutController implements Initializable {
 		 */
 
 		consoleInput.setText("");
+	}
+
+	/**
+	 * The {@code writeConsoleRPi} method writes the given message to the console
+	 * output in the main layout.
+	 * 
+	 * @param input
+	 *            {@link String} that contains the message that is to be written to
+	 *            the console output
+	 */
+	public void writeConsoleRPi() { // static, String input
+		addMessageToConsole(true, "Message from Pi. Can you see it?"); // FIXME
+	}
+
+	private static void addMessageToConsole(boolean fromRPi, String input) {
+		try {
+			if (previousMessageFromRPi.booleanValue() ^ fromRPi) {
+				sb = new StringBuilder();
+
+				messageList.add(new HBox());
+				i = messageList.size() - 1;
+				textList.add(new Label());
+				textList.get(i).setTextAlignment(TextAlignment.LEFT);
+				textList.get(i).setWrapText(true);
+				textList.get(i).setPrefWidth(consoleOutputTextBox.getWidth() / 2);
+				textList.get(i).getStyleClass().add("textList");
+				messageList.get(i).getChildren().add(textList.get(i));
+				if (fromRPi)
+					messageList.get(i).setAlignment(Pos.CENTER_LEFT);
+				else
+					messageList.get(i).setAlignment(Pos.CENTER_RIGHT);
+				messageList.get(i).setPrefWidth(textList.get(i).getWidth() * 2);
+				messageList.get(i).getStyleClass().add("messageList");
+			}
+			
+			if (!input.equals("")) {
+				sb.append(input);
+				sb.append("\n");
+				textList.get(i).setText(sb.toString());
+			}
+
+			if (previousMessageFromRPi.booleanValue() ^ fromRPi)
+				consoleOutputTextBox.getChildren().add(messageList.get(i));
+
+			previousMessageFromRPi = fromRPi;
+			
+		} catch (NullPointerException e) {
+			previousMessageFromRPi = !fromRPi;
+			addMessageToConsole(fromRPi, input);
+		}
 	}
 
 	/**
@@ -206,39 +235,6 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code writeConsoleRPi} method writes the given message to the console
-	 * output in the main layout.
-	 * 
-	 * @param input
-	 *            {@link String} that contains the message that is to be written to
-	 *            the console output
-	 */
-	public static void writeConsoleRPi(String input) {
-		if (previousTextYou) {
-			sb = new StringBuilder();
-
-			messageList.add(new HBox());
-			i = messageList.size() - 1;
-			textList.add(new Label());
-			textList.get(i).setTextAlignment(TextAlignment.LEFT);
-			textList.get(i).setWrapText(true);
-			textList.get(i).setPrefWidth(consoleOutputTextBox.getWidth() / 2);
-			textList.get(i).getStyleClass().add("textList");
-			messageList.get(i).getChildren().add(textList.get(i));
-			messageList.get(i).setAlignment(Pos.CENTER_LEFT);
-			messageList.get(i).setPrefWidth(consoleOutputTextBox.getWidth());
-			messageList.get(i).getStyleClass().add("messageList");
-		}
-
-		textList.get(i).setText(sb.toString());
-		
-		if (previousTextYou) {
-			consoleOutputTextBox.getChildren().add(messageList.get(i));
-			previousTextYou = false;
-		}
-	}
-
-	/**
 	 * This method loads the main scene from MainLayout.fxml and sets the scene in
 	 * the main stage.
 	 * 
@@ -254,8 +250,11 @@ public class MainLayoutController implements Initializable {
 		Parent mainStageLayout = mainStageLoader.load();
 
 		Scene mainScene = new Scene(mainStageLayout);
+		mainScene.getStylesheets().add("/com/masopust/ondra/java/gui/mainLayout/MainLayoutStyle.css");
+
 		Platform.runLater(() -> {
 			Main.mainStage.setScene(mainScene);
+			Main.mainStage.centerOnScreen();
 		});
 	}
 

@@ -9,6 +9,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import com.masopust.ondra.java.gui.ipSelectionLayout.IPSelectionLayoutController;
@@ -213,6 +214,7 @@ public class RoverConnection extends Task<String> {
 			errorCounter++;
 
 			if (roverConnection.connectionEstablished() || i == 1) {
+				/* FIXME uncomment
 				try {
 					outputTCP = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 					inputTCP = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -220,6 +222,7 @@ public class RoverConnection extends Task<String> {
 					// TODO
 					e.printStackTrace();
 				}
+				*/
 				break;
 			} else {
 				// wait 500ms
@@ -238,6 +241,20 @@ public class RoverConnection extends Task<String> {
 		}
 		IPHostPrompt.writeOptions();
 		MainLayoutController.loadMainScene();
+		
+		/*
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Platform.runLater(() -> {
+			MainLayoutController.writeConsoleRPi("Ahooooj jak se máš? já dovře.");
+		});
+		*/
+		
+		/* FIXME uncomment
 		while (true) {
 			if (this.isCancelled())
 				break;
@@ -245,6 +262,7 @@ public class RoverConnection extends Task<String> {
 			if (!input.equals(""))
 				MainLayoutController.writeConsoleRPi(input);
 		}
+		*/
 		return null;
 	}
 }
