@@ -126,15 +126,16 @@ public class MainLayoutController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		buildCenterSection();
 		consoleOutputTextBox = consoleOutputTextBoxx;
-		consoleOutputSP.heightProperty().addListener((observable, oldValue, newValue) -> { // FIXME scrolling doesn't work
+		consoleOutputTextBox.heightProperty().addListener((observable, oldValue, newValue) -> {
 			consoleOutputSP.setVvalue(1);
-			System.out.println("listener called");
 		});
 	}
 
 	/**
 	 * The {@code handleSubmit} method wraps code that is executed if the submit
-	 * button is pressed or enter is hit while in the console text input.
+	 * button is pressed or enter is hit while in the console text input. The
+	 * message in the input text field (if not empty String) is sent to the rover
+	 * and written to the console output.
 	 */
 	public void handleSubmit() {
 		// FIXME uncomment:
@@ -152,14 +153,14 @@ public class MainLayoutController implements Initializable {
 
 	/**
 	 * The {@code writeConsoleRPi} method writes the given message to the console
-	 * output in the main layout.
+	 * output in the main layout aligned to the left side.
 	 * 
 	 * @param input
 	 *            {@link String} that contains the message that is to be written to
 	 *            the console output
 	 */
-	public void writeConsoleRPi() { // static, String input
-		addMessageToConsole(true, "Message from Pi. Can you see it?"); // FIXME
+	public static void writeConsoleRPi(String input) {
+		addMessageToConsole(true, input);
 	}
 
 	private static void addMessageToConsole(boolean fromRPi, String input) {
@@ -182,7 +183,7 @@ public class MainLayoutController implements Initializable {
 				messageList.get(i).setPrefWidth(textList.get(i).getWidth() * 2);
 				messageList.get(i).getStyleClass().add("messageList");
 			}
-			
+
 			if (!input.equals("")) {
 				sb.append(input);
 				sb.append("\n");
@@ -193,7 +194,7 @@ public class MainLayoutController implements Initializable {
 				consoleOutputTextBox.getChildren().add(messageList.get(i));
 
 			previousMessageFromRPi = fromRPi;
-			
+
 		} catch (NullPointerException e) {
 			previousMessageFromRPi = !fromRPi;
 			addMessageToConsole(fromRPi, input);

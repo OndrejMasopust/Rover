@@ -242,7 +242,7 @@ public class RoverConnection extends Task<String> {
 		IPHostPrompt.writeOptions();
 		MainLayoutController.loadMainScene();
 		
-		/*
+		/* testing code
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
@@ -259,8 +259,10 @@ public class RoverConnection extends Task<String> {
 			if (this.isCancelled())
 				break;
 			String input = inputTCP.readLine();
-			if (!input.equals(""))
-				MainLayoutController.writeConsoleRPi(input);
+			Platform.runLater(() -> {
+				if (!input.equals(""))
+					MainLayoutController.writeConsoleRPi(input);
+			});
 		}
 		*/
 		return null;

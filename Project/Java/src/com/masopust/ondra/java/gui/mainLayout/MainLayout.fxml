@@ -88,7 +88,7 @@
 									onAction="#handleSubmit" />
 								<Button fx:id="consoleSubmit" defaultButton="true"
 									mnemonicParsing="false" prefHeight="${submitButDim}" prefWidth="${submitButDim}"
-									onAction="#writeConsoleRPi" styleClass="consoleSubmitButton" />
+									onAction="#handleSubmit" styleClass="consoleSubmitButton" />
 							</children>
 						</HBox>
 					</children>
