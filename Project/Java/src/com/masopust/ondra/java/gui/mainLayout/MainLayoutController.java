@@ -3,9 +3,13 @@ package com.masopust.ondra.java.gui.mainLayout;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.masopust.ondra.java.gui.Main;
+import com.masopust.ondra.java.gui.mainLayout.test.MainLayoutTestLauncher;
 import com.masopust.ondra.java.info.Info;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 
@@ -22,6 +26,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -59,7 +65,7 @@ public class MainLayoutController implements Initializable {
 	Pane centerSectionPane;
 
 	@FXML
-	Group centerSectionGroup;
+	Group centerSectionGroupp;
 
 	@FXML
 	VBox leftSection;
@@ -94,40 +100,71 @@ public class MainLayoutController implements Initializable {
 	@FXML
 	Button info;
 
-	/*
-	 * This variable defines number of lines that are generated in the center
-	 * section.
-	 */
-	private int numberOfLines = 30; // FIXME
-
-	private static StringBuilder sb = new StringBuilder();;
+	private static StringBuilder sb = new StringBuilder();
 	private static ArrayList<HBox> messageList = new ArrayList<>();
 	private static ArrayList<Label> textList = new ArrayList<>();
-	private static int i;
-	private double zoomScale = 0.2;
+	private static int messageIndex;
 	private static VBox consoleOutputTextBox;
+	private static Group centerSectionGroup;
+	private double zoomScale = 0.2;
 
 	/**
 	 * This boolean tells if the previous record in the console output was form you.
 	 */
-	private static Boolean previousMessageFromRPi = null;
+	private static Boolean previousMessageFromRover = null;
 
 	/**
-	 * This list holds all of the lines that are generated in the center section.
+	 * This variable defines number of lines that are generated in the center
+	 * section. It defines the resolution of the visualization.
 	 */
-	public static ArrayList<Line> lines = new ArrayList<>();
+	private static int numberOfLines = 30; // FIXME initialize after Rover finishes it's initialization
+	
+	/**
+	 * This {@code double} holds the angle between two neighbour lines in the center
+	 * section.
+	 */
+	private static double baseAngle;
+	
+	/**
+	 * This list holds all of the lines starting in the middle that are generated in the center section.
+	 */
+	private static ArrayList<Line> lines = new ArrayList<>(numberOfLines);
 
 	/**
 	 * This list holds all of the dots that are at the end of each of the lines.
 	 */
-	public static ArrayList<Rectangle> dots = new ArrayList<>();
+	private static ArrayList<Rectangle> dots = new ArrayList<>(numberOfLines);
+	
+	/**
+	 * This float holds the size of the edge of the {@link Rectangle} end dots.
+	 */
+	private static float dotSize = 3;
+	
+	/**
+	 * This map connects a {@link Rectangle} from {@code dots} {@link List} and a
+	 * {@link Line} that is between the given dot and the previous dot if visible.
+	 */
+	private static Map<Rectangle, Line> dotLines = new HashMap<>(numberOfLines);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		buildCenterSection();
+		baseAngle = (double) 360 / numberOfLines;
+				
 		consoleOutputTextBox = consoleOutputTextBoxx;
+		centerSectionGroup = centerSectionGroupp;
+		buildCenterSection(); // FIXME start with empty center section and start to build it after the Rover sends the first set of data to be visualized
+
 		consoleOutputTextBox.heightProperty().addListener((observable, oldValue, newValue) -> {
 			consoleOutputSP.setVvalue(1);
+		});
+
+		// FIXME bind to Main.mainstage
+		MainLayoutTestLauncher.mainStage.addEventHandler(KeyEvent.KEY_RELEASED, (keyEvent) -> {
+			if (stackPane.getChildren().get(1).equals(infoSPane)) {
+				if (keyEvent.getCode() == KeyCode.ESCAPE) {
+					controlPane.toFront();
+				}
+			}
 		});
 	}
 
@@ -152,58 +189,100 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code writeConsoleRPi} method writes the given message to the console
+	 * The {@code receiveMessage} method writes the given message to the console
 	 * output in the main layout aligned to the left side.
 	 * 
 	 * @param input
 	 *            {@link String} that contains the message that is to be written to
 	 *            the console output
 	 */
-	public static void writeConsoleRPi(String input) {
-		addMessageToConsole(true, input);
+	public static void receiveMessage(String input) {
+		// TODO check for data from the sensor and don't write them to the console
+		if (input == null)
+			return;
+		switch (input.substring(0, 2)) {
+		case RoverCommands.DATA:
+			// TODO update visualization
+			updatePoint(Integer.parseInt(input.substring(2, 4)), Integer.parseInt(input.substring(4, 7))); // FIXME fix the index parameter to fit the dots.size
+			break;
+		case RoverCommands.READY:
+			// TODO write to console that Rover is ready
+			setNumberOfLines(Integer.valueOf(input.substring(2, 4))); // FIXME set the parameters in the substring method to match the maximum possible number of lines 
+			break;
+		case RoverCommands.ERROR:
+			// TODO write error to the console with red fill
+			break;
+		// TODO finish all cases
+		default:
+			addMessageToConsole(true, input);
+			break;
+		}
 	}
 
-	private static void addMessageToConsole(boolean fromRPi, String input) {
+	/**
+	 * The {@code RoverCommands} class wraps static {@link String} constants that
+	 * contain the command representation as it is send from the Rover
+	 * 
+	 * @author Ondrej Masopust
+	 *
+	 */
+	private class RoverCommands {
+		private static final String DATA = "dt";
+		private static final String READY = "rd";
+		private static final String ERROR = "er";
+	}
+
+	/**
+	 * The {@code addMessageToConsole} method adds the message given in the
+	 * {@code input} parameter to the console output aligned to the right or left
+	 * depending on the {@code fromPi} {@code boolean}.
+	 * 
+	 * @param fromRover
+	 *            {@code boolean} value that tells if the message is from the Rover
+	 * @param input
+	 *            {@link String} containing the message
+	 */
+	private static void addMessageToConsole(boolean fromRover, String input) {
 		try {
-			if (previousMessageFromRPi.booleanValue() ^ fromRPi) {
+			if (previousMessageFromRover.booleanValue() ^ fromRover) {
 				sb = new StringBuilder();
 
 				messageList.add(new HBox());
-				i = messageList.size() - 1;
+				messageIndex = messageList.size() - 1;
 				textList.add(new Label());
-				textList.get(i).setTextAlignment(TextAlignment.LEFT);
-				textList.get(i).setWrapText(true);
-				textList.get(i).setPrefWidth(consoleOutputTextBox.getWidth() / 2);
-				textList.get(i).getStyleClass().add("textList");
-				messageList.get(i).getChildren().add(textList.get(i));
-				if (fromRPi)
-					messageList.get(i).setAlignment(Pos.CENTER_LEFT);
+				textList.get(messageIndex).setTextAlignment(TextAlignment.LEFT);
+				textList.get(messageIndex).setWrapText(true);
+				textList.get(messageIndex).setPrefWidth(consoleOutputTextBox.getWidth() / 2);
+				textList.get(messageIndex).getStyleClass().add("textList");
+				messageList.get(messageIndex).getChildren().add(textList.get(messageIndex));
+				if (fromRover)
+					messageList.get(messageIndex).setAlignment(Pos.CENTER_LEFT);
 				else
-					messageList.get(i).setAlignment(Pos.CENTER_RIGHT);
-				messageList.get(i).setPrefWidth(textList.get(i).getWidth() * 2);
-				messageList.get(i).getStyleClass().add("messageList");
+					messageList.get(messageIndex).setAlignment(Pos.CENTER_RIGHT);
+				messageList.get(messageIndex).setPrefWidth(textList.get(messageIndex).getWidth() * 2);
+				messageList.get(messageIndex).getStyleClass().add("messageList");
 			}
 
 			if (!input.equals("")) {
 				sb.append(input);
 				sb.append("\n");
-				textList.get(i).setText(sb.toString());
+				textList.get(messageIndex).setText(sb.toString());
 			}
 
-			if (previousMessageFromRPi.booleanValue() ^ fromRPi)
-				consoleOutputTextBox.getChildren().add(messageList.get(i));
+			if (previousMessageFromRover.booleanValue() ^ fromRover)
+				consoleOutputTextBox.getChildren().add(messageList.get(messageIndex));
 
-			previousMessageFromRPi = fromRPi;
+			previousMessageFromRover = fromRover;
 
 		} catch (NullPointerException e) {
-			previousMessageFromRPi = !fromRPi;
-			addMessageToConsole(fromRPi, input);
+			previousMessageFromRover = !fromRover;
+			addMessageToConsole(fromRover, input);
 		}
 	}
 
 	/**
 	 * The {@code handleZoomIn} method wraps code that is executed when the zoom in
-	 * button is pressed.
+	 * button is pressed. The visualization in the center section is zoomed in to.
 	 */
 	public void handleZoomIn() {
 		centerSectionGroup.setScaleX(centerSectionGroup.getScaleX() + zoomScale);
@@ -212,7 +291,7 @@ public class MainLayoutController implements Initializable {
 
 	/**
 	 * The {@code handleZoomIn} method wraps code that is executed when the zoom out
-	 * button is pressed.
+	 * button is pressed. The visualization in the center section is zoomed out of.
 	 */
 	public void handleZoomOut() {
 		if ((centerSectionGroup.getScaleX() - zoomScale) > 0) {
@@ -223,16 +302,19 @@ public class MainLayoutController implements Initializable {
 
 	/**
 	 * The {@code handleInfo} method wraps code that is executed when the info
-	 * button is pressed.
+	 * button is pressed. The {@link ScrollPane} with the info is brought to front.
 	 */
 	public void handleInfo() {
+		updatePoint(4, 250);
+		/*
 		if (infoTF.getChildren().size() == 0) {
 			infoTF.setTextAlignment(TextAlignment.LEFT);
 			infoTF.setPadding(new Insets(8, 10, 8, 10));
 			infoTF.setLineSpacing(5.0);
 			infoTF.getChildren().addAll(Info.getInfo());
-			infoSPane.toFront();
 		}
+		infoSPane.toFront();
+		*/
 	}
 
 	/**
@@ -258,6 +340,42 @@ public class MainLayoutController implements Initializable {
 			Main.mainStage.centerOnScreen();
 		});
 	}
+	
+	/**
+	 * The {@code updatePoint} method moves the point in the {@code dots} list on
+	 * the given {@code index} to the given {@code distance} or sets it invisible if
+	 * the distance can not be measured.
+	 * 
+	 * @param index
+	 *            of the point in the {@code dots} list
+	 * @param distance
+	 *            in centimeters, -1 if the sensors can't measure it
+	 */
+	private static void updatePoint(int index, int distance) {
+		Rectangle dot = dots.get(index);
+		if (distance < 0)
+			dot.setVisible(false);
+		else {
+			updateLineEndPoint(distance, index);
+			
+			dot.setVisible(true);
+			
+			int previousIndex = index - 1;
+			if (previousIndex < 0)
+				previousIndex = dots.size() - 1;
+			
+			Rectangle prevDot = dots.get(previousIndex);
+			if (prevDot.isVisible()) {
+				dotLines.put(dot, new Line());
+				Line line = dotLines.get(dot);
+				line.startXProperty().bind(prevDot.xProperty().add((double) dotSize / 2));
+				line.startYProperty().bind(prevDot.yProperty().add((double) dotSize / 2));
+				line.endXProperty().bind(dot.xProperty().add((double) dotSize / 2));
+				line.endYProperty().bind(dot.yProperty().add((double) dotSize / 2));
+				centerSectionGroup.getChildren().add(dotLines.get(dot));
+			}
+		}
+	}
 
 	/**
 	 * This method builds the lines and dots in the center section.
@@ -266,38 +384,26 @@ public class MainLayoutController implements Initializable {
 	 */
 	private void buildCenterSection() {
 		int lineLength = 200; // FIXME
-		double startX = centerSectionPane.getWidth() / 2;
-		double startY = centerSectionPane.getHeight() / 2;
-		double baseAngle = (double) 360 / numberOfLines;
-		float dotSize = 3;
 
 		for (int i = 0; i < numberOfLines; i++) {
 			lines.add(new Line());
-			lines.get(i).setStartX(startX);
-			lines.get(i).setStartY(startY);
-			double angleInDeg = baseAngle * i;
+			Line line = lines.get(i);
 
-			// count the deflection of the end point
-			double xSide = lineLength * Math.sin(Math.toRadians(angleInDeg));
-			double ySide = lineLength * Math.cos(Math.toRadians(angleInDeg));
-			double endX = startX + xSide;
-			double endY = startY + ySide;
-			lines.get(i).setEndX(endX);
-			lines.get(i).setEndY(endY);
+			updateLineEndPoint(lineLength, i);
 
 			// set start and end points to be relative to the pane dimensions
-			lines.get(i).startXProperty().bind(centerSectionPane.widthProperty().divide(2));
-			lines.get(i).startYProperty().bind(centerSectionPane.heightProperty().divide(2));
-			lines.get(i).endXProperty().bind(lines.get(i).startXProperty().add(xSide));
-			lines.get(i).endYProperty().bind(lines.get(i).startYProperty().add(ySide));
-			centerSectionGroup.getChildren().add(lines.get(i));
+			line.startXProperty().bind(centerSectionPane.widthProperty().divide(2));
+			line.startYProperty().bind(centerSectionPane.heightProperty().divide(2));
+			
+			line.setVisible(false);
+			centerSectionGroup.getChildren().add(line);
 
 			dots.add(new Rectangle(dotSize, dotSize, Color.BLUE));
-			dots.get(i).setX(endX - dotSize / 2);
-			dots.get(i).setY(endY - dotSize / 2);
-			dots.get(i).xProperty().bind(lines.get(i).endXProperty().subtract(dotSize / 2));
-			dots.get(i).yProperty().bind(lines.get(i).endYProperty().subtract(dotSize / 2));
-			centerSectionGroup.getChildren().add(dots.get(i));
+			Rectangle dot = dots.get(i);
+			
+			dot.xProperty().bind(line.endXProperty().subtract(dotSize / 2));
+			dot.yProperty().bind(line.endYProperty().subtract(dotSize / 2));
+			centerSectionGroup.getChildren().add(dot);
 
 			/*
 			 * System.out.printf("Angle: %f\n", angleInDeg);
@@ -307,5 +413,32 @@ public class MainLayoutController implements Initializable {
 			 * ySide); System.out.println();
 			 */
 		}
+	}
+
+	/**
+	 * The {@code updateLineEndPoint} method sets binding of the {@link Line} in the
+	 * {@code lines} {@link List} at the given index to match the given length.
+	 * 
+	 * @param lineLength
+	 *            in cm
+	 * @param index
+	 *            of the {@link Line} in the {@code lines} {@link List}
+	 */
+	private static void updateLineEndPoint(int lineLength, int index) {
+		double xSide = lineLength * Math.sin(Math.toRadians(baseAngle * index));
+		double ySide = lineLength * Math.cos(Math.toRadians(baseAngle * index));
+		lines.get(index).endXProperty().bind(lines.get(index).startXProperty().add(xSide));
+		lines.get(index).endYProperty().bind(lines.get(index).startYProperty().add(ySide));
+	}
+	
+	/**
+	 * The {@code setNumberOfLines} method sets the value of the
+	 * {@code numberOfLines} integer.
+	 *
+	 * @param value
+	 *            to be assigned to the numberOfLines integer
+	 */
+	private static void setNumberOfLines(int value) {
+		numberOfLines = value;
 	}
 }

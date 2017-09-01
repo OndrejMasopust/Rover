@@ -15,12 +15,16 @@ import javafx.stage.Stage;
  */
 public class MainLayoutTestLauncher extends Application{
 
+	public static Stage mainStage;
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		mainStage = primaryStage;
+		
 		FXMLLoader mainLoader = new FXMLLoader();
 		mainLoader.setLocation(MainLayoutTestLauncher.class.getResource("/com/masopust/ondra/java/gui/mainLayout/MainLayout.fxml"));
 		
@@ -37,9 +41,9 @@ public class MainLayoutTestLauncher extends Application{
 		primaryStage.setHeight(screenBounds.getHeight());
 		 */
 		
-		primaryStage.setScene(mainLayoutScene);
-		primaryStage.setTitle("Main Layout Testing");
-		primaryStage.show();
+		mainStage.setScene(mainLayoutScene);
+		mainStage.setTitle("Main Layout Testing");
+		mainStage.show();
 	}
 
 }

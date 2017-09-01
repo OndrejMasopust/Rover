@@ -250,7 +250,7 @@ public class RoverConnection extends Task<String> {
 			e.printStackTrace();
 		}
 		Platform.runLater(() -> {
-			MainLayoutController.writeConsoleRPi("Ahooooj jak se máš? já dovře.");
+			MainLayoutController.receiveMessage("Ahooooj jak se máš? já dovře.");
 		});
 		*/
 		
@@ -261,7 +261,7 @@ public class RoverConnection extends Task<String> {
 			String input = inputTCP.readLine();
 			Platform.runLater(() -> {
 				if (!input.equals(""))
-					MainLayoutController.writeConsoleRPi(input);
+					MainLayoutController.receiveMessage(input);
 			});
 		}
 		*/

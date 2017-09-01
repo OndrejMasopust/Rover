@@ -44,7 +44,7 @@
 				<Pane fx:id="centerSectionPane" BorderPane.alignment="CENTER"
 					styleClass="centerSection">
 					<children>
-						<Group fx:id="centerSectionGroup" />
+						<Group fx:id="centerSectionGroupp" />
 					</children>
 				</Pane>
 			</center>
