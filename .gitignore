@@ -1,6 +1,3 @@
-#ignore the pdf with the questions
-Maturitni-otazky-z-IVT.pdf
-
 #ignore compiled files
 Project/Java/bin/
 
@@ -13,6 +10,3 @@ Project/Python/.project
 Project/Python/.pydevproject
 
 *.txt
-
-PreloaderTestLaunch.java
-WorkingThread.java
