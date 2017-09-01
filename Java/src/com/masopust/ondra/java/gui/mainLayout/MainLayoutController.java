@@ -159,7 +159,7 @@ public class MainLayoutController implements Initializable {
 		});
 
 		// FIXME bind to Main.mainstage
-		MainLayoutTestLauncher.mainStage.addEventHandler(KeyEvent.KEY_RELEASED, (keyEvent) -> {
+		Main.mainStage.addEventHandler(KeyEvent.KEY_RELEASED, (keyEvent) -> {
 			if (stackPane.getChildren().get(1).equals(infoSPane)) {
 				if (keyEvent.getCode() == KeyCode.ESCAPE) {
 					controlPane.toFront();
@@ -176,7 +176,7 @@ public class MainLayoutController implements Initializable {
 	 */
 	public void handleSubmit() {
 		// FIXME uncomment:
-		// RoverConnection.roverConnection.sendData(consoleInput.getText());
+		RoverConnection.roverConnection.sendData(consoleInput.getText());
 		addMessageToConsole(false, consoleInput.getText());
 
 		/*
@@ -202,7 +202,6 @@ public class MainLayoutController implements Initializable {
 			return;
 		switch (input.substring(0, 2)) {
 		case RoverCommands.DATA:
-			// TODO update visualization
 			updatePoint(Integer.parseInt(input.substring(2, 4)), Integer.parseInt(input.substring(4, 7))); // FIXME fix the index parameter to fit the dots.size
 			break;
 		case RoverCommands.READY:
@@ -335,10 +334,8 @@ public class MainLayoutController implements Initializable {
 		Scene mainScene = new Scene(mainStageLayout);
 		mainScene.getStylesheets().add("/com/masopust/ondra/java/gui/mainLayout/MainLayoutStyle.css");
 
-		Platform.runLater(() -> {
-			Main.mainStage.setScene(mainScene);
-			Main.mainStage.centerOnScreen();
-		});
+		Main.mainStage.setScene(mainScene);
+		Main.mainStage.centerOnScreen();
 	}
 	
 	/**

@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -37,7 +38,8 @@ public class RoverConnection extends Task<String> {
 	private int timeout = 1000;
 	private int errorCounter = 1;
 	private StringBuilder errors = new StringBuilder();
-	private BufferedWriter outputTCP;
+	//private BufferedWriter outputTCP;
+	private PrintWriter outputTCP;
 	private BufferedReader inputTCP;
 
 	/**
@@ -176,13 +178,18 @@ public class RoverConnection extends Task<String> {
 	 *            {@link String} that is to be sent
 	 */
 	public void sendData(String message) {
-		try {
-			outputTCP.write(message);
+		//try {
+			System.out.println("1"); // FIXME delte
+			outputTCP.println(message);
+			System.out.println("2"); // FIXME delte
+			/*
 			outputTCP.flush();
-		} catch (IOException e) {
+			System.out.println("3"); // FIXME delte
+			*/
+		/*} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	/**
@@ -213,16 +220,17 @@ public class RoverConnection extends Task<String> {
 			roverConnection.connect();
 			errorCounter++;
 
-			if (roverConnection.connectionEstablished() || i == 1) {
-				/* FIXME uncomment
+			if (roverConnection.connectionEstablished()) { //  || i == 1
+				/* FIXME uncomment*/
 				try {
-					outputTCP = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+					//outputTCP = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+					outputTCP = new PrintWriter(clientSocket.getOutputStream(), true);
 					inputTCP = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				} catch (IOException e) {
 					// TODO
 					e.printStackTrace();
 				}
-				*/
+				/**/
 				break;
 			} else {
 				// wait 500ms
@@ -240,7 +248,14 @@ public class RoverConnection extends Task<String> {
 			}
 		}
 		IPHostPrompt.writeOptions();
-		MainLayoutController.loadMainScene();
+		Platform.runLater(() -> {
+			try {
+				MainLayoutController.loadMainScene();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 		
 		/* testing code
 		try {
@@ -254,17 +269,22 @@ public class RoverConnection extends Task<String> {
 		});
 		*/
 		
-		/* FIXME uncomment
+		/* FIXME uncomment*/
 		while (true) {
 			if (this.isCancelled())
 				break;
 			String input = inputTCP.readLine();
-			Platform.runLater(() -> {
+			try {
 				if (!input.equals(""))
-					MainLayoutController.receiveMessage(input);
-			});
+					Platform.runLater(() -> {MainLayoutController.receiveMessage(input);});
+				Thread.sleep(20);
+			} catch (NullPointerException e) {}
+			catch (InterruptedException e) {
+				if (this.isCancelled())
+					break;
+			}
 		}
-		*/
+		/**/
 		return null;
 	}
 }
