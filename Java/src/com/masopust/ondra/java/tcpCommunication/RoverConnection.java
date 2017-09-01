@@ -1,10 +1,8 @@
 package com.masopust.ondra.java.tcpCommunication;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -38,7 +36,6 @@ public class RoverConnection extends Task<String> {
 	private int timeout = 1000;
 	private int errorCounter = 1;
 	private StringBuilder errors = new StringBuilder();
-	//private BufferedWriter outputTCP;
 	private PrintWriter outputTCP;
 	private BufferedReader inputTCP;
 
@@ -178,18 +175,7 @@ public class RoverConnection extends Task<String> {
 	 *            {@link String} that is to be sent
 	 */
 	public void sendData(String message) {
-		//try {
-			System.out.println("1"); // FIXME delte
-			outputTCP.println(message);
-			System.out.println("2"); // FIXME delte
-			/*
-			outputTCP.flush();
-			System.out.println("3"); // FIXME delte
-			*/
-		/*} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		outputTCP.println(message);
 	}
 
 	/**
@@ -223,7 +209,6 @@ public class RoverConnection extends Task<String> {
 			if (roverConnection.connectionEstablished()) { //  || i == 1
 				/* FIXME uncomment*/
 				try {
-					//outputTCP = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 					outputTCP = new PrintWriter(clientSocket.getOutputStream(), true);
 					inputTCP = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				} catch (IOException e) {

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -73,8 +74,17 @@
 					styleClass="leftSection">
 					<fx:define>
 						<Double fx:id="submitButDim" fx:value="40.0" />
+						<Double fx:id="headingHeight" fx:value="30.0" />
 					</fx:define>
 					<children>
+						<BorderPane prefHeight="${headingHeight}" prefWidth="${leftSection.width - 2}">
+							<left>
+								<Label text="Rover" />
+							</left>
+							<right>
+								<Label text="You" />
+							</right>
+						</BorderPane>
 						<ScrollPane fx:id="consoleOutputSP"
 							prefHeight="${leftSection.height - submitButDim}" fitToWidth="true">
 							<content>

@@ -1,45 +1,76 @@
 package com.masopust.ondra.java.testServerSocket;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
-public class TestServerSocket extends Thread{
+/**
+ * The {@code TCPCommunication} class was used to test TCP communication with
+ * the rover.
+ * 
+ * @author Ondrej Masopust
+ *
+ */
+public class TestServerSocket extends Thread {
 
-	public static void main(String[] args) {
-		try (
-			ServerSocket serverSocket = new ServerSocket(5321);
-			Socket clientSocket = serverSocket.accept();
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			Scanner stdInput = new Scanner(System.in);
-		){
-			System.out.println("Connection succesful.");
+	private static Socket clientSocket;
+
+	public TestServerSocket(String name) {
+		super(name);
+	}
+
+	@Override
+	public void run() {
+		BufferedReader inputTCP;
+		try {
+			inputTCP = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
 			while (true) {
-				
-				String message;
-				if ((message = stdInput.nextLine()) != null) {
-					if (message.equals("q")) {
-						break;
-					}
-					out.println(message);
-				}
-				
-				String input;
-				if ((input = in.readLine()) != null) {
-					System.out.println(input);
-				}
-				
-				//System.out.println(in.readLine());
+				String input = inputTCP.readLine();
+				if (input != null)
+					System.out.println("Control Panel: " + input);
 			}
-			
 		} catch (IOException e) {
-			e.printStackTrace();
-		}	
+			System.out.println(e.getMessage());
+		}
+
+	}
+
+	public static void main(String[] args) throws UnknownHostException, IOException {
+		ServerSocket serverSocket = new ServerSocket(5321);
+		clientSocket = serverSocket.accept();
+		System.out.println("Server launched correctly.");
+
+		Scanner stdInput = new Scanner(System.in);
+
+		//BufferedWriter outputTCP = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+		PrintWriter outputTCP = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream()), true);
+
+		TestServerSocket TCPreader = new TestServerSocket("TCPreader");
+		TCPreader.start();
+
+		while (true) {
+			String message = stdInput.nextLine();
+			if (message.equals("q")) {
+				break;
+			}
+
+			outputTCP.println(message);
+		}
+		outputTCP.close();
+		stdInput.close();
+		clientSocket.close();
+		serverSocket.close();
+		if (clientSocket.isClosed()) {
+			System.out.println("Server socket closed correctly.");
+		}
 	}
 
 }

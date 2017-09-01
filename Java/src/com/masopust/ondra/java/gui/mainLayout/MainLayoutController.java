@@ -13,7 +13,6 @@ import com.masopust.ondra.java.gui.mainLayout.test.MainLayoutTestLauncher;
 import com.masopust.ondra.java.info.Info;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -159,7 +158,7 @@ public class MainLayoutController implements Initializable {
 		});
 
 		// FIXME bind to Main.mainstage
-		Main.mainStage.addEventHandler(KeyEvent.KEY_RELEASED, (keyEvent) -> {
+		MainLayoutTestLauncher.mainStage.addEventHandler(KeyEvent.KEY_RELEASED, (keyEvent) -> {
 			if (stackPane.getChildren().get(1).equals(infoSPane)) {
 				if (keyEvent.getCode() == KeyCode.ESCAPE) {
 					controlPane.toFront();
@@ -176,7 +175,7 @@ public class MainLayoutController implements Initializable {
 	 */
 	public void handleSubmit() {
 		// FIXME uncomment:
-		RoverConnection.roverConnection.sendData(consoleInput.getText());
+		//RoverConnection.roverConnection.sendData(consoleInput.getText());
 		addMessageToConsole(false, consoleInput.getText());
 
 		/*
@@ -304,8 +303,6 @@ public class MainLayoutController implements Initializable {
 	 * button is pressed. The {@link ScrollPane} with the info is brought to front.
 	 */
 	public void handleInfo() {
-		updatePoint(4, 250);
-		/*
 		if (infoTF.getChildren().size() == 0) {
 			infoTF.setTextAlignment(TextAlignment.LEFT);
 			infoTF.setPadding(new Insets(8, 10, 8, 10));
@@ -313,7 +310,6 @@ public class MainLayoutController implements Initializable {
 			infoTF.getChildren().addAll(Info.getInfo());
 		}
 		infoSPane.toFront();
-		*/
 	}
 
 	/**
