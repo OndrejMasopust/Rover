@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
+
+<!--
+This fxml file consists of elements that are in the main layout.
+
+@author Ondrej Masopust
+
+   	<fx:define>
+   		<Screen fx:factory="getPrimary" fx:id="screen" />
+	</fx:define>
+	
+	${screen.visualBounds.height}
+	${screen.visualBounds.width}
+	
+	${hroot.width*0.15}
+	hroot is parent element's id
+	
+width: 569.0
+
+height: 500.0
+-->
+
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.mainLayout.MainLayoutController">
+   <children>
+      <ScrollPane fx:id="infoSPane" prefHeight="200.0" prefWidth="200.0">
+         <content>
+            <TextFlow prefHeight="200.0" prefWidth="200.0" />
+         </content></ScrollPane>
+      <BorderPane fx:id="controlPane" prefHeight="500.0" prefWidth="569.0">
+         <left>
+            <VBox fx:id="leftSection" BorderPane.alignment="CENTER">
+               <children>
+                  <ScrollPane fx:id="consoleOutputSP" fitToWidth="true">
+                     <content>
+                        <VBox />
+                     </content>
+                  </ScrollPane>
+                  <HBox fx:id="consoleInputBox">
+                     <children>
+                        <TextField fx:id="consoleInput" />
+                        <Button fx:id="consoleSubmit" defaultButton="true" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="consoleSubmitButton" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </left>
+         <center>
+            <Pane fx:id="centerSectionPane" BorderPane.alignment="CENTER">
+               <children>
+                  <Group fx:id="centerSectionGroup" />
+               </children>
+            </Pane>
+         </center>
+         <right>
+            <BorderPane fx:id="rightSection" BorderPane.alignment="CENTER">
+               <top>
+                  <VBox fx:id="zoomBox" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="zoomIn" mnemonicParsing="false" text="+" />
+                        <Button fx:id="zommOut" mnemonicParsing="false" text="-" />
+                     </children>
+                  </VBox>
+               </top>
+               <bottom>
+                  <Button fx:id="info" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="infoButton" text="?" BorderPane.alignment="CENTER" />
+               </bottom>
+            </BorderPane>
+         </right>
+      </BorderPane>
+   </children>
+</StackPane>

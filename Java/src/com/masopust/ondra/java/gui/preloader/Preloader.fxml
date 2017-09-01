@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<!-- 
+This fxml file consists of elements that are in the preloader layout.
+
+@author Ondrej Masopust
+-->
+
+<VBox alignment="CENTER" maxHeight="272.0" minWidth="558.0" prefHeight="272.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.preloader.PreloaderController">
+	<children>
+		<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="558.0" prefHeight="86.0" prefWidth="558.0">
+			<children>
+				<ProgressIndicator />
+				<Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textTitle" text="Connecting To The Rover" textAlignment="CENTER" wrappingWidth="315.21875">
+					<font>
+						<Font size="26.0" />
+					</font>
+               <HBox.margin>
+                  <Insets left="15.0" />
+               </HBox.margin>
+				</Text>
+			</children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+		</HBox>
+      <ScrollPane fx:id="scrollPane" fitToWidth="true" hvalue="1.0" minHeight="20.0" prefViewportHeight="10.0" prefViewportWidth="550.0" styleClass="textScrollPane" VBox.vgrow="SOMETIMES">
+         <content>
+            <Text fx:id="text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textErrors" wrappingWidth="550.0" />
+         </content>
+      </ScrollPane>
+		<Button fx:id="closeButton" alignment="CENTER" cancelButton="true" defaultButton="true" mnemonicParsing="false" onAction="#handleCancel" styleClass="but" text="Close">
+			<VBox.margin>
+				<Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+			</VBox.margin>
+         <font>
+            <Font size="15.0" />
+         </font>
+		</Button>
+	</children>
+</VBox>

@@ -305,8 +305,6 @@ public class MainLayoutController implements Initializable {
 	 * button is pressed. The {@link ScrollPane} with the info is brought to front.
 	 */
 	public void handleInfo() {
-		updatePoint(4, 250);
-		/*
 		if (infoTF.getChildren().size() == 0) {
 			infoTF.setTextAlignment(TextAlignment.LEFT);
 			infoTF.setPadding(new Insets(8, 10, 8, 10));
@@ -314,7 +312,6 @@ public class MainLayoutController implements Initializable {
 			infoTF.getChildren().addAll(Info.getInfo());
 		}
 		infoSPane.toFront();
-		*/
 	}
 
 	/**
