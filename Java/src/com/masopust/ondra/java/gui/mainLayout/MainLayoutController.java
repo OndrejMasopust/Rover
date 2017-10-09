@@ -159,7 +159,7 @@ public class MainLayoutController implements Initializable {
 		});
 
 		// FIXME bind to Main.mainstage
-		MainLayoutTestLauncher.mainStage.addEventHandler(KeyEvent.KEY_RELEASED, (keyEvent) -> {
+		stackPane.addEventHandler(KeyEvent.KEY_RELEASED, (keyEvent) -> {
 			if (keyEvent.getCode() == KeyCode.ESCAPE) {
 				if (stackPane.getChildren().get(1).equals(infoSPane)) {
 					controlPane.toFront();
@@ -187,7 +187,7 @@ public class MainLayoutController implements Initializable {
 			}
 		});
 		
-		MainLayoutTestLauncher.mainStage.addEventHandler(KeyEvent.KEY_PRESSED, (keyEvent) -> {
+		stackPane.addEventHandler(KeyEvent.KEY_PRESSED, (keyEvent) -> {
 			if (keyEvent.getCode() == KeyCode.UP) {
 				System.out.println("UP key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover

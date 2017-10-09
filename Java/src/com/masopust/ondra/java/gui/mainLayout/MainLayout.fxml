@@ -86,7 +86,7 @@
 							</right>
 						</BorderPane>
 						<ScrollPane fx:id="consoleOutputSP"
-							prefHeight="${leftSection.height - submitButDim}" fitToWidth="true">
+							prefHeight="${leftSection.height - submitButDim - headingHeight}" fitToWidth="true">
 							<content>
 								<VBox fx:id="consoleOutputTextBoxx" fillWidth="true"
 									snapToPixel="false" styleClass="consoleOutputTextBox" />
