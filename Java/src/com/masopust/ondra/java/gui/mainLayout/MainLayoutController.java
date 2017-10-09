@@ -158,8 +158,8 @@ public class MainLayoutController implements Initializable {
 			consoleOutputSP.setVvalue(1);
 		});
 
-		// FIXME bind to Main.mainstage
-		stackPane.addEventHandler(KeyEvent.KEY_RELEASED, (keyEvent) -> {
+		// TODO change to switch-case
+		stackPane.addEventFilter(KeyEvent.KEY_RELEASED, (keyEvent) -> {
 			if (keyEvent.getCode() == KeyCode.ESCAPE) {
 				if (stackPane.getChildren().get(1).equals(infoSPane)) {
 					controlPane.toFront();
@@ -169,43 +169,51 @@ public class MainLayoutController implements Initializable {
 			if (keyEvent.getCode() == KeyCode.UP) {
 				System.out.println("UP key released");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 			}
 			
 			if (keyEvent.getCode() == KeyCode.DOWN) {
 				System.out.println("DOWN key released");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 			}
 			
 			if (keyEvent.getCode() == KeyCode.LEFT) {
 				System.out.println("LEFT key released");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 			}
 			
 			if (keyEvent.getCode() == KeyCode.RIGHT) {
 				System.out.println("RIGHT key released");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 			}
 		});
 		
-		stackPane.addEventHandler(KeyEvent.KEY_PRESSED, (keyEvent) -> {
+		stackPane.addEventFilter(KeyEvent.KEY_PRESSED, (keyEvent) -> {
 			if (keyEvent.getCode() == KeyCode.UP) {
 				System.out.println("UP key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 			}
 			
 			if (keyEvent.getCode() == KeyCode.DOWN) {
 				System.out.println("DOWN key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 			}
 			
 			if (keyEvent.getCode() == KeyCode.LEFT) {
 				System.out.println("LEFT key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 			}
 			
 			if (keyEvent.getCode() == KeyCode.RIGHT) {
 				System.out.println("RIGHT key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 			}
 		});
 	}
