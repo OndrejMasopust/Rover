@@ -153,16 +153,59 @@ public class MainLayoutController implements Initializable {
 		centerSectionGroup = centerSectionGroupp;
 		buildCenterSection(); // FIXME start with empty center section and start to build it after the Rover sends the first set of data to be visualized
 
+		// This code automatically scrolls down the console
 		consoleOutputTextBox.heightProperty().addListener((observable, oldValue, newValue) -> {
 			consoleOutputSP.setVvalue(1);
 		});
 
 		// FIXME bind to Main.mainstage
 		MainLayoutTestLauncher.mainStage.addEventHandler(KeyEvent.KEY_RELEASED, (keyEvent) -> {
-			if (stackPane.getChildren().get(1).equals(infoSPane)) {
-				if (keyEvent.getCode() == KeyCode.ESCAPE) {
+			if (keyEvent.getCode() == KeyCode.ESCAPE) {
+				if (stackPane.getChildren().get(1).equals(infoSPane)) {
 					controlPane.toFront();
 				}
+			}
+			
+			if (keyEvent.getCode() == KeyCode.UP) {
+				System.out.println("UP key released");
+				// TODO delete system.out.println and add code that sends command to the Rover
+			}
+			
+			if (keyEvent.getCode() == KeyCode.DOWN) {
+				System.out.println("DOWN key released");
+				// TODO delete system.out.println and add code that sends command to the Rover
+			}
+			
+			if (keyEvent.getCode() == KeyCode.LEFT) {
+				System.out.println("LEFT key released");
+				// TODO delete system.out.println and add code that sends command to the Rover
+			}
+			
+			if (keyEvent.getCode() == KeyCode.RIGHT) {
+				System.out.println("RIGHT key released");
+				// TODO delete system.out.println and add code that sends command to the Rover
+			}
+		});
+		
+		MainLayoutTestLauncher.mainStage.addEventHandler(KeyEvent.KEY_PRESSED, (keyEvent) -> {
+			if (keyEvent.getCode() == KeyCode.UP) {
+				System.out.println("UP key pressed");
+				// TODO delete system.out.println and add code that sends command to the Rover
+			}
+			
+			if (keyEvent.getCode() == KeyCode.DOWN) {
+				System.out.println("DOWN key pressed");
+				// TODO delete system.out.println and add code that sends command to the Rover
+			}
+			
+			if (keyEvent.getCode() == KeyCode.LEFT) {
+				System.out.println("LEFT key pressed");
+				// TODO delete system.out.println and add code that sends command to the Rover
+			}
+			
+			if (keyEvent.getCode() == KeyCode.RIGHT) {
+				System.out.println("RIGHT key pressed");
+				// TODO delete system.out.println and add code that sends command to the Rover
 			}
 		});
 	}
@@ -175,7 +218,7 @@ public class MainLayoutController implements Initializable {
 	 */
 	public void handleSubmit() {
 		// FIXME uncomment:
-		//RoverConnection.roverConnection.sendData(consoleInput.getText());
+		RoverConnection.roverConnection.sendData(consoleInput.getText());
 		addMessageToConsole(false, consoleInput.getText());
 
 		/*
@@ -236,7 +279,7 @@ public class MainLayoutController implements Initializable {
 	 * depending on the {@code fromPi} {@code boolean}.
 	 * 
 	 * @param fromRover
-	 *            {@code boolean} value that tells if the message is from the Rover
+	 *            {@code boolean} value that tells if the current message is from the Rover
 	 * @param input
 	 *            {@link String} containing the message
 	 */

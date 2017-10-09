@@ -36,8 +36,7 @@ public class PreloaderController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		while (RoverConnection.roverConnection == null)
-			;
+		while (RoverConnection.roverConnection == null);
 		text.textProperty().bind(RoverConnection.roverConnection.valueProperty());
 
 		// autoscroll ScrollPane to bottom

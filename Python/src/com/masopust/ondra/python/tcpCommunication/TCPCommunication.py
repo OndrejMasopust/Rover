@@ -1,9 +1,9 @@
 '''
 Created on Jul 12, 2017
 
-@author: Ondřej Masopust
+@author: Ondrej Masopust
 
-This main function opens server socket and listens for incoming connections.
+The main function opens server socket and listens for incoming connections.
 If connection is established, both server and host can communicate.
 '''
 import socket
@@ -19,41 +19,57 @@ class TCPCommunication:
     
     def establishTCPConnection(self):
         serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        serverSocket.bind(('', port))
+        serverSocket.bind(('', self.port)) #on RPi, maybe the '' would need to change to socket.gethostname()
         serverSocket.listen(1)
-        global connectionSocket
-        connectionSocket, clientAddress = serverSocket.accept()
+        global clientSocket
+        clientSocket, clientAddress = serverSocket.accept()
         
         print("Connection from " + str(clientAddress) + " was successful")
-
-        time.sleep(3)
         
-        message = "Raspberry Pi is connected."
-        connectionSocket.send(message)
+        time.sleep(5)
         
-    def sendToHost(self, message = ""):
-        connectionSocket.send(message)
+        while True:
+            potential_writers = [clientSocket]
+        
+            readyToRead, readyToWrite, error = select.select([], potential_writers, [])
+        
+            if clientSocket in readyToWrite:
+                message = "Raspberry Pi is connected.\r\n"
+                self.sendToHost(message)
+                break
+    
+    def sendToHost(self, message = "null"):
+        #check if the message ends with '\r\n' and if not, add it
+        clientSocket.sendall(message.encode(encoding='utf_8', errors='strict'))
 
     '''
     This function still waits and listens to the socket.
     It interrupts the flow of the code.
 	This function needs to have its own thread.
     '''
-    def listenContinuouslyToSocket(self):
+    def handleRecvAndSend(self):
         while True:
-            inputList = [connectionSocket]
+            potential_readers = [clientSocket, sys.stdin]
+            potential_writers = [clientSocket]
         
-            readyToRead, readyToWrite, error = select.select(inputList, [], [])
+            readyToRead, readyToWrite, error = select.select(potential_readers, potential_writers, [])
         
-            for sock in readyToRead:
-                if sock == connectionSocket:
-                    data = connectionSocket.recv(1024)
+            for reader in readyToRead:
+                if reader == clientSocket:
+                    data = clientSocket.recv(4096)
                     if not data:
-                        connectionSocket.close()
+                        clientSocket.close()
                         print("connectionSocket closed successfully (hopefully)")
                         return 'stop'
                         sys.exit()
-                    return data
+                    else: return data
+                if reader == sys.stdin:
+                    if clientSocket in readyToWrite:
+                        message = sys.stdin.readline()
+                        self.sendToHost(message)
+                    else:
+                        print("ERROR: Message could not be sent because the client socket is not ready to write. Try sending it again later.")
+                    
         
 
 def main():

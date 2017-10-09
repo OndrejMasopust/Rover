@@ -177,6 +177,10 @@ public class RoverConnection extends Task<String> {
 	public void sendData(String message) {
 		outputTCP.println(message);
 	}
+	
+	public class Commands {
+		// TODO
+	}
 
 	/**
 	 * The {@code readLine} method reads a line from the Rover. For more info, see
@@ -250,7 +254,7 @@ public class RoverConnection extends Task<String> {
 			e.printStackTrace();
 		}
 		Platform.runLater(() -> {
-			MainLayoutController.receiveMessage("Ahooooj jak se máš? já dovře.");
+			MainLayoutController.receiveMessage("Ahooooj jak se máš? já dobře.");
 		});
 		*/
 		
