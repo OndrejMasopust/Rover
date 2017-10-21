@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.masopust.ondra.java.gui.Main;
-import com.masopust.ondra.java.gui.mainLayout.test.MainLayoutTestLauncher;
 import com.masopust.ondra.java.info.Info;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 
@@ -25,6 +24,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -64,7 +65,7 @@ public class MainLayoutController implements Initializable {
 	Pane centerSectionPane;
 
 	@FXML
-	Group centerSectionGroupp;
+	Group centerSectionGroupFXML;
 
 	@FXML
 	VBox leftSection;
@@ -73,7 +74,7 @@ public class MainLayoutController implements Initializable {
 	ScrollPane consoleOutputSP;
 
 	@FXML
-	VBox consoleOutputTextBoxx;
+	VBox consoleOutputTextBoxFXML;
 
 	@FXML
 	HBox consoleInputBox;
@@ -116,16 +117,17 @@ public class MainLayoutController implements Initializable {
 	 * This variable defines number of lines that are generated in the center
 	 * section. It defines the resolution of the visualization.
 	 */
-	private static int numberOfLines = 30; // FIXME initialize after Rover finishes it's initialization
-	
+	private static int numberOfLines = 50; // FIXME initialize after Rover finishes it's initialization
+
 	/**
-	 * This {@code double} holds the angle between two neighbour lines in the center
+	 * This {@code double} holds the angle between two neighbor lines in the center
 	 * section.
 	 */
 	private static double baseAngle;
-	
+
 	/**
-	 * This list holds all of the lines starting in the middle that are generated in the center section.
+	 * This list holds all of the lines starting in the middle that are generated in
+	 * the center section.
 	 */
 	private static ArrayList<Line> lines = new ArrayList<>(numberOfLines);
 
@@ -133,12 +135,12 @@ public class MainLayoutController implements Initializable {
 	 * This list holds all of the dots that are at the end of each of the lines.
 	 */
 	private static ArrayList<Rectangle> dots = new ArrayList<>(numberOfLines);
-	
+
 	/**
 	 * This float holds the size of the edge of the {@link Rectangle} end dots.
 	 */
 	private static float dotSize = 3;
-	
+
 	/**
 	 * This map connects a {@link Rectangle} from {@code dots} {@link List} and a
 	 * {@link Line} that is between the given dot and the previous dot if visible.
@@ -147,74 +149,72 @@ public class MainLayoutController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// FIXME put credit to the send arrow icon (text in css file)
 		baseAngle = (double) 360 / numberOfLines;
-				
-		consoleOutputTextBox = consoleOutputTextBoxx;
-		centerSectionGroup = centerSectionGroupp;
-		buildCenterSection(); // FIXME start with empty center section and start to build it after the Rover sends the first set of data to be visualized
+
+		consoleOutputTextBox = consoleOutputTextBoxFXML;
+		centerSectionGroup = centerSectionGroupFXML;
+		buildCenterSection(); // FIXME start with empty center section only with message that "Rover is
+								// initializing sensors" and start to build it after the Rover sends the first
+								// set of data to be visualized
 
 		// This code automatically scrolls down the console
 		consoleOutputTextBox.heightProperty().addListener((observable, oldValue, newValue) -> {
 			consoleOutputSP.setVvalue(1);
 		});
 
-		// TODO change to switch-case
 		stackPane.addEventFilter(KeyEvent.KEY_RELEASED, (keyEvent) -> {
 			if (keyEvent.getCode() == KeyCode.ESCAPE) {
 				if (stackPane.getChildren().get(1).equals(infoSPane)) {
 					controlPane.toFront();
 				}
-			}
-			
-			if (keyEvent.getCode() == KeyCode.UP) {
-				System.out.println("UP key released");
-				// TODO delete system.out.println and add code that sends command to the Rover
-				keyEvent.consume();
-			}
-			
-			if (keyEvent.getCode() == KeyCode.DOWN) {
-				System.out.println("DOWN key released");
-				// TODO delete system.out.println and add code that sends command to the Rover
-				keyEvent.consume();
-			}
-			
-			if (keyEvent.getCode() == KeyCode.LEFT) {
-				System.out.println("LEFT key released");
-				// TODO delete system.out.println and add code that sends command to the Rover
-				keyEvent.consume();
-			}
-			
-			if (keyEvent.getCode() == KeyCode.RIGHT) {
-				System.out.println("RIGHT key released");
-				// TODO delete system.out.println and add code that sends command to the Rover
+			} else {
+				switch (keyEvent.getCode()) {
+				case UP:
+					System.out.println("UP key released");
+					// TODO delete system.out.println and add code that sends command to the Rover
+					break;
+				case DOWN:
+					System.out.println("DOWN key released");
+					// TODO delete system.out.println and add code that sends command to the Rover
+					break;
+				case LEFT:
+					System.out.println("LEFT key released");
+					// TODO delete system.out.println and add code that sends command to the Rover
+					break;
+				case RIGHT:
+					System.out.println("RIGHT key released");
+					// TODO delete system.out.println and add code that sends command to the Rover
+					break;
+				default:
+					break;
+				}
 				keyEvent.consume();
 			}
 		});
-		
+
 		stackPane.addEventFilter(KeyEvent.KEY_PRESSED, (keyEvent) -> {
-			if (keyEvent.getCode() == KeyCode.UP) {
+			switch (keyEvent.getCode()) {
+			case UP:
 				System.out.println("UP key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
-				keyEvent.consume();
-			}
-			
-			if (keyEvent.getCode() == KeyCode.DOWN) {
+				break;
+			case DOWN:
 				System.out.println("DOWN key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
-				keyEvent.consume();
-			}
-			
-			if (keyEvent.getCode() == KeyCode.LEFT) {
+				break;
+			case LEFT:
 				System.out.println("LEFT key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
-				keyEvent.consume();
-			}
-			
-			if (keyEvent.getCode() == KeyCode.RIGHT) {
+				break;
+			case RIGHT:
 				System.out.println("RIGHT key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
-				keyEvent.consume();
+				break;
+			default:
+				break;
 			}
+			keyEvent.consume();
 		});
 	}
 
@@ -226,7 +226,7 @@ public class MainLayoutController implements Initializable {
 	 */
 	public void handleSubmit() {
 		// FIXME uncomment:
-		RoverConnection.roverConnection.sendData(consoleInput.getText());
+		// RoverConnection.roverConnection.sendData(consoleInput.getText());
 		addMessageToConsole(false, consoleInput.getText());
 
 		/*
@@ -236,6 +236,7 @@ public class MainLayoutController implements Initializable {
 		 */
 
 		consoleInput.setText("");
+		consoleSubmit.requestFocus();
 	}
 
 	/**
@@ -252,11 +253,18 @@ public class MainLayoutController implements Initializable {
 			return;
 		switch (input.substring(0, 2)) {
 		case RoverCommands.DATA:
-			updatePoint(Integer.parseInt(input.substring(2, 4)), Integer.parseInt(input.substring(4, 7))); // FIXME fix the index parameter to fit the dots.size
+			updatePoint(Integer.parseInt(input.substring(2, 4)), Integer.parseInt(input.substring(4, 7))); // FIXME fix
+																											// the index
+																											// parameter
+																											// to fit
+																											// the
+																											// dots.size
 			break;
 		case RoverCommands.READY:
 			// TODO write to console that Rover is ready
-			setNumberOfLines(Integer.valueOf(input.substring(2, 4))); // FIXME set the parameters in the substring method to match the maximum possible number of lines 
+			setNumberOfLines(Integer.valueOf(input.substring(2, 4))); // FIXME set the parameters in the substring
+																		// method to match the maximum possible number
+																		// of lines
 			break;
 		case RoverCommands.ERROR:
 			// TODO write error to the console with red fill
@@ -287,7 +295,8 @@ public class MainLayoutController implements Initializable {
 	 * depending on the {@code fromPi} {@code boolean}.
 	 * 
 	 * @param fromRover
-	 *            {@code boolean} value that tells if the current message is from the Rover
+	 *            {@code boolean} value that tells if the current message is from
+	 *            the Rover
 	 * @param input
 	 *            {@link String} containing the message
 	 */
@@ -301,13 +310,17 @@ public class MainLayoutController implements Initializable {
 				textList.add(new Label());
 				textList.get(messageIndex).setTextAlignment(TextAlignment.LEFT);
 				textList.get(messageIndex).setWrapText(true);
-				textList.get(messageIndex).setPrefWidth(consoleOutputTextBox.getWidth() / 2);
+				textList.get(messageIndex).setMinWidth(consoleOutputTextBox.getWidth() / 2);
+				textList.get(messageIndex).setMaxWidth(consoleOutputTextBox.getWidth() * 2 / 3);
 				textList.get(messageIndex).getStyleClass().add("textList");
 				messageList.get(messageIndex).getChildren().add(textList.get(messageIndex));
-				if (fromRover)
+				if (fromRover) {
 					messageList.get(messageIndex).setAlignment(Pos.CENTER_LEFT);
-				else
+					textList.get(messageIndex).getStyleClass().add("textListRover");
+				} else {
 					messageList.get(messageIndex).setAlignment(Pos.CENTER_RIGHT);
+					textList.get(messageIndex).getStyleClass().add("textListYou");
+				}
 				messageList.get(messageIndex).setPrefWidth(textList.get(messageIndex).getWidth() * 2);
 				messageList.get(messageIndex).getStyleClass().add("messageList");
 			}
@@ -351,7 +364,8 @@ public class MainLayoutController implements Initializable {
 
 	/**
 	 * The {@code handleInfo} method wraps code that is executed when the info
-	 * button is pressed. The {@link ScrollPane} with the info is brought to front.
+	 * button is pressed. The {@link ScrollPane} with the info is brought to the
+	 * front.
 	 */
 	public void handleInfo() {
 		if (infoTF.getChildren().size() == 0) {
@@ -384,7 +398,7 @@ public class MainLayoutController implements Initializable {
 		Main.mainStage.setScene(mainScene);
 		Main.mainStage.centerOnScreen();
 	}
-	
+
 	/**
 	 * The {@code updatePoint} method moves the point in the {@code dots} list on
 	 * the given {@code index} to the given {@code distance} or sets it invisible if
@@ -401,13 +415,13 @@ public class MainLayoutController implements Initializable {
 			dot.setVisible(false);
 		else {
 			updateLineEndPoint(distance, index);
-			
+
 			dot.setVisible(true);
-			
+
 			int previousIndex = index - 1;
 			if (previousIndex < 0)
 				previousIndex = dots.size() - 1;
-			
+
 			Rectangle prevDot = dots.get(previousIndex);
 			if (prevDot.isVisible()) {
 				dotLines.put(dot, new Line());
@@ -427,6 +441,13 @@ public class MainLayoutController implements Initializable {
 	 * @return void
 	 */
 	private void buildCenterSection() {
+		Image tank = new Image("/com/masopust/ondra/java/gui/mainLayout/tank.png");
+		ImageView tankIV = new ImageView(tank);
+		tankIV.xProperty().bind(centerSectionPane.widthProperty().divide(2).subtract(tank.getWidth() / 2));
+		tankIV.yProperty().bind(centerSectionPane.heightProperty().divide(2).subtract(tank.getHeight() / 2));
+
+		centerSectionGroup.getChildren().add(tankIV);
+
 		int lineLength = 200; // FIXME
 
 		for (int i = 0; i < numberOfLines; i++) {
@@ -438,13 +459,13 @@ public class MainLayoutController implements Initializable {
 			// set start and end points to be relative to the pane dimensions
 			line.startXProperty().bind(centerSectionPane.widthProperty().divide(2));
 			line.startYProperty().bind(centerSectionPane.heightProperty().divide(2));
-			
+
 			line.setVisible(false);
 			centerSectionGroup.getChildren().add(line);
 
-			dots.add(new Rectangle(dotSize, dotSize, Color.BLUE));
+			dots.add(new Rectangle(dotSize, dotSize, Color.web("#0092CC")));
 			Rectangle dot = dots.get(i);
-			
+
 			dot.xProperty().bind(line.endXProperty().subtract(dotSize / 2));
 			dot.yProperty().bind(line.endYProperty().subtract(dotSize / 2));
 			centerSectionGroup.getChildren().add(dot);
@@ -474,7 +495,7 @@ public class MainLayoutController implements Initializable {
 		lines.get(index).endXProperty().bind(lines.get(index).startXProperty().add(xSide));
 		lines.get(index).endYProperty().bind(lines.get(index).startYProperty().add(ySide));
 	}
-	
+
 	/**
 	 * The {@code setNumberOfLines} method sets the value of the
 	 * {@code numberOfLines} integer.

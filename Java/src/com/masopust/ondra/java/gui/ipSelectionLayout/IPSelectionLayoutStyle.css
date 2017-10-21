@@ -1,0 +1,29 @@
+/*
+ * This css file consists of style features in the ip selection layout.
+ *  
+ * @author Ondrej Masopust
+ */
+
+.window{
+	-fx-background-color: #282828;
+}
+
+.labels{
+	-fx-text-fill: #F0F0F0;
+}
+
+.inputs{
+	-fx-background-color: #393939;
+	-fx-text-fill: #F0F0F0;
+	-fx-highlight-fill: #F0F0F0;
+	-fx-highlight-text-fill: #393939;
+}
+
+.buttons{
+	-fx-background-color: #087099;
+	-fx-text-fill: #F0F0F0;
+}
+
+.buttons:hover{
+	-fx-cursor: hand;
+}

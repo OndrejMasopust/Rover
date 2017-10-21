@@ -40,6 +40,7 @@ class TCPCommunication:
     
     def sendToHost(self, message = "null"):
         #check if the message ends with '\r\n' and if not, add it
+        #chceck for hacky and carky, because it is not possible to decode
         clientSocket.sendall(message.encode(encoding='utf_8', errors='strict'))
 
     '''

@@ -90,6 +90,7 @@ public class IPSelectionLayoutController implements Initializable {
 		Parent ipSelectionLayout = ipSelectionLayoutLoader.load();
 
 		ipSelectionScene = new Scene(ipSelectionLayout);
+		ipSelectionScene.getStylesheets().add("/com/masopust/ondra/java/gui/ipSelectionLayout/IPSelectionLayoutStyle.css");
 
 		return ipSelectionScene;
 	}

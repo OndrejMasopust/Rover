@@ -3,18 +3,29 @@
  * 
  * @author Ondrej Masopust
  */
-.but{
-	
+.window{
+	-fx-background-color: #282828;
+}
+
+.progress{
+	-fx-progress-color: #087099;
 }
 
 .textTitle{
-	
+	-fx-fill: #F0F0F0;
+	-fx-font-size: 26px;
+}
+
+.button{
+	-fx-background-color: #087099;
+	-fx-text-fill: #F0F0F0;
 }
 
 .textErrors{
-	-fx-fill: white;
+	-fx-fill: #F0F0F0;
 }
 
 .textScrollPane{
-	-fx-background: black;
+	-fx-background: #181818;
+	-fx-background-color: #181818;
 }

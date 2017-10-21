@@ -210,7 +210,7 @@ public class RoverConnection extends Task<String> {
 			roverConnection.connect();
 			errorCounter++;
 
-			if (roverConnection.connectionEstablished()) { //  || i == 1
+			if (roverConnection.connectionEstablished()) {	// || i == 1
 				/* FIXME uncomment*/
 				try {
 					outputTCP = new PrintWriter(clientSocket.getOutputStream(), true);
