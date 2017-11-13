@@ -149,7 +149,7 @@ public class MainLayoutController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// FIXME put credit to the send arrow icon (text in css file)
+		// TODO put credit to the author of the send arrow icon (text in css file)
 		baseAngle = (double) 360 / numberOfLines;
 
 		consoleOutputTextBox = consoleOutputTextBoxFXML;
@@ -164,33 +164,34 @@ public class MainLayoutController implements Initializable {
 		});
 
 		stackPane.addEventFilter(KeyEvent.KEY_RELEASED, (keyEvent) -> {
-			if (keyEvent.getCode() == KeyCode.ESCAPE) {
-				if (stackPane.getChildren().get(1).equals(infoSPane)) {
-					controlPane.toFront();
-				}
-			} else {
 				switch (keyEvent.getCode()) {
+				case ESCAPE:
+					if (stackPane.getChildren().get(1).equals(infoSPane))
+						controlPane.toFront();
+					break;
 				case UP:
 					System.out.println("UP key released");
 					// TODO delete system.out.println and add code that sends command to the Rover
+					keyEvent.consume();
 					break;
 				case DOWN:
 					System.out.println("DOWN key released");
 					// TODO delete system.out.println and add code that sends command to the Rover
+					keyEvent.consume();
 					break;
 				case LEFT:
 					System.out.println("LEFT key released");
 					// TODO delete system.out.println and add code that sends command to the Rover
+					keyEvent.consume();
 					break;
 				case RIGHT:
 					System.out.println("RIGHT key released");
 					// TODO delete system.out.println and add code that sends command to the Rover
+					keyEvent.consume();
 					break;
 				default:
 					break;
 				}
-				keyEvent.consume();
-			}
 		});
 
 		stackPane.addEventFilter(KeyEvent.KEY_PRESSED, (keyEvent) -> {
@@ -198,23 +199,26 @@ public class MainLayoutController implements Initializable {
 			case UP:
 				System.out.println("UP key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 				break;
 			case DOWN:
 				System.out.println("DOWN key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 				break;
 			case LEFT:
 				System.out.println("LEFT key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 				break;
 			case RIGHT:
 				System.out.println("RIGHT key pressed");
 				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
 				break;
 			default:
 				break;
 			}
-			keyEvent.consume();
 		});
 	}
 

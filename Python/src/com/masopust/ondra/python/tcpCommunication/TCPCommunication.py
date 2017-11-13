@@ -34,12 +34,13 @@ class TCPCommunication:
             readyToRead, readyToWrite, error = select.select([], potential_writers, [])
         
             if clientSocket in readyToWrite:
-                message = "Raspberry Pi is connected.\r\n"
+                message = "Raspberry Pi is connected.\r\n"  # FIXME \r\n
                 self.sendToHost(message)
                 break
     
     def sendToHost(self, message = "null"):
         #check if the message ends with '\r\n' and if not, add it
+        
         #chceck for hacky and carky, because it is not possible to decode
         clientSocket.sendall(message.encode(encoding='utf_8', errors='strict'))
 
