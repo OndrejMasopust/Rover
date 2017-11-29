@@ -1,13 +1,13 @@
 #ignore compiled files
-Project/Java/bin/
+Java/bin/
 
 #ignore .DS_Store
 .DS_Store
 
-Project/Java/.classpath
-Project/Java/.project
-Project/Python/.project
-Project/Python/.pydevproject
+Java/.classpath
+Java/.project
+Python/.project
+Python/.pydevproject
 
 *.txt
 
