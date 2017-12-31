@@ -12,3 +12,7 @@ Python/.pydevproject
 *.txt
 
 Java/original-images/
+
+*.hex
+*.elf
+*.o

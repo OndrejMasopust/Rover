@@ -13,8 +13,6 @@ sudo raspi-config
 And there, in "Interafcing Options", select I<sup>2</sup>C and confirm that.
 You need to reboot your Pi after this.
 
-
-
-
-You need to compile the VL530LX-Raspi Library:
-Go to "VL53L0X_rasp_python-master" folder and in Pi terminal, type "make"
+####4. Install Python smbus2 package
+In the Pi terminal, type:
+sudo pip3 install smbus2
