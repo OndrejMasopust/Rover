@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.masopust.ondra.java.gui.Main;
+import com.masopust.ondra.java.gui.mainLayout.batteryPercentage.BatteryPercentageManager;
 import com.masopust.ondra.java.info.Info;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 
@@ -26,7 +27,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -36,6 +36,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 
@@ -98,6 +99,9 @@ public class MainLayoutController implements Initializable {
 	Button zommOut;
 
 	@FXML
+	Text percentageFXML;
+
+	@FXML
 	Button info;
 
 	private static StringBuilder sb = new StringBuilder();
@@ -106,10 +110,11 @@ public class MainLayoutController implements Initializable {
 	private static int messageIndex;
 	private static VBox consoleOutputTextBox;
 	private static Group centerSectionGroup;
+	private static Text percentage;
 	private double zoomScale = 0.2;
 
 	/**
-	 * This boolean tells if the previous record in the console output was form you.
+	 * This boolean tells if the previous record in the console output was from the Rover.
 	 */
 	private static Boolean previousMessageFromRover = null;
 
@@ -147,6 +152,12 @@ public class MainLayoutController implements Initializable {
 	 */
 	private static Map<Rectangle, Line> dotLines = new HashMap<>(numberOfLines);
 
+	/**
+	 * This variable is instance of the {@link BatteryPercentageManager} class and
+	 * is used to write and read data from the <b>BatteryPercentage.txt</b> file.
+	 */
+	private static BatteryPercentageManager percentageFile;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO put credit to the author of the send arrow icon (text in css file)
@@ -154,44 +165,49 @@ public class MainLayoutController implements Initializable {
 
 		consoleOutputTextBox = consoleOutputTextBoxFXML;
 		centerSectionGroup = centerSectionGroupFXML;
+		percentage = percentageFXML;
 		buildCenterSection(); // FIXME start with empty center section only with message that "Rover is
 								// initializing sensors" and start to build it after the Rover sends the first
 								// set of data to be visualized
 
-		// This code automatically scrolls down the console
+		// This code automatically scrolls down the console when new message is added
 		consoleOutputTextBox.heightProperty().addListener((observable, oldValue, newValue) -> {
 			consoleOutputSP.setVvalue(1);
 		});
 
 		stackPane.addEventFilter(KeyEvent.KEY_RELEASED, (keyEvent) -> {
-				switch (keyEvent.getCode()) {
-				case ESCAPE:
-					if (stackPane.getChildren().get(1).equals(infoSPane))
-						controlPane.toFront();
-					break;
-				case UP:
-					System.out.println("UP key released");
-					// TODO delete system.out.println and add code that sends command to the Rover
-					keyEvent.consume();
-					break;
-				case DOWN:
-					System.out.println("DOWN key released");
-					// TODO delete system.out.println and add code that sends command to the Rover
-					keyEvent.consume();
-					break;
-				case LEFT:
+			switch (keyEvent.getCode()) {
+			case ESCAPE:
+				if (stackPane.getChildren().get(1).equals(infoSPane))
+					controlPane.toFront();
+				break;
+			case UP:
+				System.out.println("UP key released");
+				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
+				break;
+			case DOWN:
+				System.out.println("DOWN key released");
+				// TODO delete system.out.println and add code that sends command to the Rover
+				keyEvent.consume();
+				break;
+			case LEFT:
+				if (!consoleInput.isFocused()) {
 					System.out.println("LEFT key released");
 					// TODO delete system.out.println and add code that sends command to the Rover
 					keyEvent.consume();
-					break;
-				case RIGHT:
+				}
+				break;
+			case RIGHT:
+				if (!consoleInput.isFocused()) {
 					System.out.println("RIGHT key released");
 					// TODO delete system.out.println and add code that sends command to the Rover
 					keyEvent.consume();
-					break;
-				default:
-					break;
 				}
+				break;
+			default:
+				break;
+			}
 		});
 
 		stackPane.addEventFilter(KeyEvent.KEY_PRESSED, (keyEvent) -> {
@@ -207,19 +223,29 @@ public class MainLayoutController implements Initializable {
 				keyEvent.consume();
 				break;
 			case LEFT:
-				System.out.println("LEFT key pressed");
-				// TODO delete system.out.println and add code that sends command to the Rover
-				keyEvent.consume();
+				if (!consoleInput.isFocused()) {
+					System.out.println("LEFT key pressed");
+					// TODO delete system.out.println and add code that sends command to the Rover
+					keyEvent.consume();
+				}
 				break;
 			case RIGHT:
-				System.out.println("RIGHT key pressed");
-				// TODO delete system.out.println and add code that sends command to the Rover
-				keyEvent.consume();
+				if (!consoleInput.isFocused()) {
+					System.out.println("RIGHT key pressed");
+					// TODO delete system.out.println and add code that sends command to the Rover
+					keyEvent.consume();
+				}
 				break;
 			default:
 				break;
 			}
 		});
+		initPercentage();
+	}
+	
+	private void initPercentage() {
+		percentageFile = new BatteryPercentageManager();
+		setPercentage(percentageFile.read());
 	}
 
 	/**
@@ -229,9 +255,18 @@ public class MainLayoutController implements Initializable {
 	 * and written to the console output.
 	 */
 	public void handleSubmit() {
-		// FIXME uncomment:
-		// RoverConnection.roverConnection.sendData(consoleInput.getText());
-		addMessageToConsole(false, consoleInput.getText());
+		String text = consoleInput.getText();
+		if (text.substring(0, 1).equals("$")) {
+			switch (text) {
+			case localCommands.RESETPERCENTAGE:
+				setPercentage(100);
+			}
+		} else {
+			// FIXME uncomment:
+			// RoverConnection.roverConnection.sendData(text);
+		}
+
+		addMessageToConsole(false, text);
 
 		/*
 		 * System.out.println(consoleOutputSP.getWidth());
@@ -241,6 +276,18 @@ public class MainLayoutController implements Initializable {
 
 		consoleInput.setText("");
 		consoleSubmit.requestFocus();
+	}
+
+	/**
+	 * The {@code localCommands} class wraps static {@link String} constants that
+	 * contain the command representation that are used to control the Rover control
+	 * desktop program
+	 * 
+	 * @author Ondrej Masopust
+	 *
+	 */
+	private class localCommands {
+		private static final String RESETPERCENTAGE = "$resPer";
 	}
 
 	/**
@@ -273,6 +320,8 @@ public class MainLayoutController implements Initializable {
 		case RoverCommands.ERROR:
 			// TODO write error to the console with red fill
 			break;
+		case RoverCommands.BATTERY:
+			setPercentage(Integer.valueOf(input.substring(2)));
 		// TODO finish all cases
 		default:
 			addMessageToConsole(true, input);
@@ -291,6 +340,7 @@ public class MainLayoutController implements Initializable {
 		private static final String DATA = "dt";
 		private static final String READY = "rd";
 		private static final String ERROR = "er";
+		private static final String BATTERY = "bt";
 	}
 
 	/**
@@ -364,6 +414,7 @@ public class MainLayoutController implements Initializable {
 			centerSectionGroup.setScaleX(centerSectionGroup.getScaleX() - zoomScale);
 			centerSectionGroup.setScaleY(centerSectionGroup.getScaleY() - zoomScale);
 		}
+		setPercentage(50);
 	}
 
 	/**
@@ -445,7 +496,7 @@ public class MainLayoutController implements Initializable {
 	 * @return void
 	 */
 	private void buildCenterSection() {
-		Image tank = new Image("/com/masopust/ondra/java/gui/mainLayout/tank.png");
+		Image tank = new Image("/com/masopust/ondra/java/gui/mainLayout/tank.png", 100, 200, true, false);
 		ImageView tankIV = new ImageView(tank);
 		tankIV.xProperty().bind(centerSectionPane.widthProperty().divide(2).subtract(tank.getWidth() / 2));
 		tankIV.yProperty().bind(centerSectionPane.heightProperty().divide(2).subtract(tank.getHeight() / 2));
@@ -509,5 +560,17 @@ public class MainLayoutController implements Initializable {
 	 */
 	private static void setNumberOfLines(int value) {
 		numberOfLines = value;
+	}
+
+	/**
+	 * The {@code setPercentage} method sets the text of the {@code percentage}
+	 * {@link Text} variable.
+	 * 
+	 * @param value
+	 *            to be written to the {@link Text}
+	 */
+	private static void setPercentage(int value) {
+		percentage.setText(Integer.toString(value) + "%");
+		percentageFile.write(value);
 	}
 }

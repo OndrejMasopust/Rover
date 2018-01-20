@@ -6,8 +6,6 @@ import com.masopust.ondra.java.gui.ipSelectionLayout.IPSelectionLayoutController
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -55,20 +53,4 @@ public class Main extends Application {
 		super.stop();
 	}
 
-	/**
-	 * This method sets the mainStage to be full screen wide and high.
-	 * TODO delete this method if really not used
-	 * 
-	 * @deprecated
-	 * 
-	 * @return void
-	 */
-	public static void setFullScreen() {
-		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-
-		mainStage.setX(screenBounds.getMinX());
-		mainStage.setY(screenBounds.getMinY());
-		mainStage.setWidth(screenBounds.getWidth());
-		mainStage.setHeight(screenBounds.getHeight());
-	}
 }

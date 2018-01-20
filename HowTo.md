@@ -16,3 +16,14 @@ You need to reboot your Pi after this.
 ####4. Install Python smbus2 package
 In the Pi terminal, type:
 sudo pip3 install smbus2
+
+####5. Install pigpio library
+In the Pi terminal, type:
+wget abyz.co.uk/rpi/pigpio/pigpio.zip
+unzip pigpio.zip
+cd PIGPIO
+make
+sudo make install
+
+
+// before start of the main program, it is necessaru to start the pigpiod: sudo pigpiod

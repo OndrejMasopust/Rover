@@ -12,6 +12,7 @@
 *{
 	-fx-window-background: #282828;
 	-fx-left-section-back: #181818;
+	-fx-text-color: #F0F0F0;
 }
 
 .window{
@@ -28,7 +29,7 @@
 
 	.buttons{
 		-fx-background-radius: 20.0;
-		-fx-text-fill: #F0F0F0;
+		-fx-text-fill: -fx-text-color;
 		-fx-font-size: 20.0px;
 	}
 	
@@ -43,6 +44,11 @@
 	.zoomButton{
 		-fx-background-color: #B7B327;
 	}
+	
+	.percentage{
+		-fx-fill: -fx-text-color;
+		-fx-font-size: 20;
+	}
 
 .leftSection{
 	-fx-border-color: -fx-left-section-back white -fx-left-section-back -fx-left-section-back;
@@ -55,7 +61,7 @@
 	}
 	
 		.consoleHeadingLabel{
-			-fx-text-fill: #F0F0F0;
+			-fx-text-fill: -fx-text-color;
 			-fx-font-size: 23.0px;
 		}
 	
@@ -74,7 +80,7 @@
 
 	.leftSP{
 		-fx-background: -fx-left-section-back;
-		-fx-border-color: #F0F0F0 -fx-left-section-back #F0F0F0 -fx-left-section-back;
+		-fx-border-color: -fx-text-color -fx-left-section-back -fx-text-color -fx-left-section-back;
 		-fx-border-width: 1.0px;
 	}
 	
@@ -99,7 +105,7 @@
 		.consoleInput{
 			-fx-background-color: #323232;
 			-fx-background-radius: 0px;
-			-fx-text-fill: #F0F0F0;
+			-fx-text-fill: -fx-text-color;
 			-fx-font-size: 15.0px;
 		}
 		
