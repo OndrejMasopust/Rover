@@ -260,6 +260,7 @@ public class MainLayoutController implements Initializable {
 			switch (text) {
 			case localCommands.RESETPERCENTAGE:
 				setPercentage(100);
+				break;
 			}
 		} else {
 			// FIXME uncomment:
@@ -414,7 +415,6 @@ public class MainLayoutController implements Initializable {
 			centerSectionGroup.setScaleX(centerSectionGroup.getScaleX() - zoomScale);
 			centerSectionGroup.setScaleY(centerSectionGroup.getScaleY() - zoomScale);
 		}
-		setPercentage(50);
 	}
 
 	/**
