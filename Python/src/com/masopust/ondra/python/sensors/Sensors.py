@@ -12,7 +12,9 @@ class Sensors (threading.Thread):
         pass
     
     def run(self):
-        #code that should be run in this thread
+        while True:
+            self.measure()
+        
         pass
     
     def initSens(self):

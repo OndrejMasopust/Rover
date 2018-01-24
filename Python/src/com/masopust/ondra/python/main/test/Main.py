@@ -15,11 +15,11 @@ def Main():
     tcpCommunication.establishTCPConnection()
     
     #initialize sensors
-    sensors = Sensors
+    #sensors = Sensors
     #sensors.initSens()
     #tcpCommunication.sendToHost('Sensors initialized. Starting measuring.')
     #start measuring
-    sensors.start()
+    #sensors.start()
     
     #listen to commands
     while True:
