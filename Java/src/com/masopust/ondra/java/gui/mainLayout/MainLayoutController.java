@@ -305,7 +305,7 @@ public class MainLayoutController implements Initializable {
 			return;
 		switch (input.substring(0, 2)) {
 		case RoverCommands.DATA:
-			updatePoint(Integer.parseInt(input.substring(2, 4)), Integer.parseInt(input.substring(4, 7))); // FIXME fix
+			updatePoint(Integer.parseInt(input.substring(1, 3)), Integer.parseInt(input.substring(3, 6))); // FIXME fix
 																											// the index
 																											// parameter
 																											// to fit
@@ -314,7 +314,7 @@ public class MainLayoutController implements Initializable {
 			break;
 		case RoverCommands.READY:
 			// TODO write to console that Rover is ready
-			setNumberOfLines(Integer.valueOf(input.substring(2, 4))); // FIXME set the parameters in the substring
+			setNumberOfLines(Integer.valueOf(input.substring(1, 3))); // FIXME set the parameters in the substring
 																		// method to match the maximum possible number
 																		// of lines
 			break;

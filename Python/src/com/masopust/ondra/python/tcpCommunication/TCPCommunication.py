@@ -38,7 +38,8 @@ class TCPCommunication:
                 self.sendToHost(message)
                 break
     
-    def sendToHost(self, message = "null"):
+    @staticmethod
+    def sendToHost(message = "null"):
         #check if the message ends with '\r\n' and if not, add it
         if not("\r\n" in message):
             message += "\r\n"
