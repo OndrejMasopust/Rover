@@ -24,7 +24,7 @@ class Sensors (threading.Thread):
     
     def run(self):
         '''
-        This function is called when this thread is started by the star() function in the main class.
+        This function is called when this thread is started by the start() function in the Main class.
         '''
         while self.q.empty():
             for index in range(0, self.resolution):
@@ -45,6 +45,8 @@ class Sensors (threading.Thread):
     def measure(self):
         '''
         This function reads the data from the AVR and returns the measured distance
+        
+        :return
         '''
         with SMBusWrapper(1) as bus:
             val = bus.read_i2c_block_data(0x0A, 0, 4)
