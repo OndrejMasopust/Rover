@@ -9,6 +9,7 @@ import time
 from com.masopust.ondra.python.motors.Motors import Motors
 from smbus2 import SMBusWrapper
 import math
+import RPi.GPIO as gpio
 
 
 class Sensors (threading.Thread):
@@ -18,8 +19,9 @@ class Sensors (threading.Thread):
 
     def __init__(self, queue, tcpCommunication):
         '''
-        This constructor assigns given arguments to instace variables, sets the thread as daemon and calls initSens method in order to get the resolution.
-        
+        This constructor assigns given arguments to instance variables, sets the thread as daemon, sets up an interrupt
+        that is executed when the sensor finishes one rotation and calls initSens method in order to get the resolution.
+
         :param queue: The LifoQueue instance that is used to exchange information between this thread and the main thread.
             It contains, whether the client disconnected and if the measuring was stopped.
         :type queue: LifoQueue
@@ -31,6 +33,17 @@ class Sensors (threading.Thread):
         self.sensorMotor = Motors(22, [21, 23])
         self.q = queue
         self.tcpCommunication = tcpCommunication
+
+        gpio.setmode(gpio.BCM)
+        # set the pin 22, which is connected to the output of the optolatch, as input
+        gpio.setup(22, gpio.IN)
+        # set up an interrupt
+        gpio.add_event_detect(22, gpio.FALLING, callback=self.__isr)
+        self.myTime = time.time()
+
+        # time in seconds that it takes for the sensor to take one measurement
+        self.CONVERSIONTIME = 0.02
+        self.rotationCounter = 0
         # this is the variable that tells how many dots will be displayed on the screen
         self.resolution = self.initSens()
     
@@ -53,10 +66,13 @@ class Sensors (threading.Thread):
     
     def initSens(self):
         '''
-        This method starts the sensor motor and counts how fast it makes one rotation and based on that,
+        This method starts the sensor motor and based on how fast it makes one rotation,
         it counts how many dots will be displayed on the client's computer screen.
         '''
-        pass
+        self.sensorMotor.run(xx)    # FIXME set the duty cycle
+        while self.rotationCounter < 3:
+            pass
+        self.resolution = round(self.rotationTime / self.CONVERSIONTIME)
     
     def measure(self):
         '''
@@ -71,3 +87,19 @@ class Sensors (threading.Thread):
             longVoltage = longSensor * (5 / 1024)
             longDist = 916.64 * math.pow(longVoltage, -2.236)
         return longDist
+    
+    def __isr(self, channel):
+        '''
+        This interrupt service routine is called when the optolatch changes its state.
+        This function counts the time that it takes for the sensor to make one turn. This function is private.
+        
+        :param channel: Number of the pin that caused the interrupt
+        :type channel: int
+        '''
+        currentTime = time.time()
+        if (currentTime - self.myTime) > 0.8:
+            self.rotationTime = currentTime - self.myTime
+        self.myTime = currentTime
+        if self.rotationCounter < 3:
+            self.rotationCounter += 1
+            
