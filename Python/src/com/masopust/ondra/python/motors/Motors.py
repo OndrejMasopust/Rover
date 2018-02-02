@@ -9,7 +9,7 @@ import RPi.GPIO as gpio
 
 class Motors(object):
     '''
-    classdocs
+    This class is used to control the motors of the Rover.
     '''
 
     def __init__(self, pwmOut, directionOut):
@@ -34,7 +34,8 @@ class Motors(object):
         
     def run(self, dutyCycle):
         '''
-        This function starts the PWM. It is pretty similar to the setSpeed() function. It either starts the PWM, if stopped, or only changes the duty cycle.
+        This method starts the PWM. It is pretty similar to the setSpeed() method.
+        It either starts the PWM, if stopped, or only changes the duty cycle.
         
         :param dutyCycle: The duty cycle to be applied. 0 =< dutyCycle =< 100
         :type dutyCycle: int
@@ -46,14 +47,15 @@ class Motors(object):
     
     def stop(self):
         '''
-        This function stops the PWM.
+        This method stops the PWM.
         '''
         self.pwm.stop()
         self.pwmRunning = False
     
     def setSpeed(self, dutyCycle):
         '''
-        This function sets the duty cycle of the PWM and thus changes the speed of the motor. It is pretty similar to the run() function but if the PWM is stopped, this function does not start it.
+        This method sets the duty cycle of the PWM and thus changes the speed of the motor.
+        It is pretty similar to the run() method but if the PWM is stopped,this method does not start it.
         
         :param dutyCycle: The duty cycle to be applied. 0 =< dutyCycle =< 100
         :type dutyCycle: int
@@ -65,17 +67,23 @@ class Motors(object):
     
     def setDirection(self, direction):
         '''
-        This function sets the rotating direction of the motor.
+        This method sets the rotation direction of the motor.
         
-        :param direction: Direction to be applied. An enum Direction should be used. 
+        :param direction: Direction to be applied. An enum *Direction* should be used. 
         :type direction: boolean
         '''
+        # FIXME check if this setup works
         if direction:
-            pass
+            gpio.output(self.directionOut[0], gpio.LOW)
+            gpio.output(self.directionOut[1], gpio.HIGH)
         else:
-            pass
+            gpio.output(self.directionOut[0], gpio.HIGH)
+            gpio.output(self.directionOut[1], gpio.LOW)
     
     def clean(self):
+        '''
+        This method is called when the client disconnects. It stops the motors and cleans up the GPIO.
+        '''
         self.stop()
         gpio.cleanup()
         

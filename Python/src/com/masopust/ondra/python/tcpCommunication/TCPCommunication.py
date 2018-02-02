@@ -2,9 +2,6 @@
 Created on Jul 12, 2017
 
 @author: Ondrej Masopust
-
-The main function opens server socket and listens for incoming connections.
-If connection is established, both server and host can communicate.
 '''
 import socket
 import select
@@ -12,71 +9,98 @@ import sys
 import time
 
 class TCPCommunication:
-    global port
-    
+    '''
+    This class is used to communicate with the client over TCP.
+    '''
+
     def __init__(self, port = 5321):
+        '''
+        This constructor assigns the given argument to instace variable.
+        
+        :param port: The number of the port that the program should listen to.
+        :type port: int
+        '''
         self.port = port
     
     def establishTCPConnection(self):
+        '''
+        This method establishes the TCP communication. It waits, until someone connects,
+        prints it's information and sends him acknowledging message. 
+        '''
         serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        serverSocket.bind(('', self.port)) #on RPi, maybe the '' would need to change to socket.gethostname()
+        serverSocket.bind(('', self.port)) # FIXME on RPi, maybe the '' would need to change to socket.gethostname()
         serverSocket.listen(1)
-        global clientSocket
-        clientSocket, clientAddress = serverSocket.accept()
+        self.clientSocket, clientAddress = serverSocket.accept()
         
         print("Connection from " + str(clientAddress) + " was successful")
         
-        time.sleep(5)
+        time.sleep(1)
         
+        self.sendToHostWrapper("Raspberry Pi is connected.")
+    
+    def sendToHostWrapper(self, message):
+        '''
+        This method wraps the __sendToHost method and adds safe sending.
+        It waits, until the client socket is ready to be written and then sends the message.
+        
+        :param message: The message that is to be sent.
+        :type message: string
+        '''
         while True:
-            potential_writers = [clientSocket]
+            potential_writers = [self.clientSocket]
         
             readyToRead, readyToWrite, error = select.select([], potential_writers, [])
         
-            if clientSocket in readyToWrite:
-                message = "Raspberry Pi is connected."
-                self.sendToHost(message)
+            if self.clientSocket in readyToWrite:
+                self.__sendToHost(message)
                 break
     
-    @staticmethod
-    def sendToHost(message = "null"):
+    def __sendToHost(self, message = "null"):
+        '''
+        This method sends the given attribute to the host. It is private because by itself,
+        it doesn't provide safe data sending. For safe data sending, use the sendToHostWrapper function.
+        
+        :param message: The message that is to be sent.
+        :type message: string
+        '''
         #check if the message ends with '\r\n' and if not, add it
         if not("\r\n" in message):
             message += "\r\n"
         #chceck for hacky and carky, because it is not possible to decode
-        clientSocket.sendall(message.encode(encoding='utf_8', errors='strict'))
+        self.clientSocket.sendall(message.encode(encoding='utf_8', errors='strict'))
 
-    '''
-    This function still waits and listens to the socket.
-    It interrupts the flow of the code.
-	This function needs to have its own thread.
-    '''
     def handleRecvAndSend(self):
+        '''
+        This method still waits and listens to the socket and the stdin. It interrupts the flow of the code.
+        This method needs to have its own thread.
+        '''
         while True:
-            potential_readers = [clientSocket, sys.stdin]
-            potential_writers = [clientSocket]
+            potential_readers = [self.clientSocket, sys.stdin]
+            potential_writers = [self.clientSocket]
         
             readyToRead, readyToWrite, error = select.select(potential_readers, potential_writers, [])
         
             for reader in readyToRead:
-                if reader == clientSocket:
-                    data = clientSocket.recv(4096)
+                if reader == self.clientSocket:
+                    data = self.clientSocket.recv(4096)
                     if not data:
-                        clientSocket.close()
+                        self.clientSocket.close()
                         print("connectionSocket closed successfully (hopefully)")
-                        return 'stop'
                         sys.exit()
                     else: return data
                 if reader == sys.stdin:
-                    if clientSocket in readyToWrite:
+                    if self.clientSocket in readyToWrite:
                         message = sys.stdin.readline()
-                        self.sendToHost(message)
+                        self.__sendToHost(message)
                     else:
                         print("ERROR: Message could not be sent because the client socket is not ready to write. Try sending it again later.")
-                    
-        
 
-def main():
+def Main():
+    '''
+    The Main function opens server socket and listens for incoming connections.
+    If connection is established, both server and host can communicate.
+    It is here only for testing purposes.
+    '''
     port = 5321
     
     serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -105,4 +129,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    Main()

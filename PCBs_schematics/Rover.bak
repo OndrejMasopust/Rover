@@ -768,28 +768,6 @@ F 3 "" H 7400 6000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C?
-U 1 1 5A3CDF1D
-P 9200 2500
-F 0 "C?" H 9225 2600 50  0000 L CNN
-F 1 "C" H 9225 2400 50  0000 L CNN
-F 2 "" H 9238 2350 50  0001 C CNN
-F 3 "" H 9200 2500 50  0001 C CNN
-	1    9200 2500
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR?
-U 1 1 5A3CE00A
-P 9200 2750
-F 0 "#PWR?" H 9200 2500 50  0001 C CNN
-F 1 "GND" H 9200 2600 50  0000 C CNN
-F 2 "" H 9200 2750 50  0001 C CNN
-F 3 "" H 9200 2750 50  0001 C CNN
-	1    9200 2750
-	1    0    0    -1  
-$EndComp
-$Comp
 L +3.3V #PWR?
 U 1 1 5A3AD6C0
 P 9450 2300
@@ -1028,10 +1006,6 @@ Connection ~ 10150 3200
 Wire Wire Line
 	9950 2150 9950 2100
 Wire Wire Line
-	9450 2300 9450 2350
-Wire Wire Line
-	9200 2350 9550 2350
-Wire Wire Line
 	6150 1700 6500 1700
 Wire Wire Line
 	6500 1700 6500 1600
@@ -1049,8 +1023,6 @@ Wire Wire Line
 Wire Wire Line
 	7500 5100 7500 5000
 Wire Wire Line
-	9200 2750 9200 2650
-Wire Wire Line
 	2450 4800 2450 5900
 Wire Wire Line
 	2450 5900 2050 5900
@@ -1058,7 +1030,6 @@ Connection ~ 10150 3700
 Wire Wire Line
 	10450 3300 10150 3300
 Connection ~ 10150 3300
-Connection ~ 9450 2350
 Wire Wire Line
 	10350 2500 10400 2500
 Wire Wire Line
@@ -1076,9 +1047,9 @@ Wire Wire Line
 Wire Wire Line
 	8700 2250 8700 1750
 Wire Wire Line
-	8800 1850 8800 2350
+	8800 2350 8800 1850
 Wire Wire Line
-	8800 2350 6950 2350
+	6950 2350 8800 2350
 Connection ~ 8650 2350
 Connection ~ 8500 2250
 Wire Wire Line
@@ -1127,9 +1098,9 @@ Connection ~ 3300 6750
 Wire Wire Line
 	3650 6950 3500 6950
 Wire Wire Line
-	3500 6950 3500 7100
+	3500 7100 3500 6950
 Wire Wire Line
-	3500 7100 3000 7100
+	3000 7100 3500 7100
 Connection ~ 3300 7100
 Wire Wire Line
 	2700 6750 2600 6750
@@ -1316,4 +1287,8 @@ Wire Wire Line
 	4700 3950 5150 3950
 Wire Wire Line
 	4600 4150 3500 4150
+Wire Wire Line
+	9550 2350 9450 2350
+Wire Wire Line
+	9450 2350 9450 2300
 $EndSCHEMATC

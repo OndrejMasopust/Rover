@@ -8,7 +8,7 @@ from smbus2 import SMBusWrapper
 
 class I2C:
     '''
-    classdocs
+    This class is used to communicate via I2C with other devices.
     '''
 
     def __init__(self):

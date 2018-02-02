@@ -1,7 +1,7 @@
 '''
 Created on Jan 29, 2018
 
-@author: Ondra
+@author: Ondrej Masopust
 '''
 
 import RPi.GPIO as gpio
@@ -13,7 +13,8 @@ def ISR(channel):
     print("\nnow\n")
     myTime = time.time()
     global tick
-    print(myTime - tick)
+    if (myTime - tick) > 1:
+        print(myTime - tick)
     tick = time.time()
 
 def Main():
@@ -21,7 +22,7 @@ def Main():
     tick = time.time()
     gpio.setmode(gpio.BCM)
     gpio.setup(22, gpio.IN)
-    gpio.add_event_detect(22, gpio.RISING, callback=ISR)
+    gpio.add_event_detect(22, gpio.FALLING, callback=ISR)
     try:
         while True:
             pass
