@@ -104,10 +104,10 @@ public class MainLayoutController implements Initializable {
 	@FXML
 	Button info;
 
-	private static StringBuilder sb = new StringBuilder();
-	private static ArrayList<HBox> messageList = new ArrayList<>();
-	private static ArrayList<Label> textList = new ArrayList<>();
-	private static int messageIndex;
+	private static StringBuilder consoleTextSB = new StringBuilder();
+	private static Label previousConsoleText;
+	private static ArrayList<HBox> consoleMessageList = new ArrayList<>();
+	private static int consoleMessageIndex = -1;
 	private static VBox consoleOutputTextBox;
 	private static Group centerSectionGroup;
 	private static Text percentage;
@@ -248,18 +248,20 @@ public class MainLayoutController implements Initializable {
 	 */
 	public void handleSubmit() {
 		String text = consoleInput.getText();
-		if (text.substring(0, 1).equals("$")) {
-			switch (text) {
-			case localCommands.RESETPERCENTAGE:
-				setPercentage(100);
-				break;
+		if (!text.equals("")) {
+			if (text.substring(0, 1).equals("$")) {
+				switch (text) {
+				case localCommands.RESETPERCENTAGE:
+					setPercentage(100);
+					break;
+				}
+			} else {
+				// FIXME uncomment:
+				// RoverConnection.roverConnection.sendData(text);
 			}
-		} else {
-			// FIXME uncomment:
-			// RoverConnection.roverConnection.sendData(text);
-		}
 
-		addMessageToConsole(false, false, text);
+			addMessageToConsole(false, text);
+		}
 
 		/*
 		 * System.out.println(consoleOutputSP.getWidth());
@@ -306,19 +308,19 @@ public class MainLayoutController implements Initializable {
 			break;
 		case RoverCommands.READY:
 			// TODO write to console that Rover is ready
-			addMessageToConsole(true, false, "Sensors initialized. Rover is ready.");
+			addMessageToConsole(true, "Sensors initialized. Rover is ready.");
 			setNumberOfLines(Integer.valueOf(input.substring(1, 3))); // FIXME set the parameters in the substring
 																		// method to match the maximum possible number
 																		// of lines
 			break;
 		case RoverCommands.ERROR:
-			addMessageToConsole(false, true, input.substring(2));
+			addMessageToConsole(true, input.substring(2));
 			break;
 		case RoverCommands.BATTERY:
 			setPercentage(Integer.valueOf(input.substring(2)));
 			// TODO finish all cases
 		default:
-			addMessageToConsole(true, false, input);
+			addMessageToConsole(true, input);
 			break;
 		}
 	}
@@ -348,44 +350,40 @@ public class MainLayoutController implements Initializable {
 	 * @param input
 	 *            {@link String} containing the message
 	 */
-	private static void addMessageToConsole(boolean fromRover, boolean error, String input) {
+	private static void addMessageToConsole(boolean fromRover, String input) {
 		try {
-			if (previousMessageFromRover.booleanValue() ^ fromRover || error) {
-				sb = new StringBuilder();
+			if (previousMessageFromRover.booleanValue() ^ fromRover) {
+				consoleTextSB = new StringBuilder();
 
-				messageList.add(new HBox());
-				messageIndex = messageList.size() - 1;
-				textList.add(new Label());
-				Label text = textList.get(messageIndex);
-				HBox message = messageList.get(messageIndex);
-				text.setTextAlignment(TextAlignment.LEFT);
-				text.setWrapText(true);
-				text.setMinWidth(consoleOutputTextBox.getWidth() / 2);
-				text.setMaxWidth(consoleOutputTextBox.getWidth() * 2 / 3);
-				text.getStyleClass().add("textList");
-				message.getChildren().add(textList.get(messageIndex));
+				consoleMessageList.add(new HBox());
+				consoleMessageIndex++;
+				previousConsoleText = new Label();
+				HBox message = consoleMessageList.get(consoleMessageIndex);
+				previousConsoleText.setTextAlignment(TextAlignment.LEFT);
+				previousConsoleText.setWrapText(true);
+				previousConsoleText.setMinWidth(consoleOutputTextBox.getWidth() / 2);
+				previousConsoleText.setMaxWidth(consoleOutputTextBox.getWidth() * 2 / 3);
+				previousConsoleText.getStyleClass().add("textList");
+				message.getChildren().add(previousConsoleText);
 				if (fromRover) {
 					message.setAlignment(Pos.CENTER_LEFT);
-					text.getStyleClass().add("textListRover");
-				} else if (error) {
-					message.setAlignment(Pos.CENTER);
-					text.getStyleClass().add("textListError");
+					previousConsoleText.getStyleClass().add("textListRover");
 				} else {
 					message.setAlignment(Pos.CENTER_RIGHT);
-					text.getStyleClass().add("textListYou");
+					previousConsoleText.getStyleClass().add("textListYou");
 				}
-				message.setPrefWidth(textList.get(messageIndex).getWidth() * 2);
+				message.setPrefWidth(previousConsoleText.getWidth() * 2);
 				message.getStyleClass().add("messageList");
 			}
 
 			if (!input.equals("")) {
-				sb.append(input);
-				sb.append("\n");
-				textList.get(messageIndex).setText(sb.toString());
+				consoleTextSB.append(input);
+				consoleTextSB.append("\n");
+				previousConsoleText.setText(consoleTextSB.toString());
 			}
 
-			if (previousMessageFromRover.booleanValue() ^ fromRover || error)
-				consoleOutputTextBox.getChildren().add(messageList.get(messageIndex));
+			if (previousMessageFromRover.booleanValue() ^ fromRover)
+				consoleOutputTextBox.getChildren().add(consoleMessageList.get(consoleMessageIndex));
 
 			previousMessageFromRover = fromRover;
 
@@ -393,7 +391,7 @@ public class MainLayoutController implements Initializable {
 			// this exception is thrown for the first time, when there is no message in the
 			// console and previousMessageFromRover is thus null
 			previousMessageFromRover = !fromRover;
-			addMessageToConsole(fromRover, false, input);
+			addMessageToConsole(fromRover, input);
 		}
 	}
 
