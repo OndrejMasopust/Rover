@@ -259,7 +259,7 @@ public class MainLayoutController implements Initializable {
 			// RoverConnection.roverConnection.sendData(text);
 		}
 
-		addMessageToConsole(false, text);
+		addMessageToConsole(false, false, text);
 
 		/*
 		 * System.out.println(consoleOutputSP.getWidth());
@@ -306,18 +306,19 @@ public class MainLayoutController implements Initializable {
 			break;
 		case RoverCommands.READY:
 			// TODO write to console that Rover is ready
+			addMessageToConsole(true, false, "Sensors initialized. Rover is ready.");
 			setNumberOfLines(Integer.valueOf(input.substring(1, 3))); // FIXME set the parameters in the substring
 																		// method to match the maximum possible number
 																		// of lines
 			break;
 		case RoverCommands.ERROR:
-			// TODO write error to the console with red fill
+			addMessageToConsole(false, true, input.substring(2));
 			break;
 		case RoverCommands.BATTERY:
 			setPercentage(Integer.valueOf(input.substring(2)));
 			// TODO finish all cases
 		default:
-			addMessageToConsole(true, input);
+			addMessageToConsole(true, false, input);
 			break;
 		}
 	}
@@ -347,29 +348,34 @@ public class MainLayoutController implements Initializable {
 	 * @param input
 	 *            {@link String} containing the message
 	 */
-	private static void addMessageToConsole(boolean fromRover, String input) {
+	private static void addMessageToConsole(boolean fromRover, boolean error, String input) {
 		try {
-			if (previousMessageFromRover.booleanValue() ^ fromRover) {
+			if (previousMessageFromRover.booleanValue() ^ fromRover || error) {
 				sb = new StringBuilder();
 
 				messageList.add(new HBox());
 				messageIndex = messageList.size() - 1;
 				textList.add(new Label());
-				textList.get(messageIndex).setTextAlignment(TextAlignment.LEFT);
-				textList.get(messageIndex).setWrapText(true);
-				textList.get(messageIndex).setMinWidth(consoleOutputTextBox.getWidth() / 2);
-				textList.get(messageIndex).setMaxWidth(consoleOutputTextBox.getWidth() * 2 / 3);
-				textList.get(messageIndex).getStyleClass().add("textList");
-				messageList.get(messageIndex).getChildren().add(textList.get(messageIndex));
+				Label text = textList.get(messageIndex);
+				HBox message = messageList.get(messageIndex);
+				text.setTextAlignment(TextAlignment.LEFT);
+				text.setWrapText(true);
+				text.setMinWidth(consoleOutputTextBox.getWidth() / 2);
+				text.setMaxWidth(consoleOutputTextBox.getWidth() * 2 / 3);
+				text.getStyleClass().add("textList");
+				message.getChildren().add(textList.get(messageIndex));
 				if (fromRover) {
-					messageList.get(messageIndex).setAlignment(Pos.CENTER_LEFT);
-					textList.get(messageIndex).getStyleClass().add("textListRover");
+					message.setAlignment(Pos.CENTER_LEFT);
+					text.getStyleClass().add("textListRover");
+				} else if (error) {
+					message.setAlignment(Pos.CENTER);
+					text.getStyleClass().add("textListError");
 				} else {
-					messageList.get(messageIndex).setAlignment(Pos.CENTER_RIGHT);
-					textList.get(messageIndex).getStyleClass().add("textListYou");
+					message.setAlignment(Pos.CENTER_RIGHT);
+					text.getStyleClass().add("textListYou");
 				}
-				messageList.get(messageIndex).setPrefWidth(textList.get(messageIndex).getWidth() * 2);
-				messageList.get(messageIndex).getStyleClass().add("messageList");
+				message.setPrefWidth(textList.get(messageIndex).getWidth() * 2);
+				message.getStyleClass().add("messageList");
 			}
 
 			if (!input.equals("")) {
@@ -378,14 +384,16 @@ public class MainLayoutController implements Initializable {
 				textList.get(messageIndex).setText(sb.toString());
 			}
 
-			if (previousMessageFromRover.booleanValue() ^ fromRover)
+			if (previousMessageFromRover.booleanValue() ^ fromRover || error)
 				consoleOutputTextBox.getChildren().add(messageList.get(messageIndex));
 
 			previousMessageFromRover = fromRover;
 
 		} catch (NullPointerException e) {
+			// this exception is thrown for the first time, when there is no message in the
+			// console and previousMessageFromRover is thus null
 			previousMessageFromRover = !fromRover;
-			addMessageToConsole(fromRover, input);
+			addMessageToConsole(fromRover, false, input);
 		}
 	}
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 Created on Jan 27, 2018
 
@@ -12,7 +13,7 @@ class Motors(object):
     This class is used to control the motors of the Rover.
     '''
 
-    def __init__(self, pwmOut, directionOut):
+    def __init__(self, pwmOut, directionOut, tcpCommunication):
         '''
         This constructor takes as arguments numbers of pins that should be used to control the desired motor.
         
@@ -24,6 +25,7 @@ class Motors(object):
         gpio.setmode(gpio.BCM)
         self.pwmOut = pwmOut
         self.directionOut = directionOut
+        self.tcpCommunication = tcpCommunication
         # set the defined pins to be output
         gpio.setup(pwmOut, gpio.OUT)
         gpio.setup(directionOut, gpio.OUT)
@@ -39,18 +41,21 @@ class Motors(object):
         
         :param dutyCycle: The duty cycle to be applied. 0 =< dutyCycle =< 100
         :type dutyCycle: int
+        :raises ValueError: A ValueError is raised when the arugument <= 0 or 100 <= argument
         '''
-        if self.pwmRunning:
-            self.pmw.ChangeDutyCycle(dutyCycle)
-        else:
-            self.pwm.start(dutyCycle)
-    
-    def stop(self):
-        '''
-        This method stops the PWM.
-        '''
-        self.pwm.stop()
-        self.pwmRunning = False
+        try:
+            if (dutyCycle <= 0 or 100 <= dutyCycle):
+                if self.pwmRunning:
+                    self.pmw.ChangeDutyCycle(dutyCycle)
+                else:
+                    self.pwm.start(dutyCycle)
+                self.currentDutyCycle = dutyCycle
+            else:
+                raise ValueError("Motors.run(): Argument out of bounds. Must be: arugument <= 0 or 100 <= argument")
+        except ValueError as err:
+            print(err)
+            self.tcpCommunication.sendToHostWrapper('er' + err)
+            
     
     def setSpeed(self, dutyCycle):
         '''
@@ -59,12 +64,38 @@ class Motors(object):
         
         :param dutyCycle: The duty cycle to be applied. 0 =< dutyCycle =< 100
         :type dutyCycle: int
+        :raises ValueError: A ValueError is raised when the arugument <= 0 or 100 <= argument
         '''
-        if self.pwmRunning:
-            self.pmw.ChangeDutyCycle(dutyCycle)
-        else:
-            pass
-    
+        
+        try:
+            if (dutyCycle <= 0 or 100 <= dutyCycle):
+                if self.pwmRunning:
+                    self.pmw.ChangeDutyCycle(dutyCycle)
+                    self.currentDutyCycle = dutyCycle
+            else:
+                raise ValueError("Motors.setSpeed(): Argument out of bounds. Must be: arugument <= 0 or 100 <= argument")
+        except ValueError as err:
+            print(err)
+            self.tcpCommunication.sendToHostWrapper('er' + err)
+
+    def speedUp(self, increment):
+        '''
+        This methods sets a new speed by incrementing the current duty cycle by the given argument
+        
+        :param increment: The number that should be added to the current duty cycle
+        :type increment: int
+        :raises ValueError: A ValueError is raised when the (self.currentDutyCycle + increment) <= 0 or 100 <= (self.currentDutyCycle + increment)
+        '''
+        try:
+            if (self.currentDutyCycle + increment) <= 0 or 100 <= (self.currentDutyCycle + increment):
+                if self.pwmRunning:
+                    self.pwm.ChangeDutyCycle(self.currentDutyCycle + increment)
+            else:
+                raise ValueError("Motors.speedUp(): Argument not legal. Must be: (self.currentDutyCycle + increment) <= 0 or 100 <= (self.currentDutyCycle + increment)")
+        except ValueError as err:
+            print(err)
+            self.tcpCommunication.sendToHostWrapper('er' + err)
+
     def setDirection(self, direction):
         '''
         This method sets the rotation direction of the motor.
@@ -79,6 +110,14 @@ class Motors(object):
         else:
             gpio.output(self.directionOut[0], gpio.HIGH)
             gpio.output(self.directionOut[1], gpio.LOW)
+
+    def stop(self):
+        '''
+        This method stops the PWM.
+        '''
+        self.pwm.stop()
+        self.pwmRunning = False
+        self.currentDutyCycle = 0;
     
     def clean(self):
         '''

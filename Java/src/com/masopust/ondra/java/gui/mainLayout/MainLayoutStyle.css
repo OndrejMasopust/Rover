@@ -91,6 +91,7 @@
 			-fx-border-insets: 5.0px;
 			-fx-background-insets: 5.0px;
 			-fx-font-size: 15.0px;
+			-fx-text-fill: -fx-text-color;
 			-fx-background-radius: 6.0px;
 		}
 	
@@ -100,6 +101,10 @@
 	
 		.textListRover{
 			-fx-background-color: #5C7829;
+		}
+		
+		.textListError{
+			-fx-background-color: #CC3333;
 		}
 		
 		.consoleInput{

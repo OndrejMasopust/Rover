@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 Created on Feb 2, 2018
 
@@ -12,7 +13,7 @@ class Servos(object):
     '''
 
 
-    def __init__(self, pwmOut):
+    def __init__(self, pwmOut, tcpCommunication):
         '''
         This constructor assigns given arguments to instance variables.
         
@@ -21,6 +22,7 @@ class Servos(object):
         '''
         self.pwmOut = pwmOut
         self.myPigpio = pigpio.pi()
+        self.tcpCommunication = tcpCommunication
  
     def setPosition(self, position):
         '''
@@ -28,14 +30,16 @@ class Servos(object):
         
         :param position: Position that the horn should be put into. 1500 = center
         :type position: int
+        :raises ValueError: A ValueError is raised when the argument =< 1000 or 2000 =< argument
         '''
         try:
             if 1000 < position and position < 2000: # TODO check how much it is needed for the servo to rotate
                 self.myPigpio.set_servo_pulsewidth(self.pwmOut, position)
             else:
-                raise ValueError("Argument out of bounds. Needs to be 1000 < argument < 2000.")
+                raise ValueError("Servos.setPostition(): Argument out of bounds. Needs to be 1000 < argument < 2000.")
         except ValueError as err:
             print(err)
+            self.tcpCommunication.sendToHostWrapper('er' + err)
     
     def clean(self):
         '''

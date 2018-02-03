@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 Created on Aug 3, 2017
 
@@ -7,7 +8,6 @@ import sys
 sys.path.append('/Users/Ondra/Documents/Programming/Maturita/Project/Python/src/')
 
 from com.masopust.ondra.python.tcpCommunication.TCPCommunication import TCPCommunication
-from com.masopust.ondra.python.sensors.Sensors import Sensors
 
 def Main():
     #create server and wait for connection

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 Created on Aug 3, 2017
 
@@ -5,15 +6,15 @@ Created on Aug 3, 2017
 '''
 import sys
 import time
-sys.path.append('/Users/Ondra/Documents/Programming/Maturita/Project/Python/src/')
+from queue import LifoQueue
 
 from com.masopust.ondra.python.motors.Motors import Motors
 from com.masopust.ondra.python.motors.Direction import Direction
 from com.masopust.ondra.python.tcpCommunication.TCPCommunication import TCPCommunication
 from com.masopust.ondra.python.sensors.Sensors import Sensors
 from com.masopust.ondra.python.servos import Servos
-from queue import LifoQueue
 
+sys.path.append('/Users/Ondra/Documents/Programming/Maturita/Project/Python/src/')
 
 def Main():
     # create server and wait for connection
@@ -47,7 +48,7 @@ def Main():
                 servo.clean()
                 mainMotor.clean()
                 tcpCommunication.sendToHostWrapper('ACK')
-				# wait for one second
+                # wait for one second
                 time.sleep(1)
                 break
             # 'mr' motor run command

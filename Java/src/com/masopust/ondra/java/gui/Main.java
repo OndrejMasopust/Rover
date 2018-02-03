@@ -40,8 +40,9 @@ public class Main extends Application {
 	@Override
 	public void stop() throws Exception {
 		RoverConnection.roverConnection.sendData("stop");
+		/* FIXME uncomment
 		while (RoverConnection.roverConnection.getWaitForAck())
-			;
+			;*/
 		try {
 			RoverConnection.roverConnection.cancel();
 			RoverConnection.roverConnection.getClientSocket().close(); // TODO check if only this is sufficient

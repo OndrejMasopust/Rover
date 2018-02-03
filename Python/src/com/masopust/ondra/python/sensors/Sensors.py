@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 Created on Sep 4, 2017
 
@@ -9,6 +10,7 @@ import time
 import math
 import RPi.GPIO as gpio
 from smbus2 import SMBusWrapper
+
 from com.masopust.ondra.python.motors.Motors import Motors
 from com.masopust.ondra.python.motors.Direction import Direction
 
@@ -34,16 +36,13 @@ class Sensors (threading.Thread):
         
         self.sensorMotor = Motors(22, [21, 23])
         self.sensorMotor.setDirection(Direction.RIGHT)
-        
-        # TODO comment on this as it is not clear what it is
-        self.waitTime = 0.025
 
         gpio.setmode(gpio.BCM)
         # set the pin 22, which is connected to the output of the optolatch, as input
         gpio.setup(22, gpio.IN)
         # set up an interrupt
         gpio.add_event_detect(22, gpio.FALLING, callback=self.__isr)
-        self.myTime = time.time()
+        self.lastInterruptClock = time.time()
 
         # time in seconds that it takes for the sensor to take one measurement
         self.CONVERSIONTIME = 0.02
@@ -55,16 +54,19 @@ class Sensors (threading.Thread):
         '''
         This method is called when this thread is started by the start() method in the Main class.
         '''
+        self.lastConversionClock = time.time()
         while self.q.empty():
             for index in range(0, self.resolution):
-				if self.q.empty():
-	                message = "dt" + index
-    	            distance = self.measure()
-        	        message += str(distance)
-            	    self.tcpCommunication.sendToHostWrapper(message)
-                	time.sleep(self.waitTime)
+                if self.q.empty():
+                    message = "dt" + index
+                    distance = self.measure()
+                    message += str(distance)
+                    self.tcpCommunication.sendToHostWrapper(message)
+                    # wait for next conversion
+                    time.sleep( self.CONVERSIONTIME - (self.lastConversionClock - time.time()) )
+                    self.lastConversionClock = time.time()
                 else:
-                	break
+                    break
         # stop sensor motor
         self.sensorMotor.clean()
         # send ACK back to the queue
@@ -78,7 +80,7 @@ class Sensors (threading.Thread):
         self.sensorMotor.run(xx)    # FIXME set the duty cycle
         while self.rotationCounter < 3:
             pass
-        self.resolution = round(self.rotationTime / self.CONVERSIONTIME)
+        self.resolution = round(self.lastRotationTime / self.CONVERSIONTIME)
     
     def measure(self):
         '''
@@ -103,9 +105,18 @@ class Sensors (threading.Thread):
         :type channel: int
         '''
         currentTime = time.time()
-        if (currentTime - self.myTime) > 0.8:
-            self.rotationTime = currentTime - self.myTime
-        self.myTime = currentTime
+        thisRotationTime = currentTime - self.lastInterruptClock
+        # The signal edges form the optolatch are noisy so it produces more than one
+        # interrupt when there should be only one. That is why there is this
+        # condition - to clean the undesired interrupts
+        if thisRotationTime > 0.8:
+            if abs(thisRotationTime - self.lastRotationTime) > 0.2:
+                # TODO make the sensor motor run faster
+                pass
+            self.lastRotationTime = thisRotationTime
+        self.lastInterruptClock = currentTime
+        # this is needed when initializing the sensor. The sensor motor makes some free
+        # rotations to examine how fast it rotates.
         if self.rotationCounter < 3:
             self.rotationCounter += 1
             
