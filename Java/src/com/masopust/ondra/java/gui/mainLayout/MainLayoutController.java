@@ -299,7 +299,8 @@ public class MainLayoutController implements Initializable {
 			return;
 		switch (input.substring(0, 2)) {
 		case RoverCommands.DATA:
-			updatePoint(Integer.parseInt(input.substring(1, 3)), Integer.parseInt(input.substring(3, 6))); // FIXME fix
+			// TODO check, if the 1, 3 arguments are ok
+			updatePoint(Integer.parseInt(input.substring(1, 3)), Integer.parseInt(input.substring(3))); // FIXME fix
 																											// the index
 																											// parameter
 																											// to fit
@@ -309,9 +310,7 @@ public class MainLayoutController implements Initializable {
 		case RoverCommands.READY:
 			// TODO write to console that Rover is ready
 			addMessageToConsole(true, "Sensors initialized. Rover is ready.");
-			setNumberOfLines(Integer.valueOf(input.substring(1, 3))); // FIXME set the parameters in the substring
-																		// method to match the maximum possible number
-																		// of lines
+			setNumberOfLines(Integer.valueOf(input.substring(2)));
 			break;
 		case RoverCommands.ERROR:
 			addMessageToConsole(true, input.substring(2));

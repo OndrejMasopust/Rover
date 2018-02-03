@@ -8,6 +8,7 @@ Created on Sep 4, 2017
 import threading
 import time
 import math
+from queue import Queue
 import RPi.GPIO as gpio
 from smbus2 import SMBusWrapper
 
@@ -31,7 +32,9 @@ class Sensors (threading.Thread):
         :type tcpCommunication: TCPCommunication
         '''
         self.daemon = True
-        self.q = queue
+        self.sensorQueue = Queue(1)
+        
+        self.mainQueue = queue
         self.tcpCommunication = tcpCommunication
         
         self.sensorMotor = Motors(22, [21, 23])
@@ -54,23 +57,27 @@ class Sensors (threading.Thread):
         '''
         This method is called when this thread is started by the start() method in the Main class.
         '''
-        self.lastConversionClock = time.time()
-        while self.q.empty():
-            for index in range(0, self.resolution):
-                if self.q.empty():
+        while self.mainQueue.empty():
+            doRotation = self.sensorQueue.get()
+            if doRotation:
+                self.sensOneRotation()
+        # stop sensor motor
+        self.sensorMotor.clean()
+        # send ACK back to the queue
+        self.mainQueue.put(True)
+
+    def sensOneRotation(self):
+        for index in range(0, self.resolution):
+                if self.mainQueue.empty() and self.sensorQueue.empty():
+                    self.conversionStartClock = time.time()
                     message = "dt" + index
                     distance = self.measure()
                     message += str(distance)
                     self.tcpCommunication.sendToHostWrapper(message)
                     # wait for next conversion
-                    time.sleep( self.CONVERSIONTIME - (self.lastConversionClock - time.time()) )
-                    self.lastConversionClock = time.time()
+                    time.sleep( self.CONVERSIONTIME - (self.conversionStartClock - time.time()) )
                 else:
                     break
-        # stop sensor motor
-        self.sensorMotor.clean()
-        # send ACK back to the queue
-        self.q.put(True)
     
     def initSens(self):
         '''
@@ -81,6 +88,7 @@ class Sensors (threading.Thread):
         while self.rotationCounter < 3:
             pass
         self.resolution = round(self.lastRotationTime / self.CONVERSIONTIME)
+        self.tcpCommunication.sendToHostWrapper("rd" + self.resolution)
     
     def measure(self):
         '''
@@ -119,4 +127,7 @@ class Sensors (threading.Thread):
         # rotations to examine how fast it rotates.
         if self.rotationCounter < 3:
             self.rotationCounter += 1
+        else:
+            # tell, that the sensor thread should do one sensing rotation
+            self.sensorQueue.put(True)
             
