@@ -4,6 +4,7 @@ Created on Aug 3, 2017
 @author: Ondrej Masopust
 '''
 import sys
+import time
 sys.path.append('/Users/Ondra/Documents/Programming/Maturita/Project/Python/src/')
 
 from com.masopust.ondra.python.motors.Motors import Motors
@@ -45,6 +46,9 @@ def Main():
                     pass
                 servo.clean()
                 mainMotor.clean()
+                tcpCommunication.sendToHostWrapper('ACK')
+				# wait for one second
+                time.sleep(1)
                 break
             # 'mr' motor run command
             elif 'mr' in data:

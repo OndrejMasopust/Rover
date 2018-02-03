@@ -38,6 +38,7 @@ public class RoverConnection extends Task<String> {
 	private StringBuilder errors = new StringBuilder();
 	private PrintWriter outputTCP;
 	private BufferedReader inputTCP;
+	private boolean waitForAck = false;
 
 	/**
 	 * Creates instance of the {@code RoverConnection} class with default values:
@@ -200,6 +201,13 @@ public class RoverConnection extends Task<String> {
 		return message;
 	}
 
+	/**
+	 * @return the waitForAck
+	 */
+	public boolean getWaitForAck() {
+		return waitForAck;
+	}
+
 	@Override
 	protected String call() throws IOException {
 		int i = 0; // FIXME delete this before sharp run
@@ -264,8 +272,12 @@ public class RoverConnection extends Task<String> {
 				break;
 			String input = inputTCP.readLine();
 			try {
-				if (!input.equals(""))
-					Platform.runLater(() -> {MainLayoutController.receiveMessage(input);});
+				if (!input.equals("")) {
+					if (input.equals("ACK"))
+						waitForAck = true;
+					else
+						Platform.runLater(() -> {MainLayoutController.receiveMessage(input);});
+				}
 				Thread.sleep(20);
 			} catch (NullPointerException e) {}
 			catch (InterruptedException e) {

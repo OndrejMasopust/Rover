@@ -25,7 +25,8 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 		// TODO adjust build.xml to work properly
-		// TODO consider making preloader as described in docs.oracle so that the app launches more smoothly
+		// TODO consider making preloader as described in docs.oracle so that the app
+		// launches more smoothly
 	}
 
 	@Override
@@ -35,9 +36,12 @@ public class Main extends Application {
 		mainStage.setScene(IPSelectionLayoutController.loadIPSelectionScene());
 		mainStage.show();
 	}
-	
+
 	@Override
 	public void stop() throws Exception {
+		RoverConnection.roverConnection.sendData("stop");
+		while (RoverConnection.roverConnection.getWaitForAck())
+			;
 		try {
 			RoverConnection.roverConnection.cancel();
 			RoverConnection.roverConnection.getClientSocket().close(); // TODO check if only this is sufficient

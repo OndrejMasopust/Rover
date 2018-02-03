@@ -6,11 +6,11 @@ Created on Sep 4, 2017
 
 import threading
 import time
-from com.masopust.ondra.python.motors.Motors import Motors
-from smbus2 import SMBusWrapper
 import math
 import RPi.GPIO as gpio
-
+from smbus2 import SMBusWrapper
+from com.masopust.ondra.python.motors.Motors import Motors
+from com.masopust.ondra.python.motors.Direction import Direction
 
 class Sensors (threading.Thread):
     '''
@@ -29,10 +29,14 @@ class Sensors (threading.Thread):
         :type tcpCommunication: TCPCommunication
         '''
         self.daemon = True
-        self.waitTime = 0.025
-        self.sensorMotor = Motors(22, [21, 23])
         self.q = queue
         self.tcpCommunication = tcpCommunication
+        
+        self.sensorMotor = Motors(22, [21, 23])
+        self.sensorMotor.setDirection(Direction.RIGHT)
+        
+        # TODO comment on this as it is not clear what it is
+        self.waitTime = 0.025
 
         gpio.setmode(gpio.BCM)
         # set the pin 22, which is connected to the output of the optolatch, as input
@@ -53,12 +57,14 @@ class Sensors (threading.Thread):
         '''
         while self.q.empty():
             for index in range(0, self.resolution):
-                message = "dt" + index
-                distance = self.measure()
-                message += str(distance)
-                self.tcpCommunication.sendToHostWrapper(message)
-                time.sleep(self.waitTime)
-            # wait for the loop of the sensor to be completed and handle some not propre behaviour
+				if self.q.empty():
+	                message = "dt" + index
+    	            distance = self.measure()
+        	        message += str(distance)
+            	    self.tcpCommunication.sendToHostWrapper(message)
+                	time.sleep(self.waitTime)
+                else:
+                	break
         # stop sensor motor
         self.sensorMotor.clean()
         # send ACK back to the queue

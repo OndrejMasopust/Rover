@@ -114,7 +114,8 @@ public class MainLayoutController implements Initializable {
 	private double zoomScale = 0.2;
 
 	/**
-	 * This boolean tells if the previous record in the console output was from the Rover.
+	 * This boolean tells if the previous record in the console output was from the
+	 * Rover.
 	 */
 	private static Boolean previousMessageFromRover = null;
 
@@ -182,26 +183,16 @@ public class MainLayoutController implements Initializable {
 					controlPane.toFront();
 				break;
 			case UP:
-				System.out.println("UP key released");
-				// TODO delete system.out.println and add code that sends command to the Rover
-				keyEvent.consume();
-				break;
 			case DOWN:
-				System.out.println("DOWN key released");
-				// TODO delete system.out.println and add code that sends command to the Rover
+				// send motor stop command
+				RoverConnection.roverConnection.sendData("ms");
 				keyEvent.consume();
 				break;
 			case LEFT:
-				if (!consoleInput.isFocused()) {
-					System.out.println("LEFT key released");
-					// TODO delete system.out.println and add code that sends command to the Rover
-					keyEvent.consume();
-				}
-				break;
 			case RIGHT:
 				if (!consoleInput.isFocused()) {
-					System.out.println("RIGHT key released");
-					// TODO delete system.out.println and add code that sends command to the Rover
+					// send turn command
+					RoverConnection.roverConnection.sendData("tr1500");
 					keyEvent.consume();
 				}
 				break;
@@ -213,26 +204,22 @@ public class MainLayoutController implements Initializable {
 		stackPane.addEventFilter(KeyEvent.KEY_PRESSED, (keyEvent) -> {
 			switch (keyEvent.getCode()) {
 			case UP:
-				System.out.println("UP key pressed");
-				// TODO delete system.out.println and add code that sends command to the Rover
+				RoverConnection.roverConnection.sendData("mr180"); // FIXME adjust the number
 				keyEvent.consume();
 				break;
 			case DOWN:
-				System.out.println("DOWN key pressed");
-				// TODO delete system.out.println and add code that sends command to the Rover
+				RoverConnection.roverConnection.sendData("mr20"); // FIXME adjust the number
 				keyEvent.consume();
 				break;
 			case LEFT:
 				if (!consoleInput.isFocused()) {
-					System.out.println("LEFT key pressed");
-					// TODO delete system.out.println and add code that sends command to the Rover
+					RoverConnection.roverConnection.sendData("tr1400"); // FIXME adjust the number
 					keyEvent.consume();
 				}
 				break;
 			case RIGHT:
 				if (!consoleInput.isFocused()) {
-					System.out.println("RIGHT key pressed");
-					// TODO delete system.out.println and add code that sends command to the Rover
+					RoverConnection.roverConnection.sendData("tr1600"); // FIXME adjust the number
 					keyEvent.consume();
 				}
 				break;
@@ -240,9 +227,14 @@ public class MainLayoutController implements Initializable {
 				break;
 			}
 		});
+
 		initPercentage();
 	}
-	
+
+	/**
+	 * The {@code initPercentage} method is used to load data from the file that
+	 * stores the percentage and sets it in the application.
+	 */
 	private void initPercentage() {
 		percentageFile = new BatteryPercentageManager();
 		setPercentage(percentageFile.read());
@@ -323,7 +315,7 @@ public class MainLayoutController implements Initializable {
 			break;
 		case RoverCommands.BATTERY:
 			setPercentage(Integer.valueOf(input.substring(2)));
-		// TODO finish all cases
+			// TODO finish all cases
 		default:
 			addMessageToConsole(true, input);
 			break;
