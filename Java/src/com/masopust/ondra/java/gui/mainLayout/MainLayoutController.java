@@ -263,12 +263,6 @@ public class MainLayoutController implements Initializable {
 			addMessageToConsole(false, text);
 		}
 
-		/*
-		 * System.out.println(consoleOutputSP.getWidth());
-		 * System.out.println(consoleOutputTextBox.getWidth());
-		 * System.out.println(messageList.get(i).getWidth());
-		 */
-
 		consoleInput.setText("");
 		consoleSubmit.requestFocus();
 	}
@@ -294,30 +288,23 @@ public class MainLayoutController implements Initializable {
 	 *            the console output
 	 */
 	public static void receiveMessage(String input) {
-		// TODO check for data from the sensor and don't write them to the console
 		if (input == null)
 			return;
 		switch (input.substring(0, 2)) {
 		case RoverCommands.DATA:
-			// TODO check, if the 1, 3 arguments are ok
-			updatePoint(Integer.parseInt(input.substring(1, 3)), Integer.parseInt(input.substring(3))); // FIXME fix
-																											// the index
-																											// parameter
-																											// to fit
-																											// the
-																											// dots.size
+			updatePoint(Integer.parseInt(input.substring(2, 4)), Integer.parseInt(input.substring(4)));
 			break;
 		case RoverCommands.READY:
-			// TODO write to console that Rover is ready
 			addMessageToConsole(true, "Sensors initialized. Rover is ready.");
-			setNumberOfLines(Integer.valueOf(input.substring(2)));
+			break;
+		case RoverCommands.RESOLUTION:
+			setBaseAngle(Integer.parseInt(input.substring(2)));
 			break;
 		case RoverCommands.ERROR:
 			addMessageToConsole(true, input.substring(2));
 			break;
 		case RoverCommands.BATTERY:
 			setPercentage(Integer.valueOf(input.substring(2)));
-			// TODO finish all cases
 		default:
 			addMessageToConsole(true, input);
 			break;
@@ -336,6 +323,7 @@ public class MainLayoutController implements Initializable {
 		private static final String READY = "rd";
 		private static final String ERROR = "er";
 		private static final String BATTERY = "bt";
+		private static final String RESOLUTION = "ro";
 	}
 
 	/**
@@ -543,7 +531,8 @@ public class MainLayoutController implements Initializable {
 	 */
 	private static void updateLineEndPoint(int lineLength, int index) {
 		double xSide = lineLength * Math.sin(Math.toRadians(baseAngle * index));
-		double ySide = lineLength * Math.cos(Math.toRadians(baseAngle * index));
+		// the minus is there in so that the dot with index 0 is at the top and not at the bottom 
+		double ySide = - lineLength * Math.cos(Math.toRadians(baseAngle * index));
 		lines.get(index).endXProperty().bind(lines.get(index).startXProperty().add(xSide));
 		lines.get(index).endYProperty().bind(lines.get(index).startYProperty().add(ySide));
 	}
@@ -555,8 +544,20 @@ public class MainLayoutController implements Initializable {
 	 * @param value
 	 *            to be assigned to the numberOfLines integer
 	 */
+	@SuppressWarnings("unused")
 	private static void setNumberOfLines(int value) {
+		// TODO delete this method?
 		numberOfLines = value;
+	}
+	
+	/**
+	 * This method sets the angle between two neighbor lines
+	 * 
+	 * @param resolution
+	 *            The total number of lines
+	 */
+	private static void setBaseAngle(int resolution) {
+		baseAngle = (double) 360 / resolution;
 	}
 
 	/**

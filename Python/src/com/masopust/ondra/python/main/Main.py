@@ -26,8 +26,6 @@ def Main():
     q = LifoQueue(2)
     # initialize sensors
     sensors = Sensors(q, tcpCommunication)
-    # sensors.initSens()
-    # tcpCommunication.sendToHostWrapper('Sensors initialized. Starting measuring.')
     # start measuring
     sensors.start()
     

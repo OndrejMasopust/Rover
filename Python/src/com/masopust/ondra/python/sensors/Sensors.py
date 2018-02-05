@@ -49,6 +49,10 @@ class Sensors (threading.Thread):
 
         # time in seconds that it takes for the sensor to take one measurement
         self.CONVERSIONTIME = 0.02
+		# this constatn holds the ideal time of one rotation in seconds
+		# TODO check if this number works
+        self.DEFAULTROTATIONTIME = 1.2
+        # this variable counts the initial free rotations when the sensors don't measure yet
         self.rotationCounter = 0
         # this is the variable that tells how many dots will be displayed on the screen
         self.resolution = self.initSens()
@@ -58,6 +62,7 @@ class Sensors (threading.Thread):
         This method is called when this thread is started by the start() method in the Main class.
         '''
         while self.mainQueue.empty():
+            # get() blocks if necessary until an item in the queue is available 
             doRotation = self.sensorQueue.get()
             if doRotation:
                 self.sensOneRotation()
@@ -68,15 +73,20 @@ class Sensors (threading.Thread):
 
     def sensOneRotation(self):
         for index in range(0, self.resolution):
+                # check if there is not stop from the main thread or if the sensor didn't finish the rotation earlier
                 if self.mainQueue.empty() and self.sensorQueue.empty():
                     self.conversionStartClock = time.time()
-                    message = "dt" + index
+                    message = "dt"
+                    if index < 10:
+                    	message += "0"
+                    message += index
                     distance = self.measure()
                     message += str(distance)
                     self.tcpCommunication.sendToHostWrapper(message)
                     # wait for next conversion
                     time.sleep( self.CONVERSIONTIME - (self.conversionStartClock - time.time()) )
                 else:
+                    self.sensorMotor.speedUp(-3)
                     break
     
     def initSens(self):
@@ -88,7 +98,8 @@ class Sensors (threading.Thread):
         while self.rotationCounter < 3:
             pass
         self.resolution = round(self.lastRotationTime / self.CONVERSIONTIME)
-        self.tcpCommunication.sendToHostWrapper("rd" + self.resolution)
+        self.tcpCommunication.sendToHostWrapper("rd")
+        self.tcpCommunication.sendToHostWrapper("ro" + self.resolution)
     
     def measure(self):
         '''
@@ -118,7 +129,7 @@ class Sensors (threading.Thread):
         # interrupt when there should be only one. That is why there is this
         # condition - to clean the undesired interrupts
         if thisRotationTime > 0.8:
-            if abs(thisRotationTime - self.lastRotationTime) > 0.2:
+            if abs(thisRotationTime - self.DEFAULTROTATIONTIME) > 0.2:
                 # TODO make the sensor motor run faster
                 pass
             self.lastRotationTime = thisRotationTime
