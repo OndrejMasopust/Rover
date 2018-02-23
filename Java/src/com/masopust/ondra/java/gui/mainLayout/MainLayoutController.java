@@ -257,7 +257,7 @@ public class MainLayoutController implements Initializable {
 				}
 			} else {
 				// FIXME uncomment:
-				// RoverConnection.roverConnection.sendData(text);
+				RoverConnection.roverConnection.sendData(text);
 			}
 
 			addMessageToConsole(false, text);

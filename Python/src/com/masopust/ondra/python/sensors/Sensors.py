@@ -49,8 +49,8 @@ class Sensors (threading.Thread):
 
         # time in seconds that it takes for the sensor to take one measurement
         self.CONVERSIONTIME = 0.02
-		# this constatn holds the ideal time of one rotation in seconds
-		# TODO check if this number works
+        # this constatn holds the ideal time of one rotation in seconds
+        # TODO check if this number works
         self.DEFAULTROTATIONTIME = 1.2
         # this variable counts the initial free rotations when the sensors don't measure yet
         self.rotationCounter = 0
@@ -78,7 +78,7 @@ class Sensors (threading.Thread):
                     self.conversionStartClock = time.time()
                     message = "dt"
                     if index < 10:
-                    	message += "0"
+                    message += "0"
                     message += index
                     distance = self.measure()
                     message += str(distance)
