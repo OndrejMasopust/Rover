@@ -305,6 +305,7 @@ public class MainLayoutController implements Initializable {
 			break;
 		case RoverCommands.BATTERY:
 			setPercentage(Integer.valueOf(input.substring(2)));
+			break;
 		default:
 			addMessageToConsole(true, input);
 			break;
