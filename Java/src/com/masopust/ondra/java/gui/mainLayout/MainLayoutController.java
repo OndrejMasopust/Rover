@@ -104,20 +104,12 @@ public class MainLayoutController implements Initializable {
 	@FXML
 	Button info;
 
-	private static StringBuilder consoleTextSB = new StringBuilder();
-	private static Label previousConsoleText;
 	private static ArrayList<HBox> consoleMessageList = new ArrayList<>();
 	private static int consoleMessageIndex = -1;
 	private static VBox consoleOutputTextBox;
 	private static Group centerSectionGroup;
 	private static Text percentage;
 	private double zoomScale = 0.2;
-
-	/**
-	 * This boolean tells if the previous record in the console output was from the
-	 * Rover.
-	 */
-	private static Boolean previousMessageFromRover = null;
 
 	/**
 	 * This variable defines number of lines that are generated in the center
@@ -260,7 +252,7 @@ public class MainLayoutController implements Initializable {
 				RoverConnection.roverConnection.sendData(text);
 			}
 
-			addMessageToConsole(false, text);
+			addMessageToConsole(false, false, text);
 		}
 
 		consoleInput.setText("");
@@ -295,19 +287,19 @@ public class MainLayoutController implements Initializable {
 			updatePoint(Integer.parseInt(input.substring(2, 4)), Integer.parseInt(input.substring(4)));
 			break;
 		case RoverCommands.READY:
-			addMessageToConsole(true, "Sensors initialized. Rover is ready.");
+			addMessageToConsole(true, false, "Sensors initialized. Rover is ready.");
 			break;
 		case RoverCommands.RESOLUTION:
 			setBaseAngle(Integer.parseInt(input.substring(2)));
 			break;
 		case RoverCommands.ERROR:
-			addMessageToConsole(true, input.substring(2));
+			addMessageToConsole(true, true, input.substring(2));
 			break;
 		case RoverCommands.BATTERY:
 			setPercentage(Integer.valueOf(input.substring(2)));
 			break;
 		default:
-			addMessageToConsole(true, input);
+			addMessageToConsole(true, false, input);
 			break;
 		}
 	}
@@ -334,52 +326,43 @@ public class MainLayoutController implements Initializable {
 	 * 
 	 * @param fromRover
 	 *            {@code boolean} value that tells if the current message is from
-	 *            the Rover
+	 *            the Rover and thus should be aligned left
+	 * @param error
+	 *            {@code boolean} value that tells if the message should be displayed with red background
+	 * 
 	 * @param input
 	 *            {@link String} containing the message
 	 */
-	private static void addMessageToConsole(boolean fromRover, String input) {
-		try {
-			if (previousMessageFromRover.booleanValue() ^ fromRover) {
-				consoleTextSB = new StringBuilder();
+	private static void addMessageToConsole(boolean fromRover, boolean error, String input) {
+		consoleMessageList.add(new HBox());
+		consoleMessageIndex++;
+		Label consoleText = new Label();
+		HBox message = consoleMessageList.get(consoleMessageIndex);
+		consoleText.setTextAlignment(TextAlignment.LEFT);
+		consoleText.setWrapText(true);
+		consoleText.setMinWidth(consoleOutputTextBox.getWidth() / 2);
+		consoleText.setMaxWidth(consoleOutputTextBox.getWidth() * 2 / 3);
+		consoleText.getStyleClass().add("textList");
+		message.getChildren().add(consoleText);
+		if (fromRover) {
+			message.setAlignment(Pos.CENTER_LEFT);
+			if (error)
+				consoleText.getStyleClass().add("textListError");
+			else
+				consoleText.getStyleClass().add("textListRover");
+		} else {
+			message.setAlignment(Pos.CENTER_RIGHT);
+			if (error)
+				consoleText.getStyleClass().add("textListError");
+			else
+				consoleText.getStyleClass().add("textListYou");
+		}
+		message.setPrefWidth(consoleText.getWidth() * 2);
+		message.getStyleClass().add("messageList");
 
-				consoleMessageList.add(new HBox());
-				consoleMessageIndex++;
-				previousConsoleText = new Label();
-				HBox message = consoleMessageList.get(consoleMessageIndex);
-				previousConsoleText.setTextAlignment(TextAlignment.LEFT);
-				previousConsoleText.setWrapText(true);
-				previousConsoleText.setMinWidth(consoleOutputTextBox.getWidth() / 2);
-				previousConsoleText.setMaxWidth(consoleOutputTextBox.getWidth() * 2 / 3);
-				previousConsoleText.getStyleClass().add("textList");
-				message.getChildren().add(previousConsoleText);
-				if (fromRover) {
-					message.setAlignment(Pos.CENTER_LEFT);
-					previousConsoleText.getStyleClass().add("textListRover");
-				} else {
-					message.setAlignment(Pos.CENTER_RIGHT);
-					previousConsoleText.getStyleClass().add("textListYou");
-				}
-				message.setPrefWidth(previousConsoleText.getWidth() * 2);
-				message.getStyleClass().add("messageList");
-			}
-
-			if (!input.equals("")) {
-				consoleTextSB.append(input);
-				consoleTextSB.append("\n");
-				previousConsoleText.setText(consoleTextSB.toString());
-			}
-
-			if (previousMessageFromRover.booleanValue() ^ fromRover)
-				consoleOutputTextBox.getChildren().add(consoleMessageList.get(consoleMessageIndex));
-
-			previousMessageFromRover = fromRover;
-
-		} catch (NullPointerException e) {
-			// this exception is thrown for the first time, when there is no message in the
-			// console and previousMessageFromRover is thus null
-			previousMessageFromRover = !fromRover;
-			addMessageToConsole(fromRover, input);
+		if (!input.equals("")) {
+			consoleText.setText(input);
+			consoleOutputTextBox.getChildren().add(consoleMessageList.get(consoleMessageIndex));
 		}
 	}
 
@@ -532,8 +515,9 @@ public class MainLayoutController implements Initializable {
 	 */
 	private static void updateLineEndPoint(int lineLength, int index) {
 		double xSide = lineLength * Math.sin(Math.toRadians(baseAngle * index));
-		// the minus is there in so that the dot with index 0 is at the top and not at the bottom 
-		double ySide = - lineLength * Math.cos(Math.toRadians(baseAngle * index));
+		// the minus is there in so that the dot with index 0 is at the top and not at
+		// the bottom
+		double ySide = -lineLength * Math.cos(Math.toRadians(baseAngle * index));
 		lines.get(index).endXProperty().bind(lines.get(index).startXProperty().add(xSide));
 		lines.get(index).endYProperty().bind(lines.get(index).startYProperty().add(ySide));
 	}
@@ -550,7 +534,7 @@ public class MainLayoutController implements Initializable {
 		// TODO delete this method?
 		numberOfLines = value;
 	}
-	
+
 	/**
 	 * This method sets the angle between two neighbor lines
 	 * 
