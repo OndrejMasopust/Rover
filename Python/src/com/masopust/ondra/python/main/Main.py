@@ -4,6 +4,7 @@ Created on Aug 3, 2017
 
 @author: Ondrej Masopust
 '''
+import subprocess
 import sys
 import time
 import thread
@@ -30,6 +31,9 @@ def Main():
     
     # initialize an instance that controls the main motor that rotates the wheels 
     mainMotor = Motors(5, [0, 1])
+    
+    # start the pigpiod server
+    subprocess.run(["sudo", "pigpiod"])
     # initialze an instance that controls the servo that turns the wheels
     servo = Servos()
     
