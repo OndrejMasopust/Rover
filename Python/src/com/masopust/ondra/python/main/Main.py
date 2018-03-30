@@ -6,6 +6,7 @@ Created on Aug 3, 2017
 '''
 import sys
 import time
+import thread
 from queue import LifoQueue
 
 from com.masopust.ondra.python.motors.Motors import Motors
@@ -26,8 +27,6 @@ def Main():
     q = LifoQueue(2)
     # initialize sensors
     sensors = Sensors(q, tcpCommunication)
-    # start measuring
-    sensors.start()
     
     # initialize an instance that controls the main motor that rotates the wheels 
     mainMotor = Motors(5, [0, 1])
@@ -51,9 +50,12 @@ def Main():
                 break
             # 'mr' motor run command
             elif 'mr' in data:
+                # 100 is taken as 'do not move'
+                # numbers above 100 as 'move forward'
                 speed = int(data[2:])
                 if speed > 100:
                     mainMotor.setDirection(Direction.FORWARD)
+                # numbers less than 100 as 'move backward'
                 else:
                     mainMotor.setDirection(Direction.BACKWARD)
                 mainMotor.run( abs(speed - 100) )
@@ -63,6 +65,12 @@ def Main():
             # 'tr' turn command
             elif 'tr' in data:
                 servo.setPosition( int(data[2:]) )
+            elif 'startMeasure' in data:
+            	sensors.initSens()
+            	# start measuring
+			    sensors.start()
+            elif 'stopMeasure' in data:
+            	sensors.stop()
             else:
                 print(data)
 

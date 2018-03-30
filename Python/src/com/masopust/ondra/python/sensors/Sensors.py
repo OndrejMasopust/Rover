@@ -32,6 +32,8 @@ class Sensors (threading.Thread):
         :type tcpCommunication: TCPCommunication
         '''
         self.daemon = True
+        # this queue contains True if the Raspberry Pi should start to sense another rotation
+        # it needs to be a queue, because it is shared between this thread and the interrupt thread
         self.sensorQueue = Queue(1)
         
         self.mainQueue = queue
@@ -39,11 +41,14 @@ class Sensors (threading.Thread):
         
         self.sensorMotor = Motors(22, [21, 23])
         self.sensorMotor.setDirection(Direction.RIGHT)
+        
+        # this variable tells if the sensor motor is running
+        self.running = False
 
         gpio.setmode(gpio.BCM)
         # set the pin 22, which is connected to the output of the optolatch, as input
         gpio.setup(22, gpio.IN)
-        # set up an interrupt
+        # set up an interrupt for the optolatch
         gpio.add_event_detect(22, gpio.FALLING, callback=self.__isr)
         self.lastInterruptClock = time.time()
 
@@ -55,21 +60,25 @@ class Sensors (threading.Thread):
         # this variable counts the initial free rotations when the sensors don't measure yet
         self.rotationCounter = 0
         # this is the variable that tells how many dots will be displayed on the screen
-        self.resolution = self.initSens()
+        self.resolution = 0
     
     def run(self):
         '''
         This method is called when this thread is started by the start() method in the Main class.
         '''
-        while self.mainQueue.empty():
+        while self.mainQueue.empty() and self.running:
             # get() blocks if necessary until an item in the queue is available 
             doRotation = self.sensorQueue.get()
             if doRotation:
                 self.sensOneRotation()
         # stop sensor motor
         self.sensorMotor.clean()
-        # send ACK back to the queue
-        self.mainQueue.put(True)
+
+		# this only needs to be done, when th sensor is stopped because the client disconnected
+		# not only when the sensor was stopped temporarily using the 'stopMeasure' command
+        if self.running:
+	        # send ACK back to the queue
+    	    self.mainQueue.put(True)
 
     def sensOneRotation(self):
         for index in range(0, self.resolution):
@@ -86,6 +95,8 @@ class Sensors (threading.Thread):
                     # wait for next conversion
                     time.sleep( self.CONVERSIONTIME - (self.conversionStartClock - time.time()) )
                 else:
+                	# the rotation was not finished in time
+                	# speed down the sensor motor
                     self.sensorMotor.speedUp(-3)
                     break
     
@@ -94,12 +105,17 @@ class Sensors (threading.Thread):
         This method starts the sensor motor and based on how fast it makes one rotation,
         it counts how many dots will be displayed on the client's computer screen.
         '''
-        self.sensorMotor.run(xx)    # FIXME set the duty cycle
-        while self.rotationCounter < 3:
-            pass
-        self.resolution = round(self.lastRotationTime / self.CONVERSIONTIME)
-        self.tcpCommunication.sendToHostWrapper("rd")
-        self.tcpCommunication.sendToHostWrapper("ro" + self.resolution)
+        if not self.running:
+	        self.sensorMotor.run(100)    # FIXME set the duty cycle
+    	    self.running = True
+        	while self.rotationCounter < 3:
+            	pass
+	        self.resolution = round(self.lastRotationTime / self.CONVERSIONTIME)
+    	    self.tcpCommunication.sendToHostWrapper("rd")
+        	self.tcpCommunication.sendToHostWrapper("ro" + self.resolution)
+
+	def stop(self):
+		self.running = False
     
     def measure(self):
         '''
@@ -114,6 +130,9 @@ class Sensors (threading.Thread):
             longVoltage = longSensor * (5 / 1024)
             longDist = 916.64 * math.pow(longVoltage, -2.236)
         return longDist
+        
+    def getRunning(self):
+    	return self.running
     
     def __isr(self, channel):
         '''
@@ -130,8 +149,7 @@ class Sensors (threading.Thread):
         # condition - to clean the undesired interrupts
         if thisRotationTime > 0.8:
             if abs(thisRotationTime - self.DEFAULTROTATIONTIME) > 0.2:
-                # TODO make the sensor motor run faster
-                pass
+                sensorMotor.speedUp(3)
             self.lastRotationTime = thisRotationTime
         self.lastInterruptClock = currentTime
         # this is needed when initializing the sensor. The sensor motor makes some free
