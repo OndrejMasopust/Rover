@@ -1,9 +1,8 @@
 /*
  * main.c
  *
- *  Created on: Dec 29, 2017
- *      Author: Ondra
- *	With a help of CalcProgrammer1's instructable: https://www.instructables.com/id/ATTiny-USI-I2C-The-detailed-in-depth-and-infor/
+ * Created on: Dec 29, 2017
+ * Author: Ondrej Masopust
  */
 
 #include <avr/io.h>
@@ -112,11 +111,20 @@ ISR(ADC_vect) {
 	// switch to the other analog input
 	ADMUX ^= 0x1;
 	// if this ISR was for the first sensor, start a new conversion for the second sensor
-	if (ADMUX & 0x1 == 0x0)
+	if (ADMUX & (0x1 == 0x0))
 		adcStartConversion();
 }
 
 int main(void) {
+	// set unused pins as inputs
+	DDRD &= 0x00;
+	DDRC &= 0b11110011;
+	DDRB &= 0b11000000;
+	// set pull-ups in unused pins - reduce power consumption
+	PORTD |= 0xFF;
+	PORTC |= 0b00001100;
+	PORTB |= 0b00111111;
+
 	setUpI2C();
 
 	setUpADC(); // a first measurement is taken from ADC0
