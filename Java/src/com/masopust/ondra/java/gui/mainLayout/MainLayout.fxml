@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.web.WebView?>
 <?import javafx.stage.Screen?>
 <?import java.lang.Double?>
 
@@ -34,13 +34,7 @@
 		<fx:define>
 			<Screen fx:factory="getPrimary" fx:id="screen" />
 		</fx:define>
-		<ScrollPane prefHeight="${stackPane.height}" prefWidth="${stackPane.height}"
-			opacity="0.8" fx:id="infoSPane" styleClass="infoSPane">
-			<content>
-				<TextFlow prefHeight="${infoSPane.height - 2}" prefWidth="${infoSPane.height - 2}"
-					fx:id="infoTF" />
-			</content>
-		</ScrollPane>
+		<WebView opacity="0.85" prefHeight="200.0" prefWidth="200.0" fx:id="webView" />
 		<BorderPane fx:id="controlPane" prefHeight="${stackPane.height}"
 			prefWidth="${stackPane.width}" styleClass="window">
 			<right>

@@ -10,13 +10,11 @@ import java.util.ResourceBundle;
 
 import com.masopust.ondra.java.gui.Main;
 import com.masopust.ondra.java.gui.mainLayout.batteryPercentage.BatteryPercentageManager;
-import com.masopust.ondra.java.info.Info;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -38,7 +36,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
+import javafx.scene.web.WebView;
 
 /**
  * This class holds the logic behind the main scene.
@@ -58,9 +56,9 @@ public class MainLayoutController implements Initializable {
 
 	@FXML
 	ScrollPane infoSPane;
-
+	
 	@FXML
-	TextFlow infoTF;
+	WebView webView;
 
 	@FXML
 	Pane centerSectionPaneFXML;
@@ -173,7 +171,7 @@ public class MainLayoutController implements Initializable {
 		stackPane.addEventFilter(KeyEvent.KEY_RELEASED, (keyEvent) -> {
 			switch (keyEvent.getCode()) {
 			case ESCAPE:
-				if (stackPane.getChildren().get(1).equals(infoSPane))
+				if (stackPane.getChildren().get(1).equals(webView))
 					controlPane.toFront();
 				break;
 			case UP:
@@ -222,6 +220,8 @@ public class MainLayoutController implements Initializable {
 			}
 		});
 
+		webView.getEngine().load(getClass().getResource("Info.html").toExternalForm());
+		
 		initPercentage();
 	}
 
@@ -252,7 +252,7 @@ public class MainLayoutController implements Initializable {
 			} else
 				RoverConnection.roverConnection.sendData(text);
 			boolean command = (text.equals(RoverOutcomeCommands.STARTMEASURING)
-					|| text.equals(RoverOutcomeCommands.STOPMEASURING));
+					|| text.equals(RoverOutcomeCommands.STOPMEASURING) || text.equals(RoverOutcomeCommands.CHECK));
 			addMessageToConsole(false, false, command, text);
 			consoleInput.setText("");
 		}
@@ -333,6 +333,7 @@ public class MainLayoutController implements Initializable {
 	public class RoverOutcomeCommands {
 		public static final String STARTMEASURING = "startMeasure";
 		public static final String STOPMEASURING = "stopMeasure";
+		public static final String CHECK = "check";
 	}
 
 	/**
@@ -405,17 +406,11 @@ public class MainLayoutController implements Initializable {
 
 	/**
 	 * The {@code handleInfo} method wraps code that is executed when the info
-	 * button is pressed. The {@link ScrollPane} with the info is brought to the
+	 * button is pressed. The {@link WebView} with the info is brought to the
 	 * front.
 	 */
 	public void handleInfo() {
-		if (infoTF.getChildren().size() == 0) {
-			infoTF.setTextAlignment(TextAlignment.LEFT);
-			infoTF.setPadding(new Insets(8, 10, 8, 10));
-			infoTF.setLineSpacing(5.0);
-			infoTF.getChildren().addAll(Info.getInfo());
-		}
-		infoSPane.toFront();
+		webView.toFront();
 	}
 
 	/**

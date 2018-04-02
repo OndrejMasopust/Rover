@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.web.WebView?>
 
 <!--
 This fxml file consists of elements that are in the main layout.
@@ -36,10 +36,7 @@ height: 500.0
 
 <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.masopust.ondra.java.gui.mainLayout.MainLayoutController">
    <children>
-      <ScrollPane fx:id="infoSPane" prefHeight="200.0" prefWidth="200.0">
-         <content>
-            <TextFlow prefHeight="200.0" prefWidth="200.0" />
-         </content></ScrollPane>
+      <WebView opacity="0.7" prefHeight="200.0" prefWidth="200.0" />
       <BorderPane fx:id="controlPane" prefHeight="500.0" prefWidth="569.0">
          <left>
             <VBox fx:id="leftSection" BorderPane.alignment="CENTER">
