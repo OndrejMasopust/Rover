@@ -2,6 +2,8 @@
 '''
 Created on Jul 12, 2017
 
+This module contains the TCPCommunication class. The Main() function is used to test. It is not the main function of the Rover program.
+
 @author: Ondrej Masopust
 '''
 import socket
@@ -58,8 +60,8 @@ class TCPCommunication:
     
     def __sendToHost(self, message = "null"):
         '''
-        This method sends the given attribute to the host. It is private because by itself,
-        it doesn't provide safe data sending. For safe data sending, use the sendToHostWrapper function.
+        This method sends the given message to the host. It is private because by itself,
+        it doesn't provide safe data sending. For safe data sending, use the sendToHostWrapper(message) function.
         
         :param message: The message that is to be sent.
         :type message: string
@@ -67,7 +69,6 @@ class TCPCommunication:
         #check if the message ends with '\r\n' and if not, add it
         if not("\r\n" in message):
             message += "\r\n"
-        #chceck for hacky and carky, because it is not possible to decode
         self.clientSocket.sendall(message.encode(encoding='utf_8', errors='strict'))
 
     def handleRecvAndSend(self):
@@ -83,6 +84,7 @@ class TCPCommunication:
         
             for reader in readyToRead:
                 if reader == self.clientSocket:
+                    # buffer size 4096
                     data = self.clientSocket.recv(4096)
                     if not data:
                         self.clientSocket.close()

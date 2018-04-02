@@ -1,7 +1,9 @@
 '''
 Created on Jan 6, 2018
 
-@author: Ondra
+This module is just to test the gpio and pwm.
+
+@author: Ondrej Masopust
 '''
 
 import RPi.GPIO as gpio 

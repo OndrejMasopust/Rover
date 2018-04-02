@@ -1,6 +1,8 @@
 '''
 Created on Jan 29, 2018
 
+This module is just to test the interrupts.
+
 @author: Ondrej Masopust
 '''
 

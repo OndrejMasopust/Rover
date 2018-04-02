@@ -2,6 +2,8 @@
 '''
 Created on Jan 27, 2018
 
+This module contains only the Motor class.
+
 @author: Ondrej Masopust
 '''
 
@@ -15,7 +17,7 @@ class Motors(object):
 
     def __init__(self, pwmOut, directionOut, tcpCommunication):
         '''
-        This constructor takes as arguments numbers of pins that should be used to control the desired motor.
+        This constructor initializes a new Motor object.
         
         :param pwmOut: The number of the pin that should be used as the output of the PWM
         :type pwmOut: int
@@ -81,7 +83,7 @@ class Motors(object):
 
     def speedUp(self, increment):
         '''
-        This methods sets a new speed by incrementing the current duty cycle by the given argument
+        This methods sets a new speed by incrementing the current duty cycle by the given argument if possible.
         
         :param increment: The number that should be added to the current duty cycle
         :type increment: int
@@ -113,20 +115,20 @@ class Motors(object):
             gpio.output(self.directionOut[1], gpio.LOW)
     
     def getDutyCycle(self):
+        '''
+        :return: Value of current duty cycle
+        :rtype: int
+        '''
         return self.currentDutyCycle
 
     def stop(self):
-        '''
-        This method stops the PWM.
-        '''
+        '''This method stops the PWM.'''
         self.pwm.stop()
         self.pwmRunning = False
         self.currentDutyCycle = 0;
     
     def clean(self):
-        '''
-        This method is called when the client disconnects. It stops the motors and cleans up the GPIO.
-        '''
+        '''This method is called when the client disconnects. It stops the motors and cleans up the GPIO.'''
         self.stop()
         gpio.cleanup()
         

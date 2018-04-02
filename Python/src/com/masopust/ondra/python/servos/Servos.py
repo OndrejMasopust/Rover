@@ -2,16 +2,15 @@
 '''
 Created on Feb 2, 2018
 
+This module contains only the Servos class.
+
 @author: Ondrej Masopust
 '''
 
 import pigpio
 
 class Servos(object):
-    '''
-    This class is used to control servos on the Rover. It is necessary to start the pigpiod server for this class to work.
-    '''
-
+    '''This class is used to control servos on the Rover. It is necessary to start the pigpiod server for this class to work.'''
 
     def __init__(self, pwmOut, tcpCommunication):
         '''
@@ -43,9 +42,7 @@ class Servos(object):
             self.tcpCommunication.sendToHostWrapper('er' + err)
     
     def clean(self):
-        '''
-        This method stops the PWM going to the servo and stops the connection to the pigpio server.
-        '''
+        '''This method stops the PWM going to the servo and stops the connection to the pigpio server.'''
         self.myPigpio.set_servo_pulsewidth(self.pwmOut, 0)
         self.myPigpio.stop()
         

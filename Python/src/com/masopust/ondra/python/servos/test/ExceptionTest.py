@@ -1,7 +1,9 @@
 '''
 Created on Feb 2, 2018
 
-@author: Ondra
+This module is just to test exceptions.
+
+@author: Ondrej Masopust
 '''
 
 def Main():

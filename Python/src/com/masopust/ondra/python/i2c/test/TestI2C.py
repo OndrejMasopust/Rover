@@ -1,7 +1,9 @@
 '''
 Created on Dec 23, 2017
 
-@author: Ondra
+Used just to test, that the I2C communication works.
+
+@author: Ondrej Masopust
 '''
 from smbus2 import SMBusWrapper
 import math

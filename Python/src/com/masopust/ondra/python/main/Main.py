@@ -2,6 +2,8 @@
 '''
 Created on Aug 3, 2017
 
+This module starts the whole Rover application.
+
 @author: Ondrej Masopust
 '''
 import subprocess
@@ -12,12 +14,12 @@ from queue import LifoQueue
 sys.path.append('/home/pi/Documents/Ondra/Rover/src/src')
 
 from com.masopust.ondra.python.motors.Motors import Motors
-from com.masopust.ondra.python.motors.Direction import Direction
 from com.masopust.ondra.python.tcpCommunication.TCPCommunication import TCPCommunication
 from com.masopust.ondra.python.sensors.Sensors import Sensors
 from com.masopust.ondra.python.servos import Servos
 
 def Main():
+    '''The main method'''
     # create server and wait for connection
     tcpCommunication = TCPCommunication()
     tcpCommunication.establishTCPConnection()
@@ -51,6 +53,7 @@ def Main():
                 tcpCommunication.sendToHostWrapper('ACK')
                 # wait for one second
                 time.sleep(1)
+                self.clientSocket.close()
                 break
             # just checking, if the socket was not broken
             elif 'check'.encode(encoding='utf_8', errors='strict') in data:
@@ -82,7 +85,6 @@ def Main():
                 print(data.decode())
 
     print('Client disconnected - terminating program')
-    # terminate all threads
 
 
 if __name__ == '__main__':

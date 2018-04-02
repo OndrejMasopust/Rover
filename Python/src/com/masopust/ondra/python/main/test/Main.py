@@ -2,6 +2,8 @@
 '''
 Created on Aug 3, 2017
 
+This module is just to test the communication over TCP.
+
 @author: Ondrej Masopust
 '''
 import sys
