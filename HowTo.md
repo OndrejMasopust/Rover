@@ -52,6 +52,9 @@ Some things I used specifically:
 -[slip ring](https://www.ebay.com/itm/12-5mm-300Rpm-Capsule-Tiny-Slip-Ring-12-Circuits-Wires-2A-240V-Test-Equipment-/141778019951?hash=item2102a0e66f)
 
 #### 9. Assemble the sensor holder
+I used a balsa wood.   
 For example like this:
-1. Make bigger hole in the gear, so that it fits the slip ring   
-![gear](howTo-imgs/white-gear.jpg)
+1. Make bigger hole in the gear, so that it fits the slip ring
+3. Make this:
+![holder1](howTo-imgs/holder1.jpg)
+![holder2](howTo-imgs/holder2.jpg)
