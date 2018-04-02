@@ -8,8 +8,10 @@ In the terminal of the Pi, type:
 ```sudo apt-get install build-essential python-dev```
 
 #### 3. Enable I<sup>2</sup>C on the Pi
-In the Pi terminal, type:   
-sudo raspi-config   
+In the Pi terminal, type:
+```bash   
+sudo raspi-config
+```   
 And there, in "Interafcing Options", select I<sup>2</sup>C and confirm that.
 You need to reboot your Pi after this.
 
