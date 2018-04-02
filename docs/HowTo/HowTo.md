@@ -39,18 +39,19 @@ sudo make install
 Copy the content of the `Rover/Python/` directory somewhere to your Pi.
 
 #### 8. Get the PCB, electronic and Lego parts
-...and assemble that.
-Buy 4 1nF capacitors more than it is in the schematics. They will be soldered from the motor terminals to the motor shield.   
+Drill holes for the sensor holder and the Pi.  
+Buy also 4 more 1nF capacitors than there are in the schematics. They will be soldered from the motor terminals to the motor shield.   
+...and assemble the PCB.   
 PCB layout can be found in the `PCBs_schematics/PCB-Layout/` directory. You can order it for example from [JLCPCB](https://jlcpcb.com).   
 Some things I used specifically:
--[sensor](https://www.ebay.com/itm/Sharp-GP2Y0A710K0F-IR-Range-Sensor-100-550cm-Infrared-Proximity-Measure-distance/321873113256?epid=2256191608&hash=item4af121f0a8:g:ZYwAAOSw9r1WAVJC)
--[servo](http://hitecrcd.com/products/servos/sport-servos/analog-sport-servos/hs-422-deluxe-standard-servo/product)
--[main motor](https://www.ebay.com/itm/320911868255)
--[sensor motor](https://www.ebay.com/itm/6-12V-100-200-300-30RPM-Mini-DC-Metal-Gear-Motor-Gearwheel-Shaft-Diameter-N20/182498725375?ssPageName=STRK%3AMEBIDX%3AIT&var=485067902164&_trksid=p2057872.m2749.l2649)
+- [sensor](https://www.ebay.com/itm/Sharp-GP2Y0A710K0F-IR-Range-Sensor-100-550cm-Infrared-Proximity-Measure-distance/321873113256?epid=2256191608&hash=item4af121f0a8:g:ZYwAAOSw9r1WAVJC)
+- [servo](http://hitecrcd.com/products/servos/sport-servos/analog-sport-servos/hs-422-deluxe-standard-servo/product)
+- [main motor](https://www.ebay.com/itm/320911868255)
+- [sensor motor](https://www.ebay.com/itm/6-12V-100-200-300-30RPM-Mini-DC-Metal-Gear-Motor-Gearwheel-Shaft-Diameter-N20/182498725375?ssPageName=STRK%3AMEBIDX%3AIT&var=485067902164&_trksid=p2057872.m2749.l2649)
 (6V 200rpm version)
--[gears](https://www.ebay.com/itm/85Pcs-Plastic-Gears-Rack-Pulley-Belt-Worm-Teeth-Shaft-Car-Toy-Models-Part-DIY/152738933090?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649)
--Li-Pol 3S 1300mAh battery
--[slip ring](https://www.ebay.com/itm/12-5mm-300Rpm-Capsule-Tiny-Slip-Ring-12-Circuits-Wires-2A-240V-Test-Equipment-/141778019951?hash=item2102a0e66f)
+- [gears](https://www.ebay.com/itm/85Pcs-Plastic-Gears-Rack-Pulley-Belt-Worm-Teeth-Shaft-Car-Toy-Models-Part-DIY/152738933090?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649)
+- Li-Pol 3S 1300mAh battery
+- [slip ring](https://www.ebay.com/itm/12-5mm-300Rpm-Capsule-Tiny-Slip-Ring-12-Circuits-Wires-2A-240V-Test-Equipment-/141778019951?hash=item2102a0e66f)
 
 #### 9. Assemble the sensor holder
 I used a balsa wood.   
@@ -84,10 +85,22 @@ The dimensions are roughly 6.5cm x 9.5cm. The holes form a rectangle 8cm x 4.8cm
 ![opto-latch3](howTo-imgs/opto-latch3.jpg)
 13. Create a protrusion from balsa wood and glue it to the disc. I needs to be in such a way, that it goes through the optolatch in every rotation:  
 ![protrusion](howTo-imgs/protrusion.jpg)
-14. To strenghten the servo mount, you can glue there a stick with an epoxid glue:  
+14. To strenghten the servo mount, you can glue there some sticks with an epoxid glue:  
 ![stick1](howTo-imgs/servo-mount1.jpg)  
 ![stick2](howTo-imgs/servo-mount2.jpg)
-15. Solder the 1nF capacitors between motor terminals and motor shields:
+15. Solder the 1nF capacitors between motor terminals and motor shields (both sensor motor and main motor):
 ![motor1](howTo-imgs/motor1.jpg)   
 ![motor2](howTo-imgs/motor2.jpg)
 ![motor3](howTo-imgs/motor3.jpg)
+16. And there you have it! You have your sensor holder.
+
+#### 10. Solder wires with connectors to the Pi header:
+(It is also a good idea to label them)   
+![pi header1](howTo-imgs/pi-header1.jpg)
+![pi header2](howTo-imgs/pi-header2.jpg)
+
+#### 11. Mount the Pi and the sensor to the PCB
+![pcb](howTo-imgs/pcb.jpg)
+
+#### 12. Assemble everything together and make the final Rover!!!
+![rover](howTo-imgs/rover.jpg)

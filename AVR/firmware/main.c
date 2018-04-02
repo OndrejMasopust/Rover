@@ -1,6 +1,8 @@
 /*
  * main.c
  *
+ * This program sets the AVR as an analog-digital converter, that can communicate over I2C.
+ *
  * Created on: Dec 29, 2017
  * Author: Ondrej Masopust
  */
@@ -9,15 +11,20 @@
 #include <avr/iomx8.h>
 #include <avr/interrupt.h>
 
-/* Define an array of variables that hold the sensor output values
- * The value under [0] is from the sensor that measures the shorter distances
- * The value under [1] is from the sensor that measures the larger distances
+/** An array of 2-byte variables that hold the sensor output values.<br>
+ * The value under [0] is from the sensor that measures the shorter distances.<br>
+ * The value under [1] is from the sensor that measures the larger distances.
  */
 uint16_t sensorValues[2];
 
-// define a counter, that counts what has been sent
+/**
+* A counter, that counts what has been sent over I2C. Base on that, next data is sent.
+*/
 uint8_t sentCounter = 0;
 
+/**
+* The setUpI2C() function is called at the beginning of the program and sets up everything around the I2C.
+*/
 void setUpI2C(void) {
 	// set the device address to be 10 and disable 'general call recognition'
 	TWAR = 0b00010100;
@@ -31,11 +38,19 @@ void setUpI2C(void) {
 	TWCR |= (1 << TWINT);
 }
 
+/**
+* The i2cStatus() function returns prescaled current state of the I2C.
+*
+* @return byte containing the status
+*/
 uint8_t i2cStatus(void) {
 	// mask the prescaler bits
 	return TWSR & 0b11111000;
 }
 
+/**
+* The setUpADC() function is called at the beginning of the program and sets up everything around the analog-gigital conversion.
+*/
 void setUpADC(void) {
 	// set the voltage reference to be AVcc
 	ADMUX |= (1 << REFS0);
@@ -49,10 +64,16 @@ void setUpADC(void) {
 	ADCSRA |= (1 << ADEN);
 }
 
+/**
+* When the adcStartConversion() function is called, a logic 1 is written to the ADSC bit in the ADCSRA register and new analog-digital conversion is started.
+*/
 void adcStartConversion(void) {
 	ADCSRA |= (1 << ADSC);
 }
 
+/**
+* This interrupt seervice routine is called when the TWI vector is set. It sends the appropriate data through the I2C and starts new conversion after all.
+*/
 ISR(TWI_vect) {
 	// own SLA+R received, ACK sent || data byte has been transmitted, ACK received
 	if (i2cStatus() == 0xA8 || i2cStatus() == 0xB8) {
@@ -105,6 +126,9 @@ ISR(TWI_vect) {
 	}
 }
 
+/**
+* This interrupt service routine is called when the ADC vector is set. It stores the converted value, switches the ADC input to the other sensor and invokes new conversion if needed.
+*/
 ISR(ADC_vect) {
 	// assign a-d conversion result to either [0] or [1] depending on the input selected
 	sensorValues[ADMUX & 0x1] = ADCL | ((ADCH << 8) & 0xFF00);
@@ -115,6 +139,9 @@ ISR(ADC_vect) {
 		adcStartConversion();
 }
 
+/**
+* The main function. It sets everything up, starts first AD conversino and then just hangs in an endless while loop.
+*/
 int main(void) {
 	// set unused pins as inputs
 	DDRD &= 0x00;
