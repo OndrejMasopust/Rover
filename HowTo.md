@@ -5,7 +5,7 @@ Follow this [tutorial](https://www.raspberrypi.org/documentation/configuration/w
 
 #### 2. Install these packages on the Pi
 In the terminal of the Pi, type:   
-'''sudo apt-get install build-essential python-dev'''
+''' sudo apt-get install build-essential python-dev '''
 
 #### 3. Enable I<sup>2</sup>C on the Pi
 In the Pi terminal, type:   
