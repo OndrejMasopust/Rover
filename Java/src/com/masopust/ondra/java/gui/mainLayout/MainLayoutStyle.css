@@ -5,7 +5,9 @@
  * from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
  * <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
  * 
- * @author Ondrej Masopust
+ * Blackberry dark pallete was used.
+ * 
+ * @author of this css: Ondrej Masopust
  */
 
 /*define variables*/
@@ -83,8 +85,6 @@
 		-fx-border-color: -fx-text-color -fx-left-section-back -fx-text-color -fx-left-section-back;
 		-fx-border-width: 1.0px;
 	}
-	
-		.messageList{}
 
 		.textList{
 			-fx-padding: 10.0px;
@@ -105,6 +105,10 @@
 		
 		.textListError{
 			-fx-background-color: #CC3333;
+		}
+		
+		.textListCommand{
+			-fx-text-fill: #DCD427;
 		}
 		
 		.consoleInput{
