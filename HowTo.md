@@ -72,17 +72,17 @@ The dimensions are roughly 6.5cm x 9.5cm. The holes form a rectangle 8cm x 4.8cm
 8. Mount the slip ring and the motor (already with its gear) to the plate (I mounted it to a Lego supportive skeleton):   
 ![plate2](howTo-imgs/plate2.jpg)   
 ![plate3](howTo-imgs/plate3.jpg)
-9. Solder connector for the sensor:  
+9. Solder a connector for the sensor:  
 ![connector](howTo-imgs/connector.jpg)
-10. Solder connector to the wore going from the sensor and screw the sensor to the holder and connect it:  
+10. Solder a connector to the wire going from the sensor and screw the sensor to the holder:  
 ![sensor](howTo-imgs/sensor.jpg)
-11. Add counterweight to the other side of the holder (I used lead marbles, it should weight the same as the sensor):  
+11. Add counterweight to the other side of the holder (I used lead marbles. It should weight the same as the sensor):  
 ![counterweight](howTo-imgs/counterweight.jpg)
-12. Create holder for the opto-latch and mount it:  
+12. Create a holder for the opto-latch and mount it:  
 ![opto-latch1](howTo-imgs/opto-latch1.jpg)  
 ![opto-latch2](howTo-imgs/opto-latch2.jpg)  
 ![opto-latch3](howTo-imgs/opto-latch3.jpg)
-13. Create a protrusion from balsa wood and glue it to the disc. I needs to be in such a way, that it goes through the optolatch every rotation:  
+13. Create a protrusion from balsa wood and glue it to the disc. I needs to be in such a way, that it goes through the optolatch in every rotation:  
 ![protrusion](howTo-imgs/protrusion.jpg)
 14. To strenghten the servo mount, you can glue there a stick with an epoxid glue:  
 ![stick1](howTo-imgs/servo-mount1.jpg)  
