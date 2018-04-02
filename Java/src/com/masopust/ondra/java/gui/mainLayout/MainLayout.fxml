@@ -17,14 +17,8 @@
 <?import javafx.stage.Screen?>
 <?import java.lang.Double?>
 
-<!-- This fxml file consists of elements that are in the main layout. @author 
-	Ondrej Masopust <fx:define> <Screen fx:factory="getPrimary" fx:id="screen" 
-	/> </fx:define> ${screen.visualBounds.height} ${screen.visualBounds.width} 
-	${hroot.width*0.15} hroot is parent element's id width: 569.0 height: 500.0 
-	<Text fx:id="consoleOutputText" strokeType="OUTSIDE" strokeWidth="0.0" /> 
-	<ScrollPane fx:id="infoSPane" opacity="0.5" prefHeight="${stackPane.height}" 
-	prefWidth="${stackPane.width}" styleClass="infoSPane"> <content> <Label fx:id="infoLabel" 
-	text="" /> </content> </ScrollPane> -->
+<!-- This fxml file consists of elements that are in the main layout.
+@author Ondrej Masopust -->
 
 <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="${screen.visualBounds.height}"

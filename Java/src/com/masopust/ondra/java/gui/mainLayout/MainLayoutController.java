@@ -46,16 +46,11 @@ import javafx.scene.web.WebView;
  */
 
 public class MainLayoutController implements Initializable {
-
-	// TODO check if these variables are used and if not, delete them
 	@FXML
 	StackPane stackPane;
 
 	@FXML
 	BorderPane controlPane;
-
-	@FXML
-	ScrollPane infoSPane;
 	
 	@FXML
 	WebView webView;
@@ -196,22 +191,22 @@ public class MainLayoutController implements Initializable {
 		stackPane.addEventFilter(KeyEvent.KEY_PRESSED, (keyEvent) -> {
 			switch (keyEvent.getCode()) {
 			case UP:
-				RoverConnection.roverConnection.sendData("mr180"); // FIXME adjust the number
+				RoverConnection.roverConnection.sendData("mr180");
 				keyEvent.consume();
 				break;
 			case DOWN:
-				RoverConnection.roverConnection.sendData("mr20"); // FIXME adjust the number
+				RoverConnection.roverConnection.sendData("mr20");
 				keyEvent.consume();
 				break;
 			case LEFT:
 				if (!consoleInput.isFocused()) {
-					RoverConnection.roverConnection.sendData("tr1100"); // FIXME adjust the number
+					RoverConnection.roverConnection.sendData("tr1100");
 					keyEvent.consume();
 				}
 				break;
 			case RIGHT:
 				if (!consoleInput.isFocused()) {
-					RoverConnection.roverConnection.sendData("tr1900"); // FIXME adjust the number
+					RoverConnection.roverConnection.sendData("tr1900");
 					keyEvent.consume();
 				}
 				break;
@@ -327,7 +322,7 @@ public class MainLayoutController implements Initializable {
 	 * messages, that can be sent to the Rover through the console an will be
 	 * treated as commands.
 	 * 
-	 * @author Ondra
+	 * @author Ondrej Masopust
 	 *
 	 */
 	public class RoverOutcomeCommands {
@@ -418,8 +413,6 @@ public class MainLayoutController implements Initializable {
 	 * the main stage.
 	 * 
 	 * @throws IOException
-	 * 
-	 * @return void
 	 */
 	public static void loadMainScene() throws IOException {
 		FXMLLoader mainStageLoader = new FXMLLoader();
@@ -473,8 +466,6 @@ public class MainLayoutController implements Initializable {
 
 	/**
 	 * This method builds the lines and dots in the center section.
-	 * 
-	 * @return void
 	 */
 	private static void buildCenterSection() {
 		Image tank = new Image("/com/masopust/ondra/java/gui/mainLayout/tank.png", 100, 200, true, false);
@@ -505,14 +496,6 @@ public class MainLayoutController implements Initializable {
 			dot.xProperty().bind(line.endXProperty().subtract(dotSize / 2));
 			dot.yProperty().bind(line.endYProperty().subtract(dotSize / 2));
 			centerSectionGroup.getChildren().add(dot);
-
-			/*
-			 * System.out.printf("Angle: %f\n", angleInDeg);
-			 * System.out.printf("sin(angle): %f\n", Math.sin(angleInDeg));
-			 * System.out.printf("cos(angle): %f\n", Math.cos(angleInDeg));
-			 * System.out.printf("xSide: %f\n", xSide); System.out.printf("ySide: %f\n",
-			 * ySide); System.out.println();
-			 */
 		}
 	}
 
