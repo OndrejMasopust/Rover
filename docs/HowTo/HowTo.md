@@ -43,6 +43,7 @@ Drill holes for the sensor holder and the Pi.
 Buy also 4 more 1nF capacitors than there are in the schematics. They will be soldered from the motor terminals to the motor shield.   
 ...and assemble the PCB.   
 PCB layout can be found in the `PCBs_schematics/PCB-Layout/` directory. You can order it for example from [JLCPCB](https://jlcpcb.com).   
+If you buy the Lego parts, do not buy the connector pegs without friction pads. The construction won't be as robust as with the friction pads.
 Some things I used specifically:
 - [sensor](https://www.ebay.com/itm/Sharp-GP2Y0A710K0F-IR-Range-Sensor-100-550cm-Infrared-Proximity-Measure-distance/321873113256?epid=2256191608&hash=item4af121f0a8:g:ZYwAAOSw9r1WAVJC)
 - [servo](http://hitecrcd.com/products/servos/sport-servos/analog-sport-servos/hs-422-deluxe-standard-servo/product)
