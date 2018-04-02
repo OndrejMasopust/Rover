@@ -84,6 +84,9 @@ def Main():
             else:
                 print(data.decode())
 
+    # stop the pigpiod server
+    subprocess.run(["sudo", "kilall", "pigpiod"])
+    
     print('Client disconnected - terminating program')
 
 
