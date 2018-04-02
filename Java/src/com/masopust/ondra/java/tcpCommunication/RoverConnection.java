@@ -178,10 +178,6 @@ public class RoverConnection extends Task<String> {
 	public void sendData(String message) {
 		outputTCP.println(message);
 	}
-	
-	public class Commands {
-		// TODO
-	}
 
 	/**
 	 * The {@code readLine} method reads a line from the Rover. For more info, see
@@ -189,7 +185,7 @@ public class RoverConnection extends Task<String> {
 	 * 
 	 * @return {@link String} containing the received line
 	 */
-	public String readLine() {
+	private String readLine() {
 		String message = "";
 		try {
 			message = inputTCP.readLine();
@@ -210,7 +206,6 @@ public class RoverConnection extends Task<String> {
 
 	@Override
 	protected String call() throws IOException {
-		int i = 0; // FIXME delete this before sharp run
 		while (true) {
 			if (this.isCancelled())
 				break;
@@ -218,8 +213,7 @@ public class RoverConnection extends Task<String> {
 			roverConnection.connect();
 			errorCounter++;
 
-			if (roverConnection.connectionEstablished()) {	// || i == 1
-				/* FIXME uncomment*/
+			if (roverConnection.connectionEstablished()) {
 				try {
 					outputTCP = new PrintWriter(clientSocket.getOutputStream(), true);
 					inputTCP = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -227,7 +221,6 @@ public class RoverConnection extends Task<String> {
 					// TODO
 					e.printStackTrace();
 				}
-				/**/
 				break;
 			} else {
 				// wait 500ms
@@ -241,7 +234,6 @@ public class RoverConnection extends Task<String> {
 						break;
 				}
 				System.out.printf("Slept for %dms\n", sleepTime);
-				i++;
 			}
 		}
 		IPHostPrompt.writeOptions();
@@ -254,38 +246,26 @@ public class RoverConnection extends Task<String> {
 			}
 		});
 		
-		/* testing code
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Platform.runLater(() -> {
-			MainLayoutController.receiveMessage("Ahooooj jak se máš? já dobře.");
-		});
-		*/
-		
-		/* FIXME uncomment*/
 		while (true) {
 			if (this.isCancelled())
 				break;
-			String input = inputTCP.readLine();
 			try {
+				String input = roverConnection.readLine();
 				if (!input.equals("")) {
 					if (input.equals("ACK"))
 						waitForAck = true;
 					else
-						Platform.runLater(() -> {MainLayoutController.receiveMessage(input);});
+						Platform.runLater(() -> {
+							MainLayoutController.receiveMessage(input);
+						});
 				}
 				Thread.sleep(20);
-			} catch (NullPointerException e) {}
-			catch (InterruptedException e) {
+			} catch (NullPointerException e) {
+			} catch (InterruptedException e) {
 				if (this.isCancelled())
 					break;
 			}
 		}
-		/**/
 		return null;
 	}
 }

@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 /**
  * The {@code TCPCommunication} class was used to test TCP communication with
- * the rover.
+ * the rover. Client side.
  * 
  * @author Ondrej Masopust
  *

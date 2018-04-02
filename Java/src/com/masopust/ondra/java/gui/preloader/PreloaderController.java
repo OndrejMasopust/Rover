@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.masopust.ondra.java.gui.Main;
-import com.masopust.ondra.java.gui.preloader.test.PreloaderTestLaunch;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 
 import javafx.fxml.FXML;
@@ -37,7 +36,6 @@ public class PreloaderController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// FIXME uncomment
 		while (RoverConnection.roverConnection == null);
 		text.textProperty().bind(RoverConnection.roverConnection.valueProperty());
 
@@ -45,11 +43,6 @@ public class PreloaderController implements Initializable {
 		RoverConnection.roverConnection.progressProperty().addListener((observable, oldValue, newValue) -> {
 			scrollPane.setVvalue(1);
 		});
-		
-		/*
-		 * Only for testing purposes:
-		 * text.textProperty().bind(PreloaderTestLaunch.wt.valueProperty());
-		 */
 	}
 	
 	/**

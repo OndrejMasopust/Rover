@@ -1,4 +1,4 @@
-package com.masopust.ondra.java.testServerSocket;
+package com.masopust.ondra.java.tcpCommunication.test;
 
 import java.io.BufferedReader;
 
@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 /**
  * The {@code TCPCommunication} class was used to test TCP communication with
- * the rover.
+ * the rover. Server side.
  * 
  * @author Ondrej Masopust
  *
