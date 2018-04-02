@@ -63,7 +63,7 @@ public class MainLayoutController implements Initializable {
 	TextFlow infoTF;
 
 	@FXML
-	Pane centerSectionPane;
+	Pane centerSectionPaneFXML;
 
 	@FXML
 	Group centerSectionGroupFXML;
@@ -108,6 +108,7 @@ public class MainLayoutController implements Initializable {
 	private static int consoleMessageIndex = -1;
 	private static VBox consoleOutputTextBox;
 	private static Group centerSectionGroup;
+	private static Pane centerSectionPane;
 	private static Text percentage;
 	private double zoomScale = 0.2;
 
@@ -153,12 +154,13 @@ public class MainLayoutController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO put credit to the author of the send arrow icon (text in css file)
+		// FIXME delete this - it is done, when Rover sends 'ready'
 		baseAngle = (double) 360 / numberOfLines;
 
 		consoleOutputTextBox = consoleOutputTextBoxFXML;
 		centerSectionGroup = centerSectionGroupFXML;
 		percentage = percentageFXML;
+		centerSectionPane = centerSectionPaneFXML;
 		buildCenterSection(); // FIXME start with empty center section only with message that "Rover is
 								// initializing sensors" and start to build it after the Rover sends the first
 								// set of data to be visualized
@@ -205,13 +207,13 @@ public class MainLayoutController implements Initializable {
 				break;
 			case LEFT:
 				if (!consoleInput.isFocused()) {
-					RoverConnection.roverConnection.sendData("tr1400"); // FIXME adjust the number
+					RoverConnection.roverConnection.sendData("tr1100"); // FIXME adjust the number
 					keyEvent.consume();
 				}
 				break;
 			case RIGHT:
 				if (!consoleInput.isFocused()) {
-					RoverConnection.roverConnection.sendData("tr1600"); // FIXME adjust the number
+					RoverConnection.roverConnection.sendData("tr1900"); // FIXME adjust the number
 					keyEvent.consume();
 				}
 				break;
@@ -247,15 +249,14 @@ public class MainLayoutController implements Initializable {
 					setPercentage(100);
 					break;
 				}
-			} else {
-				// FIXME uncomment:
+			} else
 				RoverConnection.roverConnection.sendData(text);
-			}
-
-			addMessageToConsole(false, false, text);
+			boolean command = (text.equals(RoverOutcomeCommands.STARTMEASURING)
+					|| text.equals(RoverOutcomeCommands.STOPMEASURING));
+			addMessageToConsole(false, false, command, text);
+			consoleInput.setText("");
 		}
 
-		consoleInput.setText("");
 		consoleSubmit.requestFocus();
 	}
 
@@ -283,40 +284,55 @@ public class MainLayoutController implements Initializable {
 		if (input == null)
 			return;
 		switch (input.substring(0, 2)) {
-		case RoverCommands.DATA:
+		case RoverIncomeCommands.DATA:
 			updatePoint(Integer.parseInt(input.substring(2, 4)), Integer.parseInt(input.substring(4)));
 			break;
-		case RoverCommands.READY:
-			addMessageToConsole(true, false, "Sensors initialized. Rover is ready.");
+		case RoverIncomeCommands.READY:
+			addMessageToConsole(true, false, false, "Sensors initialized. Rover is ready.");
 			break;
-		case RoverCommands.RESOLUTION:
-			setBaseAngle(Integer.parseInt(input.substring(2)));
+		case RoverIncomeCommands.RESOLUTION:
+			numberOfLines = Integer.parseInt(input.substring(2));
+			countBaseAngle(numberOfLines);
+			buildCenterSection();
 			break;
-		case RoverCommands.ERROR:
-			addMessageToConsole(true, true, input.substring(2));
+		case RoverIncomeCommands.ERROR:
+			addMessageToConsole(true, true, false, input.substring(2));
 			break;
-		case RoverCommands.BATTERY:
+		case RoverIncomeCommands.BATTERY:
 			setPercentage(Integer.valueOf(input.substring(2)));
 			break;
 		default:
-			addMessageToConsole(true, false, input);
+			addMessageToConsole(true, false, false, input);
 			break;
 		}
 	}
 
 	/**
 	 * The {@code RoverCommands} class wraps static {@link String} constants that
-	 * contain the command representation as it is send from the Rover
+	 * contain the command representation as it is send from the Rover.
 	 * 
 	 * @author Ondrej Masopust
 	 *
 	 */
-	private class RoverCommands {
+	private class RoverIncomeCommands {
 		private static final String DATA = "dt";
 		private static final String READY = "rd";
 		private static final String ERROR = "er";
 		private static final String BATTERY = "bt";
 		private static final String RESOLUTION = "ro";
+	}
+
+	/**
+	 * This class contains public static constant {@link String}s containing
+	 * messages, that can be sent to the Rover through the console an will be
+	 * treated as commands.
+	 * 
+	 * @author Ondra
+	 *
+	 */
+	public class RoverOutcomeCommands {
+		public static final String STARTMEASURING = "startMeasure";
+		public static final String STOPMEASURING = "stopMeasure";
 	}
 
 	/**
@@ -333,7 +349,7 @@ public class MainLayoutController implements Initializable {
 	 * @param input
 	 *            {@link String} containing the message
 	 */
-	private static void addMessageToConsole(boolean fromRover, boolean error, String input) {
+	private static void addMessageToConsole(boolean fromRover, boolean error, boolean command, String input) {
 		consoleMessageList.add(new HBox());
 		consoleMessageIndex++;
 		Label consoleText = new Label();
@@ -356,9 +372,10 @@ public class MainLayoutController implements Initializable {
 				consoleText.getStyleClass().add("textListError");
 			else
 				consoleText.getStyleClass().add("textListYou");
+			if (command)
+				consoleText.getStyleClass().add("textListCommand");
 		}
 		message.setPrefWidth(consoleText.getWidth() * 2);
-		message.getStyleClass().add("messageList");
 
 		if (!input.equals("")) {
 			consoleText.setText(input);
@@ -464,7 +481,7 @@ public class MainLayoutController implements Initializable {
 	 * 
 	 * @return void
 	 */
-	private void buildCenterSection() {
+	private static void buildCenterSection() {
 		Image tank = new Image("/com/masopust/ondra/java/gui/mainLayout/tank.png", 100, 200, true, false);
 		ImageView tankIV = new ImageView(tank);
 		tankIV.xProperty().bind(centerSectionPane.widthProperty().divide(2).subtract(tank.getWidth() / 2));
@@ -541,7 +558,7 @@ public class MainLayoutController implements Initializable {
 	 * @param resolution
 	 *            The total number of lines
 	 */
-	private static void setBaseAngle(int resolution) {
+	private static void countBaseAngle(int resolution) {
 		baseAngle = (double) 360 / resolution;
 	}
 

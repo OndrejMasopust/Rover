@@ -87,7 +87,7 @@
 				</BorderPane>
 			</right>
 			<center>
-				<Pane fx:id="centerSectionPane" BorderPane.alignment="CENTER"
+				<Pane fx:id="centerSectionPaneFXML" BorderPane.alignment="CENTER"
 					styleClass="centerSection">
 					<children>
 						<Group fx:id="centerSectionGroupFXML" />
