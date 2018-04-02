@@ -4,23 +4,23 @@
 Follow this [tutorial](https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md) to set up your Raspberry Pi as an AP
 
 #### 2. Install these packages on the Pi
-In the terminal of the Pi, type:
+In the terminal of the Pi, type:   
 sudo apt-get install build-essential python-dev
 
 #### 3. Enable I<sup>2</sup>C on the Pi
-In the Pi terminal, type:
-sudo raspi-config
+In the Pi terminal, type:   
+sudo raspi-config   
 And there, in "Interafcing Options", select I<sup>2</sup>C and confirm that.
 You need to reboot your Pi after this.
 
 #### 4. Install Python smbus2 package
-In the Pi terminal, type:
+In the Pi terminal, type:   
 sudo pip3 install smbus2
 
 #### 5. Install pigpio library
-In the Pi terminal, type:
-wget abyz.co.uk/rpi/pigpio/pigpio.zip
-unzip pigpio.zip
-cd PIGPIO
-make
+In the Pi terminal, type:   
+wget abyz.co.uk/rpi/pigpio/pigpio.zip   
+unzip pigpio.zip   
+cd PIGPIO    
+make    
 sudo make install
