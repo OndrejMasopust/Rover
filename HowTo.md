@@ -39,7 +39,8 @@ sudo make install
 Copy the content of the `Rover/Python/` directory somewhere to your Pi.
 
 #### 8. Get the PCB, electronic and Lego parts
-...and assemble that.   
+...and assemble that.
+Buy 4 1nF capacitors more than it is in the schematics. They will be soldered from the motor terminals to the motor shield.   
 PCB layout can be found in the `PCBs_schematics/PCB-Layout/` directory. You can order it for example from [JLCPCB](https://jlcpcb.com).   
 Some things I used specifically:
 -[sensor](https://www.ebay.com/itm/Sharp-GP2Y0A710K0F-IR-Range-Sensor-100-550cm-Infrared-Proximity-Measure-distance/321873113256?epid=2256191608&hash=item4af121f0a8:g:ZYwAAOSw9r1WAVJC)
@@ -55,6 +56,38 @@ Some things I used specifically:
 I used a balsa wood.   
 For example like this:
 1. Make bigger hole in the gear, so that it fits the slip ring
-3. Make this:
+3. Make this:   
+The diameter of the disc is roughly 6cm.   
 ![holder1](howTo-imgs/holder1.jpg)
 ![holder2](howTo-imgs/holder2.jpg)
+4. Glue a balsa disc to the gear and drill a hole in the middle:   
+![gear with balsa disc](howTo-imgs/gear.jpg)
+5. Glue that it to the holder:   
+![holder with gear](howTo-imgs/holder-w-gear.jpg)
+6. Glue the holder to the slip ring.
+6. Make a balsa plate:  
+The dimensions are roughly 6.5cm x 9.5cm. The holes form a rectangle 8cm x 4.8cm.  
+![balsa plate](howTo-imgs/plate.jpg)
+7. Make a hole in the plate for the slip ring, the motor that rotates with the sensor and the optolatch.
+8. Mount the slip ring and the motor (already with its gear) to the plate (I mounted it to a Lego supportive skeleton):   
+![plate2](howTo-imgs/plate2.jpg)   
+![plate3](howTo-imgs/plate3.jpg)
+9. Solder connector for the sensor:  
+![connector](howTo-imgs/connector.jpg)
+10. Solder connector to the wore going from the sensor and screw the sensor to the holder and connect it:  
+![sensor](howTo-imgs/sensor.jpg)
+11. Add counterweight to the other side of the holder (I used lead marbles, it should weight the same as the sensor):  
+![counterweight](howTo-imgs/counterweight.jpg)
+12. Create holder for the opto-latch and mount it:  
+![opto-latch1](howTo-imgs/opto-latch1.jpg)  
+![opto-latch2](howTo-imgs/opto-latch2.jpg)  
+![opto-latch3](howTo-imgs/opto-latch3.jpg)
+13. Create a protrusion from balsa wood and glue it to the disc. I needs to be in such a way, that it goes through the optolatch every rotation:  
+![protrusion](howTo-imgs/protrusion.jpg)
+14. To strenghten the servo mount, you can glue there a stick with an epoxid glue:  
+![stick1](howTo-imgs/servo-mount1.jpg)  
+![stick2](howTo-imgs/servo-mount2.jpg)
+15. Solder the 1nF capacitors between motor terminals and motor shields:
+![motor1](howTo-imgs/motor1.jpg)   
+![motor2](howTo-imgs/motor2.jpg)
+![motor3](howTo-imgs/motor3.jpg)
