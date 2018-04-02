@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 '''
 Created on Jan 27, 2018
 
@@ -42,17 +42,17 @@ class Motors(object):
         
         :param dutyCycle: The duty cycle to be applied. 0 <= dutyCycle <= 100
         :type dutyCycle: int
-        :raises ValueError: A ValueError is raised when the arugument <= 0 or 100 <= argument
+        :raises ValueError: A ValueError is raised when the argument <= 0 or 100 <= argument
         '''
         try:
-            if (dutyCycle <= 0 or 100 <= dutyCycle):
+            if (dutyCycle >= 0 and 100 >= dutyCycle):
                 if self.pwmRunning:
                     self.pmw.ChangeDutyCycle(dutyCycle)
                 else:
                     self.pwm.start(dutyCycle)
                 self.currentDutyCycle = dutyCycle
             else:
-                raise ValueError("Motors.run(): Argument out of bounds. Must be: arugument <= 0 or 100 <= argument")
+                raise ValueError("Motors.run(): Argument out of bounds. Must be: argument <= 0 or 100 <= argument, was: " + dutyCycle)
         except ValueError as err:
             print(err)
             self.tcpCommunication.sendToHostWrapper('er' + err)
@@ -65,16 +65,16 @@ class Motors(object):
         
         :param dutyCycle: The duty cycle to be applied. 0 =< dutyCycle =< 100
         :type dutyCycle: int
-        :raises ValueError: A ValueError is raised when the arugument <= 0 or 100 <= argument
+        :raises ValueError: A ValueError is raised when the argument <= 0 or 100 <= argument
         '''
         
         try:
-            if (dutyCycle <= 0 or 100 <= dutyCycle):
+            if (dutyCycle >= 0 and 100 >= dutyCycle):
                 if self.pwmRunning:
                     self.pmw.ChangeDutyCycle(dutyCycle)
                     self.currentDutyCycle = dutyCycle
             else:
-                raise ValueError("Motors.setSpeed(): Argument out of bounds. Must be: arugument <= 0 or 100 <= argument")
+                raise ValueError("Motors.setSpeed(): Argument out of bounds. Must be: argument <= 0 or 100 <= argument, was: " + dutyCycle)
         except ValueError as err:
             print(err)
             self.tcpCommunication.sendToHostWrapper('er' + err)
@@ -88,11 +88,11 @@ class Motors(object):
         :raises ValueError: A ValueError is raised when the (self.currentDutyCycle + increment) <= 0 or 100 <= (self.currentDutyCycle + increment)
         '''
         try:
-            if (self.currentDutyCycle + increment) <= 0 or 100 <= (self.currentDutyCycle + increment):
+            if (self.currentDutyCycle + increment) >= 0 or 100 >= (self.currentDutyCycle + increment):
                 if self.pwmRunning:
                     self.pwm.ChangeDutyCycle(self.currentDutyCycle + increment)
             else:
-                raise ValueError("Motors.speedUp(): Argument not legal. Must be: (self.currentDutyCycle + increment) <= 0 or 100 <= (self.currentDutyCycle + increment)")
+                raise ValueError("Motors.speedUp(): Argument not legal. Must be: (self.currentDutyCycle + increment) >= 0 or 100 >= (self.currentDutyCycle + increment), was: " + self.currentDutyCycle + " + " + increment)
         except ValueError as err:
             print(err)
             self.tcpCommunication.sendToHostWrapper('er' + err)
@@ -113,7 +113,7 @@ class Motors(object):
             gpio.output(self.directionOut[1], gpio.LOW)
     
     def getDutyCycle(self):
-    	return self.currentDutyCycle
+        return self.currentDutyCycle
 
     def stop(self):
         '''

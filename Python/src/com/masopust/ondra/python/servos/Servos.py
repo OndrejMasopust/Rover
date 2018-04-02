@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 '''
 Created on Feb 2, 2018
 
@@ -23,6 +23,7 @@ class Servos(object):
         self.pwmOut = pwmOut
         self.myPigpio = pigpio.pi()
         self.tcpCommunication = tcpCommunication
+        self.myPigpio.set_servo_pulsewidth(self.pwmOut, 1500)
  
     def setPosition(self, position):
         '''

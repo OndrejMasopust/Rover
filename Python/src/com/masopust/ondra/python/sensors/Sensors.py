@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 '''
 Created on Sep 4, 2017
 
@@ -31,6 +31,7 @@ class Sensors (threading.Thread):
         :param tcpCommunication: Instance of the TCPCommunication class that is used to send data to the client.
         :type tcpCommunication: TCPCommunication
         '''
+        threading.Thread.__init__(self)
         self.daemon = True
         # this queue contains True if the Raspberry Pi should start to sense another rotation
         # it needs to be a queue, because it is shared between this thread and the interrupt thread
@@ -39,7 +40,7 @@ class Sensors (threading.Thread):
         self.mainQueue = queue
         self.tcpCommunication = tcpCommunication
         
-        self.sensorMotor = Motors(22, [21, 23])
+        self.sensorMotor = Motors(22, [21, 23], self.tcpCommunication)
         self.sensorMotor.setDirection(Direction.RIGHT)
         
         # this variable tells if the sensor motor is running
@@ -74,11 +75,11 @@ class Sensors (threading.Thread):
         # stop sensor motor
         self.sensorMotor.clean()
 
-		# this only needs to be done, when th sensor is stopped because the client disconnected
-		# not only when the sensor was stopped temporarily using the 'stopMeasure' command
+        # this only needs to be done, when th sensor is stopped because the client disconnected
+        # not only when the sensor was stopped temporarily using the 'stopMeasure' command
         if self.running:
-	        # send ACK back to the queue
-    	    self.mainQueue.put(True)
+            # send ACK back to the queue
+            self.mainQueue.put(True)
 
     def sensOneRotation(self):
         for index in range(0, self.resolution):
@@ -87,7 +88,7 @@ class Sensors (threading.Thread):
                     self.conversionStartClock = time.time()
                     message = "dt"
                     if index < 10:
-                    message += "0"
+                        message += "0"
                     message += index
                     distance = self.measure()
                     message += str(distance)
@@ -95,8 +96,8 @@ class Sensors (threading.Thread):
                     # wait for next conversion
                     time.sleep( self.CONVERSIONTIME - (self.conversionStartClock - time.time()) )
                 else:
-                	# the rotation was not finished in time
-                	# speed down the sensor motor
+                    # the rotation was not finished in time
+                    # speed down the sensor motor
                     self.sensorMotor.speedUp(-3)
                     break
     
@@ -106,16 +107,16 @@ class Sensors (threading.Thread):
         it counts how many dots will be displayed on the client's computer screen.
         '''
         if not self.running:
-	        self.sensorMotor.run(100)    # FIXME set the duty cycle
-    	    self.running = True
-        	while self.rotationCounter < 3:
-            	pass
-	        self.resolution = round(self.lastRotationTime / self.CONVERSIONTIME)
-    	    self.tcpCommunication.sendToHostWrapper("rd")
-        	self.tcpCommunication.sendToHostWrapper("ro" + self.resolution)
+            self.sensorMotor.run(100) # FIXME set the duty cycle
+            self.running = True
+            while self.rotationCounter < 3:
+                pass
+            self.resolution = round(self.lastRotationTime / self.CONVERSIONTIME)
+            self.tcpCommunication.sendToHostWrapper("rd")
+            self.tcpCommunication.sendToHostWrapper("ro" + self.resolution)
 
-	def stop(self):
-		self.running = False
+    def stop(self):
+        self.running = False
     
     def measure(self):
         '''
@@ -132,7 +133,7 @@ class Sensors (threading.Thread):
         return longDist
         
     def getRunning(self):
-    	return self.running
+        return self.running
     
     def __isr(self, channel):
         '''

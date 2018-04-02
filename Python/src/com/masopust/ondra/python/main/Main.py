@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 '''
 Created on Aug 3, 2017
 
@@ -7,16 +7,15 @@ Created on Aug 3, 2017
 import subprocess
 import sys
 import time
-import thread
 from queue import LifoQueue
+
+sys.path.append('/home/pi/Documents/Ondra/Rover/src/src')
 
 from com.masopust.ondra.python.motors.Motors import Motors
 from com.masopust.ondra.python.motors.Direction import Direction
 from com.masopust.ondra.python.tcpCommunication.TCPCommunication import TCPCommunication
 from com.masopust.ondra.python.sensors.Sensors import Sensors
 from com.masopust.ondra.python.servos import Servos
-
-sys.path.append('/Users/Ondra/Documents/Programming/Maturita/Project/Python/src/')
 
 def Main():
     # create server and wait for connection
@@ -30,53 +29,57 @@ def Main():
     sensors = Sensors(q, tcpCommunication)
     
     # initialize an instance that controls the main motor that rotates the wheels 
-    mainMotor = Motors(5, [0, 1])
+    mainMotor = Motors(5, [0, 1], tcpCommunication)
     
     # start the pigpiod server
     subprocess.run(["sudo", "pigpiod"])
     # initialze an instance that controls the servo that turns the wheels
-    servo = Servos()
+    servo = Servos.Servos(18, tcpCommunication)
     
     # listen to commands
     while True:
         data = tcpCommunication.handleRecvAndSend()
         if data != '':
-            if data == 'stop':  # 'stop' returned from the tcpCommunication.handleRecvAndSend() function
+            if 'stop'.encode(encoding='utf_8', errors='strict') in data:  # 'stop' returned from the tcpCommunication.handleRecvAndSend() function
                 q.put(True)
                 # wait for the ACK from the sensors thread
-                while not q.full():
-                    pass
+                if sensors.running:
+                    while not q.full():
+                        pass
                 servo.clean()
                 mainMotor.clean()
                 tcpCommunication.sendToHostWrapper('ACK')
                 # wait for one second
                 time.sleep(1)
                 break
+            # just checking, if the socket was not broken
+            elif 'check'.encode(encoding='utf_8', errors='strict') in data:
+                tcpCommunication.sendToHostWrapper('check')
             # 'mr' motor run command
-            elif 'mr' in data:
+            elif 'mr'.encode(encoding='utf_8', errors='strict') in data:
                 # 100 is taken as 'do not move'
                 # numbers above 100 as 'move forward'
                 speed = int(data[2:])
                 if speed > 100:
-                    mainMotor.setDirection(Direction.FORWARD)
+                    mainMotor.setDirection(True)
                 # numbers less than 100 as 'move backward'
                 else:
-                    mainMotor.setDirection(Direction.BACKWARD)
+                    mainMotor.setDirection(False)
                 mainMotor.run( abs(speed - 100) )
             # 'ms' motor stop command
-            elif data == 'ms':
+            elif 'ms'.encode(encoding='utf_8', errors='strict') in data:
                 mainMotor.stop()
             # 'tr' turn command
-            elif 'tr' in data:
+            elif 'tr'.encode(encoding='utf_8', errors='strict') in data:
                 servo.setPosition( int(data[2:]) )
-            elif 'startMeasure' in data:
-            	sensors.initSens()
-            	# start measuring
-			    sensors.start()
-            elif 'stopMeasure' in data:
-            	sensors.stop()
+            elif 'startMeasure'.encode(encoding='utf_8', errors='strict') in data:
+                sensors.initSens()
+                # start measuring
+                sensors.start()
+            elif 'stopMeasure'.encode(encoding='utf_8', errors='strict') in data:
+                sensors.stop()
             else:
-                print(data)
+                print(data.decode())
 
     print('Client disconnected - terminating program')
     # terminate all threads
