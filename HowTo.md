@@ -24,6 +24,3 @@ unzip pigpio.zip
 cd PIGPIO
 make
 sudo make install
-
-
-// before start of the main program, it is necessaru to start the pigpiod: sudo pigpiod
