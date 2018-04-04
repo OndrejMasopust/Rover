@@ -77,7 +77,6 @@ void adcStartConversion(void) {
 ISR(TWI_vect) {
 	// own SLA+R received, ACK sent || data byte has been transmitted, ACK received
 	if (i2cStatus() == 0xA8 || i2cStatus() == 0xB8) {
-		// TWDR = 0x34;
 		switch (sentCounter) {
 			case 0:
 				// send the MSB of sensorShort
@@ -123,6 +122,9 @@ ISR(TWI_vect) {
 		TWCR |= (1 << TWINT);
 		// start a new conversion
 		adcStartConversion();
+	} else {
+		// clear TWINT flag
+		TWCR |= (1 << TWINT);
 	}
 }
 
