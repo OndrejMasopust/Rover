@@ -8,7 +8,7 @@ English below
 Podle tohoto [tutoriálu](https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md).
 
 #### 3. Nainstalujte si tyto balíčky na svém Pi
-V terminálu pusť tento příkaz:   
+V terminálu pusťte tento příkaz:   
 ```
 sudo apt-get install build-essential python-dev
 ```
