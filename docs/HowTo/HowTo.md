@@ -7,22 +7,22 @@ English below
 #### 2. Nastavte si AP na svém Pi
 Podle tohoto [tutoriálu](https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md).
 
-#### 3. Nainstalujte si tyto balíčky na své Pi
+#### 3. Nainstalujte si tyto balíčky na svém Pi
 V terminálu pusť tento příkaz:   
 ```
 sudo apt-get install build-essential python-dev
 ```
 
 #### 4. Povolte I<sup>2</sup>C na Pi
-V terminálu pusť tento příkaz:
+V terminálu pusťte tento příkaz:
 ```
 sudo raspi-config
 ```
-A tam, v "Interafcing Options", vyberte I<sup>2</sup>C a potvrďte to.  
-Po tomto je potřeba Pi restartovat.
+V "Interafcing Options" vyberte I<sup>2</sup>C a potvrďte to.  
+Po tomto kroku je potřeba Pi restartovat. (budete vyzváni)
 
 #### 5. Nainstalujte balíček Python smbus2
-V terminálu pusť tento příkaz:
+V terminálu pusťte tento příkaz:
 ```
 sudo pip3 install smbus2
 ```
@@ -42,11 +42,12 @@ Nakopírujte obsah složky `Rover/Python/` někam do svého Pi.
 
 #### 8. Pořiďte si plošmý spoj, elektronické součástky a Lego kostičky
 Potřebujete všechny součástky, které jsou ve schématu.  
-V plošném spoji vyvrtejte díry pro držák senzoru a distanční sloupky na Pi. 
 Kupte o 4 1nF kondenzátory více, než je v schématu. Budou připájeny mezi vývody motorů a obal motorů.   
+V plošném spoji vyvrtejte díry pro držák senzoru a distanční sloupky na Pi.  
 ...a spájejte plošný spoj.   
-Rozložení plošného spoje lze najít ve složce `PCBs_schematics/PCB-Layout/`. Plošný spoj si můžete objednat například od [JLCPCB](https://jlcpcb.com).   
-Až si budete kupovat Lego kostičky, nekupujte 'connector pegy' bez třecích výstupků. Konstrukce by pak nebyla tak pevná.
+Rozložení plošného spoje lze najít ve složce `PCBs_schematics/PCB-Layout/`. Soubory jsou vytvořeny pomocí programu [KiCad](http://kicad-pcb.org)
+Plošný spoj si můžete objednat například od [JLCPCB](https://jlcpcb.com).   
+Až si budete kupovat Lego kostičky, nekupujte "connector pegy" bez třecích výstupků. Konstrukce by pak nebyla tak pevná.  
 Některé konkrétní věci, co jsem použil :
 - [senzor](https://www.ebay.com/itm/Sharp-GP2Y0A710K0F-IR-Range-Sensor-100-550cm-Infrared-Proximity-Measure-distance/321873113256?epid=2256191608&hash=item4af121f0a8:g:ZYwAAOSw9r1WAVJC)
 - [servo](http://hitecrcd.com/products/servos/sport-servos/analog-sport-servos/hs-422-deluxe-standard-servo/product)
@@ -59,14 +60,18 @@ Některé konkrétní věci, co jsem použil :
 - [optozávora](https://www.gme.cz/tcst2103)
 
 #### 9. Sestavte držák na senzor
-Já jsem použil balsové dřevo.   
-Například takto:
+Použil jsem balsové dřevo.
 1. V převodu udělejte větší díru
-3. Udělejte toto:   
-Průměr kotouče je asi 6cm.   
+![gear](howTo-imgs/gear.jpg)
+3. Z balsy vyřízněte kotouč o průměru cca. 6cm, malý trojúhelníček jako podpěru a kus balsy, do kterého vyvrtáte díru pro šroub,
+kterým přišroubujete samotný senzor - tento kus musí být dost velký na to, aby mohla být díra na správném místě.
+Přesné rozměry si určete podle velikosti senzoru. 
+![disk](howTo-imgs/disk.jpg)
+![triangle](howTo-imgs/triangle.jpg)
+![mount](howTo-imgs/sensor-mount.jpg)   
 ![holder1](howTo-imgs/holder1.jpg)
 ![holder2](howTo-imgs/holder2.jpg)
-4. Přilepte balsový kotouč k převodu a vyvrtejte uprostřed díru:   
+4. Přilepte balsový kotouč (o něco menší než převod) k převodu a vyvrtejte uprostřed díru:   
 ![gear with balsa disc](howTo-imgs/gear.jpg)
 5. Přilepte to k držáku:   
 ![holder with gear](howTo-imgs/holder-w-gear.jpg)
@@ -88,9 +93,9 @@ Rozměry jsou přibližně 6,5cm x 9,5cm. Díry tvoří obdélník o rozměrech 
 ![opto-latch1](howTo-imgs/opto-latch1.jpg)  
 ![opto-latch2](howTo-imgs/opto-latch2.jpg)  
 ![opto-latch3](howTo-imgs/opto-latch3.jpg)
-13. Vyřízněte malý jazíček z balsy a přilepte ho ke kotouči. Musí to být tak, aby při každé otáčce prošel jazíček optozávorou:  
+13. Vyřízněte malý jazíček z balsy a přilepte ho ke kotouči. Musí to být uděláno tak, aby při každé otáčce prošel jazíček optozávorou:  
 ![protrusion](howTo-imgs/protrusion.jpg)
-14. Pro zpevnění držáku na servo mužete k němu přilepit několik špejlí epoxidovým lepidlem:  
+14. Pro zpevnění držáku na servo k němu můžete přilepit několik špejlí epoxidovým lepidlem:  
 ![stick1](howTo-imgs/servo-mount1.jpg)  
 ![stick2](howTo-imgs/servo-mount2.jpg)
 15. Připájejte 1nF kondenzátory mezi vývody motorů a obal motorů (jak hlavní motor, tak i motor, co točí senzorem):
