@@ -70,6 +70,10 @@ class TCPCommunication:
         if not("\r\n" in message):
             message += "\r\n"
         self.clientSocket.sendall(message.encode(encoding='utf_8', errors='strict'))
+        
+    def closeSocket(self):
+        '''This method closes the client socket.'''
+        self.clientSocket.close()
 
     def handleRecvAndSend(self):
         '''

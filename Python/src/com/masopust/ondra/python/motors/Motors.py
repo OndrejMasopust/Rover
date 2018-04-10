@@ -108,11 +108,11 @@ class Motors(object):
         '''
         # FIXME check if this setup works
         if direction:
-            gpio.output(self.directionOut[0], gpio.LOW)
-            gpio.output(self.directionOut[1], gpio.HIGH)
-        else:
             gpio.output(self.directionOut[0], gpio.HIGH)
             gpio.output(self.directionOut[1], gpio.LOW)
+        else:
+            gpio.output(self.directionOut[0], gpio.LOW)
+            gpio.output(self.directionOut[1], gpio.HIGH)
     
     def getDutyCycle(self):
         '''
