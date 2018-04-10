@@ -1,3 +1,115 @@
+English below
+
+# Jak postavit Rover
+
+#### 1. Zaktualizujte si svoje Raspberry Pi a nainstalujte si nejnovější verzi Python
+
+#### 2. Nastavte si AP na svém Pi
+Podle tohoto [tutoriálu](https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md).
+
+#### 3. Nainstalujte si tyto balíčky na své Pi
+V terminálu pusť tento příkaz:   
+```
+sudo apt-get install build-essential python-dev
+```
+
+#### 4. Povolte I<sup>2</sup>C na Pi
+V terminálu pusť tento příkaz:
+```
+sudo raspi-config
+```
+A tam, v "Interafcing Options", vyberte I<sup>2</sup>C a potvrďte to.  
+Po tomto je potřeba Pi restartovat.
+
+#### 5. Nainstalujte balíček Python smbus2
+V terminálu pusť tento příkaz:
+```
+sudo pip3 install smbus2
+```
+
+#### 6. Nainstalujte knihovnu pigpio
+V terminálu pusťte tyto příkazy:
+```
+wget abyz.co.uk/rpi/pigpio/pigpio.zip
+unzip pigpio.zip
+cd PIGPIO
+make
+sudo make install
+```
+
+#### 7. Nakopírujte program pro Rover
+Nakopírujte obsah složky `Rover/Python/` někam do svého Pi.
+
+#### 8. Pořiďte si plošmý spoj, elektronické součástky a Lego kostičky
+Potřebujete všechny součástky, které jsou ve schématu.  
+V plošném spoji vyvrtejte díry pro držák senzoru a distanční sloupky na Pi. 
+Kupte o 4 1nF kondenzátory více, než je v schématu. Budou připájeny mezi vývody motorů a obal motorů.   
+...a spájejte plošný spoj.   
+Rozložení plošného spoje lze najít ve složce `PCBs_schematics/PCB-Layout/`. Plošný spoj si můžete objednat například od [JLCPCB](https://jlcpcb.com).   
+Až si budete kupovat Lego kostičky, nekupujte 'connector pegy' bez třecích výstupků. Konstrukce by pak nebyla tak pevná.
+Některé konkrétní věci, co jsem použil :
+- [senzor](https://www.ebay.com/itm/Sharp-GP2Y0A710K0F-IR-Range-Sensor-100-550cm-Infrared-Proximity-Measure-distance/321873113256?epid=2256191608&hash=item4af121f0a8:g:ZYwAAOSw9r1WAVJC)
+- [servo](http://hitecrcd.com/products/servos/sport-servos/analog-sport-servos/hs-422-deluxe-standard-servo/product)
+- [hlavní motor](https://www.ebay.com/itm/320911868255)
+- [senzorový motor](https://www.ebay.com/itm/6-12V-100-200-300-30RPM-Mini-DC-Metal-Gear-Motor-Gearwheel-Shaft-Diameter-N20/182498725375?ssPageName=STRK%3AMEBIDX%3AIT&var=485067902164&_trksid=p2057872.m2749.l2649)
+(verze 6V 200rpm)
+- [převody](https://www.ebay.com/itm/85Pcs-Plastic-Gears-Rack-Pulley-Belt-Worm-Teeth-Shaft-Car-Toy-Models-Part-DIY/152738933090?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649)
+- Li-Pol 3S 1300mAh baterie
+- [slip ring](https://www.ebay.com/itm/12-5mm-300Rpm-Capsule-Tiny-Slip-Ring-12-Circuits-Wires-2A-240V-Test-Equipment-/141778019951?hash=item2102a0e66f)
+- [optozávora](https://www.gme.cz/tcst2103)
+
+#### 9. Sestavte držák na senzor
+Já jsem použil balsové dřevo.   
+Například takto:
+1. V převodu udělejte větší díru
+3. Udělejte toto:   
+Průměr kotouče je asi 6cm.   
+![holder1](howTo-imgs/holder1.jpg)
+![holder2](howTo-imgs/holder2.jpg)
+4. Přilepte balsový kotouč k převodu a vyvrtejte uprostřed díru:   
+![gear with balsa disc](howTo-imgs/gear.jpg)
+5. Přilepte to k držáku:   
+![holder with gear](howTo-imgs/holder-w-gear.jpg)
+6. Přilepte držák ke slip ring
+6. Udělejte balsovou destičku:  
+Rozměry jsou přibližně 6,5cm x 9,5cm. Díry tvoří obdélník o rozměrech cca. 8cm x 4.8cm.  
+![balsa plate](howTo-imgs/plate.jpg)
+7. Do destičky udělejte díru pro slip ring, senzorový motor a optozávoru.
+8. Upevni k destičce slip ring a motor (už s převodem). (Na obrázku jsem si to připevnil na pomocnou konstrukci z Lega):   
+![plate2](howTo-imgs/plate2.jpg)   
+![plate3](howTo-imgs/plate3.jpg)
+9. Připájejte konektor pro senzor:  
+![connector](howTo-imgs/connector.jpg)
+10. Připájejete konektor ke kabelu jdoucímu ze senzoru a přišroubujte senzor k držáku:  
+![sensor](howTo-imgs/sensor.jpg)
+11. Přidejte protizávaží naproti senzoru (Já jsem použil olověné kuličky. Měly by vážit stejně jako senzor):  
+![counterweight](howTo-imgs/counterweight.jpg)
+12. Vytvořte držák pro optozávoru a připevněte ji:  
+![opto-latch1](howTo-imgs/opto-latch1.jpg)  
+![opto-latch2](howTo-imgs/opto-latch2.jpg)  
+![opto-latch3](howTo-imgs/opto-latch3.jpg)
+13. Vyřízněte malý jazíček z balsy a přilepte ho ke kotouči. Musí to být tak, aby při každé otáčce prošel jazíček optozávorou:  
+![protrusion](howTo-imgs/protrusion.jpg)
+14. Pro zpevnění držáku na servo mužete k němu přilepit několik špejlí epoxidovým lepidlem:  
+![stick1](howTo-imgs/servo-mount1.jpg)  
+![stick2](howTo-imgs/servo-mount2.jpg)
+15. Připájejte 1nF kondenzátory mezi vývody motorů a obal motorů (jak hlavní motor, tak i motor, co točí senzorem):
+![motor1](howTo-imgs/motor1.jpg)   
+![motor2](howTo-imgs/motor2.jpg)
+![motor3](howTo-imgs/motor3.jpg)
+
+#### 10. Připájejte kabely s konektory ke konektoru, který připevníte k GPIO:
+(Je dobrý nápad je také označit)   
+![pi header1](howTo-imgs/pi-header1.jpg)
+![pi header2](howTo-imgs/pi-header2.jpg)
+
+#### 11. Připevněte Pi a senzor k plošnému spoji
+![pcb](howTo-imgs/pcb.jpg)
+
+#### 12. Všechno sestavte
+![rover](howTo-imgs/rover.jpg)
+    
+    
 # How to make your own Rover
 
 #### 1. Upgrade your Pi and install the latest version of Python
@@ -53,6 +165,7 @@ Some things I used specifically:
 - [gears](https://www.ebay.com/itm/85Pcs-Plastic-Gears-Rack-Pulley-Belt-Worm-Teeth-Shaft-Car-Toy-Models-Part-DIY/152738933090?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649)
 - Li-Pol 3S 1300mAh battery
 - [slip ring](https://www.ebay.com/itm/12-5mm-300Rpm-Capsule-Tiny-Slip-Ring-12-Circuits-Wires-2A-240V-Test-Equipment-/141778019951?hash=item2102a0e66f)
+- [opto-latch](https://www.gme.cz/tcst2103)
 
 #### 9. Assemble the sensor holder
 I used a balsa wood.   
@@ -64,7 +177,7 @@ The diameter of the disc is roughly 6cm.
 ![holder2](howTo-imgs/holder2.jpg)
 4. Glue a balsa disc to the gear and drill a hole in the middle:   
 ![gear with balsa disc](howTo-imgs/gear.jpg)
-5. Glue that it to the holder:   
+5. Glue it to the holder:   
 ![holder with gear](howTo-imgs/holder-w-gear.jpg)
 6. Glue the holder to the slip ring.
 6. Make a balsa plate:  
@@ -93,7 +206,6 @@ The dimensions are roughly 6.5cm x 9.5cm. The holes form a rectangle 8cm x 4.8cm
 ![motor1](howTo-imgs/motor1.jpg)   
 ![motor2](howTo-imgs/motor2.jpg)
 ![motor3](howTo-imgs/motor3.jpg)
-16. And there you have it! You have your sensor holder.
 
 #### 10. Solder wires with connectors to the Pi header:
 (It is also a good idea to label them)   
