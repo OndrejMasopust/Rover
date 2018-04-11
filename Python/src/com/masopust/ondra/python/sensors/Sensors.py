@@ -21,14 +21,14 @@ class Sensors (threading.Thread):
     This class is used to control the distance sensor of the Rover.
     '''
 
-    def __init__(self, queue, tcpCommunication):
+    def __init__(self, halt, tcpCommunication):
         '''
         This constructor assigns given arguments to instance variables, sets the thread as daemon and sets up an interrupt
         that is executed when the sensor finishes one rotation.
 
-        :param queue: The LifoQueue instance that is used to exchange information between this thread and the main thread.
-            It contains, whether the client disconnected and if the measuring was stopped.
-        :type queue: LifoQueue
+        :param halt: A threading.Event object, that is used to stop this thread.
+            It contains, whether the client disconnected.
+        :type halt: threading.Event
         :param tcpCommunication: Instance of the TCPCommunication class that is used to send data to the client.
         :type tcpCommunication: TCPCommunication
         '''
@@ -37,11 +37,11 @@ class Sensors (threading.Thread):
         
         # This queue contains True if the Raspberry Pi should start to sense another rotation
         # It also contains the self.rotationCounter variable when initializing the sensors
-        # After he sensor is initialized, it contains the time of the last rotation 
+        # After the sensor is initialized, it contains the time of the last rotation 
         # It needs to be a queue, because it is shared between this thread and the interrupt thread
         self.sensorQueue = Queue(2)
         
-        self.mainQueue = queue
+        self.halt = halt
         self.tcpCommunication = tcpCommunication
         
         self.sensorMotor = Motors(25, [9, 11], self.tcpCommunication)
@@ -71,7 +71,7 @@ class Sensors (threading.Thread):
     def run(self):
         '''This method is called when this thread is started by the start() method in the Main class.'''
         self.initSens()
-        while self.mainQueue.empty() and self.running:
+        while not self.halt.is_set() and self.running:
             # get() blocks the flow of the program if necessary until an item in the queue is available 
             if self.sensorQueue.get():
                 self.sensOneRotation()
@@ -82,15 +82,15 @@ class Sensors (threading.Thread):
         # not only when the sensor was stopped temporarily using the 'stopMeasure' command
         if self.running:
             self.sensorMotor.clean()
-            # send ACK back to the queue
-            self.mainQueue.put(True)
+            # send ACK back to the main thread
+            self.halt.clear()
 
     def sensOneRotation(self):
         '''This method senses one rotation'''
         for index in range(0, self.resolution):
                 print(time.time())
                 # check if there is not stop from the main thread
-                if self.mainQueue.empty():
+                if not self.halt.is_set():
                     print(time.time())
                     # if there is not temporary stop
                     if self.running:

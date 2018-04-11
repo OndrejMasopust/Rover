@@ -9,7 +9,7 @@ This module starts the whole Rover application.
 import subprocess
 import sys
 import time
-from queue import LifoQueue
+from threading import Event
 
 sys.path.append('/home/pi/Documents/Ondra/Rover/src/src')
 
@@ -25,11 +25,10 @@ def Main():
         tcpCommunication = TCPCommunication()
         tcpCommunication.establishTCPConnection()
         
-        # create a queue, that will share, if host sent 'stop'
-        # the queue has maxsize = 2
-        q = LifoQueue(2)
+        halt = threading.Event()
+        
         # initialize sensors
-        sensors = Sensors(q, tcpCommunication)
+        sensors = Sensors(halt, tcpCommunication)
         
         # initialize an instance that controls the main motor that rotates the wheels 
         mainMotor = Motors(5, [0, 1], tcpCommunication)
@@ -45,10 +44,10 @@ def Main():
             if data != '':
                 # 'stop' returned from the tcpCommunication.handleRecvAndSend() function
                 if 'halt'.encode(encoding='utf_8', errors='strict') in data:
-                    q.put(True)
+                    halt.set()
                     # wait for the ACK from the sensors thread
                     if sensors.getRunning():
-                        while not q.full():
+                        while halt.is_set():
                             pass
                     servo.clean()
                     mainMotor.clean()
