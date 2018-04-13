@@ -55,10 +55,10 @@ class TCPCommunication:
             readyToRead, readyToWrite, error = select.select([], potential_writers, [])
         
             if self.clientSocket in readyToWrite:
-                self.__sendToHost(message)
+                self.sendToHost(message)
                 break
     
-    def __sendToHost(self, message = "null"):
+    def sendToHost(self, message = "null"):
         '''
         This method sends the given message to the host. It is private because by itself,
         it doesn't provide safe data sending. For safe data sending, use the sendToHostWrapper(message) function.
@@ -98,7 +98,7 @@ class TCPCommunication:
                 if reader == sys.stdin:
                     if self.clientSocket in readyToWrite:
                         message = sys.stdin.readline()
-                        self.__sendToHost(message)
+                        self.sendToHost(message)
                     else:
                         print("ERROR: Message could not be sent because the client socket is not ready to write. Try sending it again later.")
 

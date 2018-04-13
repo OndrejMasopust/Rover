@@ -8,27 +8,29 @@ This module is just to test the interrupts.
 
 import RPi.GPIO as gpio
 import time
+import sys
+
+sys.path.append('/home/pi/Documents/Ondra/Rover/src/src')
+
+from com.masopust.ondra.python.motors.Motors import Motors
 
 tick = 0
 
 def ISR(channel):
-    print("\nnow\n")
-    myTime = time.time()
-    global tick
-    if (myTime - tick) > 1:
-        print(myTime - tick)
-    tick = time.time()
+    print(str(time.time()) + "\n") 
 
 def Main():
-    global tick
-    tick = time.time()
     gpio.setmode(gpio.BCM)
     gpio.setup(22, gpio.IN)
     gpio.add_event_detect(22, gpio.FALLING, callback=ISR)
+    sensorMotor = Motors(25, [9, 11], None)
+    sensorMotor.setDirection(True)
+    sensorMotor.run(100)
     try:
         while True:
             pass
     except KeyboardInterrupt:
+        sensorMotor.stop()
         gpio.cleanup()
 
 if __name__ == '__main__':

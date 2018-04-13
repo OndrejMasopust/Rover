@@ -33,6 +33,7 @@ class Sensors (threading.Thread):
         '''
         threading.Thread.__init__(self)
         self.daemon = True
+        self.name = "sensorThread"
         
         # This Event contains True when the Raspberry Pi should start to sense another rotation
         self.sensorState = threading.Event()
@@ -57,7 +58,7 @@ class Sensors (threading.Thread):
         self.lastInterruptClock = time.time()
 
         # time in seconds that it takes for the sensor to take one measurement
-        self.CONVERSIONTIME = 0.02
+        self.CONVERSIONTIME = 0.03
         # this constant holds the ideal time of one rotation in seconds
         # TODO check if this number works
         self.DEFAULTROTATIONTIME = 1.35
@@ -88,29 +89,32 @@ class Sensors (threading.Thread):
         '''This method receives information form the sensor for one rotation'''
         for index in range(0, self.resolution):
                 startTime = time.time()
-                print("startTime = " + str(startTime))
+                # print("startTime = " + str(startTime))
                 # check if there is not stop from the main thread
                 if not self.halt.is_set():
-                    print(time.time())
+                    # print("after halt check: " + str(time.time()))
                     # if there is not a temporary stop
                     if self.running:
-                        print(time.time())
+                        # print("after running check: " + str(time.time()))
                         # if the sensor didn't finish the rotation earlier
                         if not self.sensorState.is_set():
-                            print(time.time())
-                            self.conversionStartClock = time.time()
+                            # print("after sensorState check: " + str(time.time()))
+                            #print("index = " + str(index))
+                            
                             message = "dt"
                             print("index = " + str(index))
                             if index < 10:
                                 message += "0"
                             message += str(index)
                             message += str(self.measure())
-                            t = threading.Thread(target=self.tcpCommunication.sendToHostWrapper, args=(message,))
+                            #print("after measuring: " + str(time.time()))
+                            #self.tcpCommunication.sendToHost(message)
+                            t = threading.Thread(target=self.tcpCommunication.sendToHost, args=(message,))
                             t.start()
                             endTime = time.time()
-                            print("endTime = " + str(endTime))
+                            #print("endTime = " + str(endTime))
                             # wait for next conversion
-                            sleepTime = self.CONVERSIONTIME - (endTime - startTime)
+                            sleepTime = self.CONVERSIONTIME - (endTime - startTime) - 0.01
                             if sleepTime > 0:
                                 time.sleep(sleepTime)
                                 print("sleepTime = " + str(sleepTime))
@@ -188,7 +192,7 @@ class Sensors (threading.Thread):
         # interrupt when there should be only one. That is why there is this
         # condition - to clean the undesired interrupts
         self.rotationTime = time.time() - self.lastInterruptClock
-        if self.rotationTime > 0.8:
+        if self.rotationTime > 1.3:
             print("\nnow")
             print("self.rotationTime = " + str(self.rotationTime))
             '''
