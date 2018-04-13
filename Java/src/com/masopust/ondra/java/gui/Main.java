@@ -36,9 +36,10 @@ public class Main extends Application {
 
 	@Override
 	public void stop() throws Exception {
-		RoverConnection.roverConnection.sendData("stop");
+		RoverConnection.roverConnection.sendData("halt");
 		while (RoverConnection.roverConnection.getWaitForAck())
 			;
+		System.out.println("broke from waitForAck");
 		try {
 			RoverConnection.roverConnection.cancel();
 			RoverConnection.roverConnection.getClientSocket().close(); // TODO check if only this is sufficient
