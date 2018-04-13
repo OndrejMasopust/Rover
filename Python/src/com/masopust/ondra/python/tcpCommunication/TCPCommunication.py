@@ -34,12 +34,13 @@ class TCPCommunication:
         serverSocket.bind(('', self.port)) # FIXME on RPi, maybe the '' would need to change to socket.gethostname()
         serverSocket.listen(1)
         self.clientSocket, clientAddress = serverSocket.accept()
+        self.clientSocket.setblocking(0)
         
         print("Connection from " + str(clientAddress) + " was successful")
         
         time.sleep(1)
         
-        self.sendToHostWrapper("Raspberry Pi is connected.")
+        self.sendToHost("Raspberry Pi is connected.")
     
     def sendToHost(self, message = "null"):
         '''

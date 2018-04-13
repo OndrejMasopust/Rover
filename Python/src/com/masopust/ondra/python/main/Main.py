@@ -51,7 +51,7 @@ def Main():
                             pass
                     servo.clean()
                     mainMotor.clean()
-                    tcpCommunication.sendToHostWrapper('ACK')
+                    tcpCommunication.sendToHost('ACK')
                     # wait for one second
                     time.sleep(1)
                     tcpCommunication.closeSocket()
@@ -92,7 +92,7 @@ def Main():
         sensors.kill()
         servo.clean()
         mainMotor.clean()
-        tcpCommunication.sendToHostWrapper('ACK')
+        tcpCommunication.sendToHost('ACK')
         time.sleep(1)
         tcpCommunication.closeSocket()
         subprocess.run(["sudo", "killall", "pigpiod"])

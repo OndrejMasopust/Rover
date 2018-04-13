@@ -68,10 +68,12 @@ class Sensors (threading.Thread):
         '''This method is called when this thread is started by the start() method in the Main class.'''
         self.initSens()
         while not self.halt.is_set() and self.running:
-            # wait() blocks the flow of the program, if necessary, until the Event is set
-            if self.sensorState.wait():
-                self.sensorState.clear()
-                self.sensOneRotation()
+            # wait() blocks the flow of the program if necessary until the Event is set
+            self.sensorState.wait()
+            self.sensorState.clear()
+            # send the RESETDOTCOUNTER command
+            self.tcpCommunication.sendToHost("rc")
+            self.sensOneRotation()
         # stop sensor motor
         self.sensorMotor.stop()
 
@@ -85,46 +87,26 @@ class Sensors (threading.Thread):
     def sensOneRotation(self):
         '''This method receives information form the sensor for one rotation'''
         for index in range(0, self.resolution):
-                startTime = time.time()
-                print("startTime = " + str(startTime))
-                # check if there is not stop from the main thread
-                if not self.halt.is_set():
-                    print("after halt check: " + str(time.time()))
-                    # if there is not a temporary stop
-                    if self.running:
-                        print("after running check: " + str(time.time()))
-                        # if the sensor didn't finish the rotation earlier
-                        if not self.sensorState.is_set():
-                            print("after sensorState check: " + str(time.time()))
-                            #print("index = " + str(index))
-                            
-                            message = "dt"
-                            print("index = " + str(index))
-                            if index < 10:
-                                message += "0"
-                            message += str(index)
-                            message += str(self.measure())
-                            print("after measuring: " + str(time.time()))
-                            self.tcpCommunication.sendToHost(message)
-                            '''
-                            t = threading.Thread(target=self.tcpCommunication.sendToHost, args=(message,))
-                            t.start()'''
-                            endTime = time.time()
-                            print("endTime = " + str(endTime))
-                            # wait for next conversion
-                            sleepTime = self.CONVERSIONTIME - (endTime - startTime)
-                            if sleepTime > 0:
-                                time.sleep(sleepTime)
-                                print("sleepTime = " + str(sleepTime))
-                            else:
-                                print("not slept, sleepTime = " + str(sleepTime))
-                            print("\n")
-                        else:
-                            break
-                    else:
-                        break
-                else:
-                    break
+            startTime = time.time()
+            #print("startTime = " + str(startTime))
+            # if the sensor didn't finish the rotation earlier
+            if self.sensorState.is_set():
+                print("index = " + str(index))
+                break
+            #print("after sensorState check: " + str(time.time()))
+            message = "dt" + str(self.measure())
+            #print("after measuring: " + str(time.time()))
+            try:
+                self.tcpCommunication.sendToHost(message)
+            except BrokenPipeError as err:
+                break
+            endTime = time.time()
+            #print("endTime = " + str(endTime))
+            # wait for next conversion
+            sleepTime = self.CONVERSIONTIME - (endTime - startTime)
+            #print("sleepTime = " + str(sleepTime) + "\n")
+            while endTime + sleepTime > time.time():
+                pass
     
     def initSens(self):
         '''
@@ -137,13 +119,13 @@ class Sensors (threading.Thread):
             self.rotationCounter = 0
             self.sensorMotor.run(100)
             self.running = True
-            # wait() blocks the flow of the program, if Event is not set
+            # wait() blocks the flow of the program if Event is not set
             self.sensorState.wait()
             print("broke")
             print("initSens() -> self.rotationTime = " + str(self.rotationTime))
             self.resolution = round(self.rotationTime / self.CONVERSIONTIME)
-            self.tcpCommunication.sendToHostWrapper("rd")
-            self.tcpCommunication.sendToHostWrapper("ro" + str(self.resolution))
+            self.tcpCommunication.sendToHost("rd")
+            self.tcpCommunication.sendToHost("ro" + str(self.resolution))
 
     def stop(self):
         '''This method stops the direction sensing'''
@@ -159,7 +141,7 @@ class Sensors (threading.Thread):
         This method reads the data from the AVR and returns the measured distance
         
         :return: Measured distance
-        :rtype: float
+        :rtype: int
         '''
         with SMBusWrapper(1) as bus:
             val = bus.read_i2c_block_data(0x0A, 0, 4)
