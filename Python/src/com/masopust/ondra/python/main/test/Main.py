@@ -7,9 +7,16 @@ This module is just to test the communication over TCP.
 @author: Ondrej Masopust
 '''
 import sys
-sys.path.append('/Users/Ondra/Documents/Programming/Maturita/Project/Python/src/')
+sys.path.append('/home/pi/Documents/Ondra/Rover/src/src')
+#sys.path.append('/Users/Ondra/Documents/Programming/Maturita/Project/Python/src/')
+import timeit
 
 from com.masopust.ondra.python.tcpCommunication.TCPCommunication import TCPCommunication
+
+global tcpCommunication
+
+def test():
+    tcpCommunication.sendToHost('a')
 
 def Main():
     #create server and wait for connection
@@ -23,15 +30,8 @@ def Main():
     #start measuring
     #sensors.start()
     
-    #listen to commands
-    while True:
-        data = tcpCommunication.handleRecvAndSend()
-        if data != '':
-            if data == 'stop': #'stop' returned from the tcpCommunication.handleRecvAndSend() function
-                break
-            else:
-                print(data)
-                #check for commands
+    print(timeit.timeit("test()", setup="from __main__ import test", number=1))
+    
     print('Client disconnected - terminating program')
     #terminate all threads
 

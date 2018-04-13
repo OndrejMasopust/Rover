@@ -41,27 +41,9 @@ class TCPCommunication:
         
         self.sendToHostWrapper("Raspberry Pi is connected.")
     
-    def sendToHostWrapper(self, message):
-        '''
-        This method wraps the __sendToHost method and adds safe sending.
-        It waits, until the client socket is ready to be written and then sends the message.
-        
-        :param message: The message that is to be sent.
-        :type message: string
-        '''
-        while True:
-            potential_writers = [self.clientSocket]
-        
-            readyToRead, readyToWrite, error = select.select([], potential_writers, [])
-        
-            if self.clientSocket in readyToWrite:
-                self.sendToHost(message)
-                break
-    
     def sendToHost(self, message = "null"):
         '''
-        This method sends the given message to the host. It is private because by itself,
-        it doesn't provide safe data sending. For safe data sending, use the sendToHostWrapper(message) function.
+        This method sends the given message to the host.
         
         :param message: The message that is to be sent.
         :type message: string

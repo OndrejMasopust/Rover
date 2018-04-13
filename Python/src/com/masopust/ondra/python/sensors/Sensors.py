@@ -58,10 +58,7 @@ class Sensors (threading.Thread):
         self.lastInterruptClock = time.time()
 
         # time in seconds that it takes for the sensor to take one measurement
-        self.CONVERSIONTIME = 0.03
-        # this constant holds the ideal time of one rotation in seconds
-        # TODO check if this number works
-        self.DEFAULTROTATIONTIME = 1.35
+        self.CONVERSIONTIME = 0.02
         # this variable counts the initial free rotations when the sensors don't measure yet
         self.rotationCounter = 0
         # this is the variable that tells how many dots will be displayed on the screen
@@ -89,16 +86,16 @@ class Sensors (threading.Thread):
         '''This method receives information form the sensor for one rotation'''
         for index in range(0, self.resolution):
                 startTime = time.time()
-                # print("startTime = " + str(startTime))
+                print("startTime = " + str(startTime))
                 # check if there is not stop from the main thread
                 if not self.halt.is_set():
-                    # print("after halt check: " + str(time.time()))
+                    print("after halt check: " + str(time.time()))
                     # if there is not a temporary stop
                     if self.running:
-                        # print("after running check: " + str(time.time()))
+                        print("after running check: " + str(time.time()))
                         # if the sensor didn't finish the rotation earlier
                         if not self.sensorState.is_set():
-                            # print("after sensorState check: " + str(time.time()))
+                            print("after sensorState check: " + str(time.time()))
                             #print("index = " + str(index))
                             
                             message = "dt"
@@ -107,14 +104,15 @@ class Sensors (threading.Thread):
                                 message += "0"
                             message += str(index)
                             message += str(self.measure())
-                            #print("after measuring: " + str(time.time()))
-                            #self.tcpCommunication.sendToHost(message)
+                            print("after measuring: " + str(time.time()))
+                            self.tcpCommunication.sendToHost(message)
+                            '''
                             t = threading.Thread(target=self.tcpCommunication.sendToHost, args=(message,))
-                            t.start()
+                            t.start()'''
                             endTime = time.time()
-                            #print("endTime = " + str(endTime))
+                            print("endTime = " + str(endTime))
                             # wait for next conversion
-                            sleepTime = self.CONVERSIONTIME - (endTime - startTime) - 0.01
+                            sleepTime = self.CONVERSIONTIME - (endTime - startTime)
                             if sleepTime > 0:
                                 time.sleep(sleepTime)
                                 print("sleepTime = " + str(sleepTime))
@@ -195,12 +193,6 @@ class Sensors (threading.Thread):
         if self.rotationTime > 1.3:
             print("\nnow")
             print("self.rotationTime = " + str(self.rotationTime))
-            '''
-            FIXME
-            tohle přece nedává smysl - vždy zrychluju
-            if abs(self.rotationTime - self.DEFAULTROTATIONTIME) > 0.2:
-                self.sensorMotor.speedUp(3)
-            '''
             self.lastInterruptClock = time.time()
             # this is needed when initializing the sensor. The sensor motor makes some free
             # rotations to examine how fast it rotates.
