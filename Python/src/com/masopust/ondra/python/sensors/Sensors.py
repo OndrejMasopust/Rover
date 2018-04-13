@@ -10,7 +10,6 @@ This module contains only the Sensors class.
 import threading
 import time
 import math
-from queue import Queue
 import RPi.GPIO as gpio
 from smbus2 import SMBusWrapper
 
@@ -35,11 +34,10 @@ class Sensors (threading.Thread):
         threading.Thread.__init__(self)
         self.daemon = True
         
-        # This queue contains True if the Raspberry Pi should start to sense another rotation
-        # It also contains the self.rotationCounter variable when initializing the sensors
-        # After the sensor is initialized, it contains the time of the last rotation 
-        # It needs to be a queue, because it is shared between this thread and the interrupt thread
-        self.sensorQueue = Queue(2)
+        # This Event contains True when the Raspberry Pi should start to sense another rotation
+        self.sensorState = threading.Event()
+        
+        self.rotationTime = 0
         
         self.halt = halt
         self.tcpCommunication = tcpCommunication
@@ -72,8 +70,9 @@ class Sensors (threading.Thread):
         '''This method is called when this thread is started by the start() method in the Main class.'''
         self.initSens()
         while not self.halt.is_set() and self.running:
-            # get() blocks the flow of the program if necessary until an item in the queue is available 
-            if self.sensorQueue.get():
+            # wait() blocks the flow of the program, if necessary, until the Event is set
+            if self.sensorState.wait():
+                self.sensorState.clear()
                 self.sensOneRotation()
         # stop sensor motor
         self.sensorMotor.stop()
@@ -86,34 +85,39 @@ class Sensors (threading.Thread):
             self.halt.clear()
 
     def sensOneRotation(self):
-        '''This method senses one rotation'''
+        '''This method receives information form the sensor for one rotation'''
         for index in range(0, self.resolution):
-                print(time.time())
+                startTime = time.time()
+                print("startTime = " + str(startTime))
                 # check if there is not stop from the main thread
                 if not self.halt.is_set():
                     print(time.time())
-                    # if there is not temporary stop
+                    # if there is not a temporary stop
                     if self.running:
                         print(time.time())
                         # if the sensor didn't finish the rotation earlier
-                        if self.sensorQueue.empty():
+                        if not self.sensorState.is_set():
                             print(time.time())
                             self.conversionStartClock = time.time()
                             message = "dt"
                             print("index = " + str(index))
-                            print("\n")
                             if index < 10:
                                 message += "0"
                             message += str(index)
-                            distance = self.measure()
-                            message += str(distance)
-                            self.tcpCommunication.sendToHostWrapper(message)
+                            message += str(self.measure())
+                            t = threading.Thread(target=self.tcpCommunication.sendToHostWrapper, args=(message,))
+                            t.start()
+                            endTime = time.time()
+                            print("endTime = " + str(endTime))
                             # wait for next conversion
-                            time.sleep(self.CONVERSIONTIME)
+                            sleepTime = self.CONVERSIONTIME - (endTime - startTime)
+                            if sleepTime > 0:
+                                time.sleep(sleepTime)
+                                print("sleepTime = " + str(sleepTime))
+                            else:
+                                print("not slept, sleepTime = " + str(sleepTime))
+                            print("\n")
                         else:
-                            # the rotation was not finished in time
-                            # speed up the motor
-                            self.sensorMotor.speedUp(3)
                             break
                     else:
                         break
@@ -131,16 +135,11 @@ class Sensors (threading.Thread):
             self.rotationCounter = 0
             self.sensorMotor.run(100)
             self.running = True
-            # get() block the flow of the program, if queue is empty
-            while True:
-                number = self.sensorQueue.get()
-                print("number = " + str(number))
-                if number == 3:
-                    break
+            # wait() blocks the flow of the program, if Event is not set
+            self.sensorState.wait()
             print("broke")
-            lastRotationTime = self.sensorQueue.get()
-            print("lastRotationTime = " + str(lastRotationTime))
-            self.resolution = round(lastRotationTime / self.CONVERSIONTIME)
+            print("initSens() -> self.rotationTime = " + str(self.rotationTime))
+            self.resolution = round(self.rotationTime / self.CONVERSIONTIME)
             self.tcpCommunication.sendToHostWrapper("rd")
             self.tcpCommunication.sendToHostWrapper("ro" + str(self.resolution))
 
@@ -188,30 +187,22 @@ class Sensors (threading.Thread):
         # The signal edges form the optolatch are noisy so it produces more than one
         # interrupt when there should be only one. That is why there is this
         # condition - to clean the undesired interrupts
-        prevRotationTime = time.time() - self.lastInterruptClock
-        if prevRotationTime > 0.8:
+        self.rotationTime = time.time() - self.lastInterruptClock
+        if self.rotationTime > 0.8:
             print("\nnow")
-            print(str(prevRotationTime))
-            currentTime = time.time()
+            print("self.rotationTime = " + str(self.rotationTime))
             '''
+            FIXME
             tohle přece nedává smysl - vždy zrychluju
-            if abs(prevRotationTime - self.DEFAULTROTATIONTIME) > 0.2:
+            if abs(self.rotationTime - self.DEFAULTROTATIONTIME) > 0.2:
                 self.sensorMotor.speedUp(3)
             '''
-            self.lastInterruptClock = currentTime
+            self.lastInterruptClock = time.time()
             # this is needed when initializing the sensor. The sensor motor makes some free
             # rotations to examine how fast it rotates.
             if self.rotationCounter < 3:
                 self.rotationCounter += 1
-                print("putting rotationCounter: " + str(self.rotationCounter) + " into sensor queue")
-                self.sensorQueue.put(self.rotationCounter)
             else:
-                if self.rotationCounter == 3:
-                    lastRotationTime = prevRotationTime
-                    # so that this condition is not evaluated any more
-                    self.rotationCounter += 1
-                    print("putting lastRotationTime: " + str(lastRotationTime) + " into sensor queue")
-                    self.sensorQueue.put(lastRotationTime)
                 # tell, that the sensor thread should start another sensing rotation
-                self.sensorQueue.put(True)
+                self.sensorState.set()
             

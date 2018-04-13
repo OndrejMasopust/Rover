@@ -25,7 +25,7 @@ def Main():
         tcpCommunication = TCPCommunication()
         tcpCommunication.establishTCPConnection()
         
-        halt = threading.Event()
+        halt = Event()
         
         # initialize sensors
         sensors = Sensors(halt, tcpCommunication)
@@ -77,6 +77,7 @@ def Main():
                 elif 'tr'.encode(encoding='utf_8', errors='strict') in data:
                     servo.setPosition( int(data[2:]) )
                 elif 'startMeasure'.encode(encoding='utf_8', errors='strict') in data:
+                    # FIXME
                     sensors.start()
                 elif 'stopMeasure'.encode(encoding='utf_8', errors='strict') in data:
                     sensors.stop()
