@@ -3,7 +3,7 @@ English below
 # Dokumentace
 [Jak postavit Rover](HowTo/HowTo.html)   
 [Uživatelský manuál](UsrMan/index.html)  
-[Programátorská dokumentace](ProgDoc/index.html)
+[Programátorská dokumentace](ProgDoc/indexCZ.html)
 
 # Documentation
 [How to build the Rover](HowTo/HowTo.html)   
