@@ -157,7 +157,7 @@ public class MainLayoutController implements Initializable {
 		dotSize = 3;
 		
 		// place the tank image
-		Image tank = new Image("/com/masopust/ondra/java/gui/mainLayout/tank.png", 100, 200, true, false);
+		Image tank = new Image("/com/masopust/ondra/java/gui/mainLayout/tank.png", 40, 60, true, false);
 		ImageView tankIV = new ImageView(tank);
 		tankIV.xProperty().bind(centerSectionPane.widthProperty().divide(2).subtract(tank.getWidth() / 2));
 		tankIV.yProperty().bind(centerSectionPane.heightProperty().divide(2).subtract(tank.getHeight() / 2));
