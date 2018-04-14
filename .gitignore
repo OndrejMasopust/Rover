@@ -17,6 +17,8 @@ Java/original-images/
 *.hex
 *.elf
 *.o
+.cproject
+.project
 
 Nejasnosti.rtf
 I2C.rtf
