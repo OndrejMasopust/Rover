@@ -1,4 +1,4 @@
-# Programmers documentation
-[Java documentation](JavaDoc/index.html)   
-[Python documentation](PythonDoc/index.html)   
-[C documentation](CDoc/index.html)   
+# Programátorská dokumentace
+[Java dokumentace](JavaDoc/index.html)   
+[Python dokumentace](PythonDoc/index.html)   
+[C dokumentace](CDoc/index.html)   
