@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 import com.masopust.ondra.java.gui.Main;
 import com.masopust.ondra.java.gui.preloader.PreloaderController;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
-import com.masopust.ondra.java.tcpCommunication.ipHostPrompt.IPHostPrompt;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,7 +53,6 @@ public class IPSelectionLayoutController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ipSelectionLayoutConstroller = ipSelectionLayoutLoader.getController();
-		IPHostPrompt.setIPHostText();
 	}
 
 	/**

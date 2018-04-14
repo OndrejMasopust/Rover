@@ -13,7 +13,6 @@ import javafx.concurrent.Task;
 
 import com.masopust.ondra.java.gui.ipSelectionLayout.IPSelectionLayoutController;
 import com.masopust.ondra.java.gui.mainLayout.MainLayoutController;
-import com.masopust.ondra.java.tcpCommunication.ipHostPrompt.IPHostPrompt;
 
 /**
  * The {@code RoverConnection} class wraps all methods needed to handle the
@@ -38,7 +37,6 @@ public class RoverConnection extends Task<String> {
 	private StringBuilder errors = new StringBuilder();
 	private PrintWriter outputTCP;
 	private BufferedReader inputTCP;
-	private boolean waitForAck = true;
 
 	/**
 	 * Creates instance of the {@code RoverConnection} class with default values:
@@ -226,7 +224,6 @@ public class RoverConnection extends Task<String> {
 				System.out.printf("Slept for %dms\n", sleepTime);
 			}
 		}
-		IPHostPrompt.writeOptions();
 		Platform.runLater(() -> {
 			try {
 				MainLayoutController.loadMainScene();
@@ -241,12 +238,9 @@ public class RoverConnection extends Task<String> {
 			try {
 				String input = roverConnection.readLine();
 				if (!input.equals("")) {
-					if (input.contains("ACK"))
-						waitForAck = false;
-					else
-						Platform.runLater(() -> {
-							MainLayoutController.receiveMessage(input);
-						});
+					Platform.runLater(() -> {
+						MainLayoutController.receiveMessage(input);
+					});
 				}
 				Thread.sleep(20);
 			} catch (NullPointerException e) {
