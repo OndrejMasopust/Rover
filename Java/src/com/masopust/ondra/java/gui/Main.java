@@ -1,7 +1,6 @@
 package com.masopust.ondra.java.gui;
 
 import java.io.IOException;
-import java.net.SocketException;
 
 import com.masopust.ondra.java.gui.ipSelectionLayout.IPSelectionLayoutController;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;

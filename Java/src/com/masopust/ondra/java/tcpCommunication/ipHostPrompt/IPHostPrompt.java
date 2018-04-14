@@ -46,7 +46,7 @@ public class IPHostPrompt {
 	 * file.
 	 */
 	public static void setIPHostText() {
-		ipHostPrompt = new File("com/masopust/ondra/java/tcpCommunication/ipHostPrompt/IPHostPrompt.txt");
+		ipHostPrompt = new File("com/masopust/ondra/java/tcpCommunication/IPHostPrompt.txt");
 		if (ipHostPrompt.exists()) {
 			try {
 				lines = Files.readAllLines(ipHostPrompt.toPath());
@@ -76,6 +76,7 @@ public class IPHostPrompt {
 		ArrayList<String> newLines = new ArrayList<>();
 		newLines.add(host);
 		newLines.add(Integer.toString(port));
+
 		try {
 			if (!lines.get(0).equals(host) || !lines.get(1).equals(String.valueOf(0)))
 				needToChangeFile = true;
@@ -86,6 +87,5 @@ public class IPHostPrompt {
 		if (needToChangeFile || !fileExists) {
 			Files.write(ipHostPrompt.toPath(), newLines, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 		}
-
 	}
 }

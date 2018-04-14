@@ -196,15 +196,6 @@ public class RoverConnection extends Task<String> {
 		return message;
 	}
 
-	/**
-	 * @return waitForAck
-	 * 
-	 * @deprecated
-	 */
-	public boolean getWaitForAck() {
-		return waitForAck;
-	}
-
 	@Override
 	protected String call() throws IOException {
 		while (true) {
