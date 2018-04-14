@@ -1,4 +1,4 @@
-# Jak postavit Rover
+# Stručný návod, jak postavit Rover
 
 #### 1. Zaktualizujte si svoje Raspberry Pi a nainstalujte si nejnovější verzi Python
 
@@ -36,20 +36,22 @@ sudo make install
 ```
 
 #### 7. Nakopírujte program pro Rover
-Nakopírujte obsah složky [Rover/Python/](https://github.com/OndrejMasopust/Rover/tree/master/Python/src) někam do svého Pi.
+Nakopírujte obsah složky [Rover/Python/](https://github.com/OndrejMasopust/Rover/tree/master/Python/src) někam do svého Pi. Obsahy složek s
+názvem `test` nejsou nutné k běhu programu, proto je můžete vymazat.
 
 #### 8. Pořiďte si plošný spoj, elektronické součástky a Lego kostičky
 Potřebujete všechny součástky, které jsou ve schématu.  
 Kupte o 4 1nF kondenzátory více, než je v schématu. Budou připájeny mezi vývody motorů a obal motorů.   
-Rozložení plošného spoje lze najít ve složce `PCBs_schematics/PCB-Layout/`. Soubory jsou vytvořeny pomocí programu [KiCad](http://kicad-pcb.org)
+Návrh plošného spoje lze najít ve složce [PCBs_schematics](https://github.com/OndrejMasopust/Rover/tree/master/PCBs_schematics). Soubory jsou vytvořeny pomocí
+programu [KiCad](http://kicad-pcb.org).   
 Plošný spoj si můžete objednat například od [JLCPCB](https://jlcpcb.com). 
-V plošném spoji vyvrtejte díry pro držák senzoru a distanční sloupky na Pi.  
-...a spájejte plošný spoj a sestavte Lego kostičky podle tohoto [návodu]() !!!!!!dodělat odkaz!!!!!!!!     
+V plošném spoji vyvrtejte díry pro držák senzoru a distanční sloupky na Pi. (v těch místech, kde není měď)  
+Spájejte plošný spoj a sestavte Lego kostičky podle tohoto [návodu](lego/index.html)   
 Až si budete kupovat Lego kostičky, nekupujte "connector pegy" bez třecích výstupků. Konstrukce by pak nebyla tak pevná.  
 Některé konkrétní věci, co jsem použil:
 - [senzor](https://www.ebay.com/itm/Sharp-GP2Y0A710K0F-IR-Range-Sensor-100-550cm-Infrared-Proximity-Measure-distance/321873113256?epid=2256191608&hash=item4af121f0a8:g:ZYwAAOSw9r1WAVJC)
 - [servo](http://hitecrcd.com/products/servos/sport-servos/analog-sport-servos/hs-422-deluxe-standard-servo/product)
-- [hlavní motor](https://www.ebay.com/itm/320911868255)
+- [hlavní motor](https://www.ebay.com/itm/320911868255) (zvolil bych silnější)
 - [senzorový motor](https://www.ebay.com/itm/6-12V-100-200-300-30RPM-Mini-DC-Metal-Gear-Motor-Gearwheel-Shaft-Diameter-N20/182498725375?ssPageName=STRK%3AMEBIDX%3AIT&var=485067902164&_trksid=p2057872.m2749.l2649)
 (verze 6V 200rpm)
 - [převody](https://www.ebay.com/itm/85Pcs-Plastic-Gears-Rack-Pulley-Belt-Worm-Teeth-Shaft-Car-Toy-Models-Part-DIY/152738933090?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649)
@@ -59,16 +61,16 @@ Některé konkrétní věci, co jsem použil:
 
 #### 9. Sestavte držák na senzor
 Použil jsem balsové dřevo.
-1. V převodu (najdete ho v balíčku převodů v odkazu výše) udělejte větší díru   
-![gear](howTo-imgs/gear-wo-wood.jpg)
 3. Z balsy vyřízněte kotouč o průměru cca. 6cm. Dále malý trojúhelníček jako podpěru a kus balsy, do kterého vyvrtáte díru pro šroub,
 kterým přišroubujete samotný senzor - tento kus musí být dost velký na to, aby mohla být díra na správném místě.
-Přesné rozměry záleží na velikosti senzoru. 
+Přesné rozměry záleží na velikosti senzoru.    
 ![disk](howTo-imgs/disk.jpg)
 ![triangle](howTo-imgs/triangle.jpg)
 ![mount](howTo-imgs/sensor-mount.jpg)   
 ![holder1](howTo-imgs/holder1.jpg)
 ![holder2](howTo-imgs/holder2.jpg)
+1. V převodu (najdete ho v balíčku převodů v odkazu výše) udělejte větší díru   
+![gear](howTo-imgs/gear-wo-wood.jpg)
 4. Vyřízněte balsový kotouč (o něco menší průměr než převod) a přilepte ho k převodu. Vyvrtejte uprostřed díru:   
 ![gear with balsa disc](howTo-imgs/gear.jpg)
 5. ...přilepte k držáku:   
@@ -96,13 +98,14 @@ Rozměry jsou přibližně 6,5cm x 9,5cm. Díry tvoří obdélník o rozměrech 
 15. Připájejte 1nF kondenzátory mezi vývody motorů a obal motorů (jak hlavní motor, tak i motor, co točí senzorem):
 ![motor1](howTo-imgs/motor1.jpg)   
 ![motor2](howTo-imgs/motor2.jpg)
-![motor3](howTo-imgs/motor3.jpg)
+![motor3](howTo-imgs/motor3.jpg)   
+Teď byste měli mít držák senzoru sestavený.
 
 #### 10. Pro zpevnění držáku na servo k němu můžete přilepit několik špejlí epoxidovým lepidlem:  
 ![stick1](howTo-imgs/servo-mount1.jpg)  
 ![stick2](howTo-imgs/servo-mount2.jpg)
 
-#### 11. Připájejte kabely s konektory ke konektoru, který připevníte k GPIO:
+#### 11. Připájejte kabely a konektory pro komunikaci Raspberry s ostatními částmi Roveru
 (Je dobrý nápad je také označit)   
 ![pi header1](howTo-imgs/pi-header1.jpg)
 ![pi header2](howTo-imgs/pi-header2.jpg)
@@ -118,4 +121,5 @@ Rozměry jsou přibližně 6,5cm x 9,5cm. Díry tvoří obdélník o rozměrech 
 ![rover4](howTo-imgs/rover4.jpg)
 ![rover5](howTo-imgs/rover5.jpg)
 ![rover6](howTo-imgs/rover6.jpg)
-![rover7](howTo-imgs/rover7.jpg)
+![rover7](howTo-imgs/rover7.jpg)   
+...a je to!
