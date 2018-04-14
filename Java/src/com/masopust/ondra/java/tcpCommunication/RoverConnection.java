@@ -190,15 +190,16 @@ public class RoverConnection extends Task<String> {
 		try {
 			message = inputTCP.readLine();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			message = e.getMessage();
+			return null;
 		}
 		return message;
 	}
 
 	/**
 	 * @return waitForAck
+	 * 
+	 * @deprecated
 	 */
 	public boolean getWaitForAck() {
 		return waitForAck;
@@ -218,7 +219,6 @@ public class RoverConnection extends Task<String> {
 					outputTCP = new PrintWriter(clientSocket.getOutputStream(), true);
 					inputTCP = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				} catch (IOException e) {
-					// TODO
 					e.printStackTrace();
 				}
 				break;
@@ -228,7 +228,6 @@ public class RoverConnection extends Task<String> {
 				try {
 					Thread.sleep(sleepTime);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					if (this.isCancelled())
 						break;
@@ -241,7 +240,6 @@ public class RoverConnection extends Task<String> {
 			try {
 				MainLayoutController.loadMainScene();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});

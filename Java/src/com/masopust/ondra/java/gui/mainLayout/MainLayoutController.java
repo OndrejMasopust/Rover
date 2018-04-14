@@ -203,22 +203,22 @@ public class MainLayoutController implements Initializable {
 		stackPane.addEventFilter(KeyEvent.KEY_PRESSED, (keyEvent) -> {
 			switch (keyEvent.getCode()) {
 			case UP:
-				RoverConnection.roverConnection.sendData("mr180");
+				RoverConnection.roverConnection.sendData("mr200");
 				keyEvent.consume();
 				break;
 			case DOWN:
-				RoverConnection.roverConnection.sendData("mr20");
+				RoverConnection.roverConnection.sendData("mr0");
 				keyEvent.consume();
 				break;
 			case LEFT:
 				if (!consoleInput.isFocused()) {
-					RoverConnection.roverConnection.sendData("tr1100");
+					RoverConnection.roverConnection.sendData("tr1620");
 					keyEvent.consume();
 				}
 				break;
 			case RIGHT:
 				if (!consoleInput.isFocused()) {
-					RoverConnection.roverConnection.sendData("tr1900");
+					RoverConnection.roverConnection.sendData("tr1380");
 					keyEvent.consume();
 				}
 				break;
@@ -307,6 +307,8 @@ public class MainLayoutController implements Initializable {
 			lines = new ArrayList<>(numberOfLines);
 			dots = new ArrayList<>(numberOfLines);
 			dotLines = new HashMap<>(numberOfLines);
+			// remove all the dots and lines from the center section group
+			centerSectionGroup.getChildren().remove(1, centerSectionGroup.getChildren().size());
 			countBaseAngle(numberOfLines);
 			buildCenterSection();
 			break;

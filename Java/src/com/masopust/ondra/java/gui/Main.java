@@ -1,6 +1,7 @@
 package com.masopust.ondra.java.gui;
 
 import java.io.IOException;
+import java.net.SocketException;
 
 import com.masopust.ondra.java.gui.ipSelectionLayout.IPSelectionLayoutController;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
@@ -37,20 +38,13 @@ public class Main extends Application {
 	@Override
 	public void stop() throws Exception {
 		RoverConnection.roverConnection.sendData("halt");
-		while (RoverConnection.roverConnection.getWaitForAck())
-			;
-		System.out.println("broke from waitForAck");
 		try {
 			RoverConnection.roverConnection.cancel();
-			RoverConnection.roverConnection.getClientSocket().close(); // TODO check if only this is sufficient
+			RoverConnection.roverConnection.getClientSocket().close();
 		} catch (NullPointerException e) {
-			// TODO
-			System.out.println("NullPointerException thrown while terminating this program:");
-			System.out.println(e.getMessage());
+			System.out.println("NullPointerException thrown while terminating this program.");
 		} catch (IOException e) {
-			// TODO
-			System.out.println("IOException thrown while terminating this program:");
-			System.out.println(e.getMessage());
+			System.out.println("IOException thrown while terminating this program.");
 		}
 		super.stop();
 	}
