@@ -1,0 +1,4 @@
+var namespacesrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication =
+[
+    [ "TCPCommunication", "namespacesrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication.html", "namespacesrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication" ]
+];
