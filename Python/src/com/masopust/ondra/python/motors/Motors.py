@@ -57,7 +57,7 @@ class Motors(object):
                 raise ValueError("Motors.run(): Argument out of bounds. Must be: argument <= 0 or 100 <= argument, was: " + dutyCycle)
         except ValueError as err:
             print(err)
-            self.tcpCommunication.sendToHostWrapper('er' + err)
+            self.tcpCommunication.sendToHost('er' + err)
             
     
     def setSpeed(self, dutyCycle):
@@ -79,7 +79,7 @@ class Motors(object):
                 raise ValueError("Motors.setSpeed(): Argument out of bounds. Must be: argument <= 0 or 100 <= argument, was: " + dutyCycle)
         except ValueError as err:
             print(err)
-            self.tcpCommunication.sendToHostWrapper('er' + err)
+            self.tcpCommunication.sendToHost('er' + err)
 
     def speedUp(self, increment):
         '''
@@ -97,7 +97,7 @@ class Motors(object):
                 raise ValueError("Motors.speedUp(): Argument not legal. Must be: (self.currentDutyCycle + increment) >= 0 or 100 >= (self.currentDutyCycle + increment), was: " + self.currentDutyCycle + " + " + increment)
         except ValueError as err:
             print(err)
-            self.tcpCommunication.sendToHostWrapper('er' + err)
+            self.tcpCommunication.sendToHost('er' + err)
 
     def setDirection(self, direction):
         '''

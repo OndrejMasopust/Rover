@@ -53,6 +53,7 @@ class Sensors (threading.Thread):
         # set the pin 22, which is connected to the output of the optolatch, as input
         gpio.setup(22, gpio.IN)
         # set up an interrupt for the optolatch
+        gpio.remove_event_detect(22)
         gpio.add_event_detect(22, gpio.FALLING, callback=self.__isr)
         
         self.lastInterruptClock = time.time()
@@ -124,8 +125,9 @@ class Sensors (threading.Thread):
             print("broke")
             print("initSens() -> self.rotationTime = " + str(self.rotationTime))
             self.resolution = round(self.rotationTime / self.CONVERSIONTIME)
-            self.tcpCommunication.sendToHost("rd")
-            self.tcpCommunication.sendToHost("ro" + str(self.resolution))
+            if not self.halt.is_set():
+                self.tcpCommunication.sendToHost("rd")
+                self.tcpCommunication.sendToHost("ro" + str(self.resolution))
 
     def stop(self):
         '''This method stops the direction sensing'''

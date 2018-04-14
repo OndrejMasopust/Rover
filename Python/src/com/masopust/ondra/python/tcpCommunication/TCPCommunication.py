@@ -49,7 +49,7 @@ class TCPCommunication:
         :param message: The message that is to be sent.
         :type message: string
         '''
-        #check if the message ends with '\r\n' and if not, add it
+        # check if the message ends with '\r\n' and if not, add it
         if not("\r\n" in message):
             message += "\r\n"
         self.clientSocket.sendall(message.encode(encoding='utf_8', errors='strict'))

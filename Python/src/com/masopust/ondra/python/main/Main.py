@@ -11,7 +11,7 @@ import sys
 import time
 from threading import Event
 
-sys.path.append('/home/pi/Documents/Ondra/Rover/src/src')
+sys.path.append('/home/pi/Documents/Ondra/Rover/src')
 
 from com.masopust.ondra.python.motors.Motors import Motors
 from com.masopust.ondra.python.tcpCommunication.TCPCommunication import TCPCommunication
@@ -51,14 +51,13 @@ def Main():
                             pass
                     servo.clean()
                     mainMotor.clean()
-                    tcpCommunication.sendToHost('ACK')
                     # wait for one second
                     time.sleep(1)
                     tcpCommunication.closeSocket()
                     break
                 # just checking, if the socket was not broken
                 elif 'check'.encode(encoding='utf_8', errors='strict') in data:
-                    tcpCommunication.sendToHostWrapper('check')
+                    tcpCommunication.sendToHost('check')
                 # 'mr' motor run command
                 elif 'mr'.encode(encoding='utf_8', errors='strict') in data:
                     # 100 is taken as 'do not move'
@@ -81,6 +80,7 @@ def Main():
                     sensors.start()
                 elif 'stopMeasure'.encode(encoding='utf_8', errors='strict') in data:
                     sensors.stop()
+                    sensors = Sensors(halt, tcpCommunication)
                 else:
                     print(data.decode())
     

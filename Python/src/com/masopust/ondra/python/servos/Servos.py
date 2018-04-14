@@ -33,13 +33,13 @@ class Servos(object):
         :raises ValueError: A ValueError is raised when the argument =< 1000 or 2000 =< argument
         '''
         try:
-            if 1000 < position and position < 2000: # TODO check how much it is needed for the servo to rotate
+            if 1000 < position and position < 2000:
                 self.myPigpio.set_servo_pulsewidth(self.pwmOut, position)
             else:
                 raise ValueError("Servos.setPostition(): Argument out of bounds. Needs to be 1000 < argument < 2000.")
         except ValueError as err:
             print(err)
-            self.tcpCommunication.sendToHostWrapper('er' + err)
+            self.tcpCommunication.sendToHost('er' + err)
     
     def clean(self):
         '''This method stops the PWM going to the servo and stops the connection to the pigpio server.'''
