@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * The {@code MainLayoutTestLauncher} class is only for testing purposes of the
+ * The <i>MainLayoutTestLauncher</i> class is only for testing purposes of the
  * main layout.
  * 
  * @author Ondrej Masopust
@@ -32,14 +32,6 @@ public class MainLayoutTestLauncher extends Application{
 		
 		Scene mainLayoutScene = new Scene(mainLayout);
 		mainLayoutScene.getStylesheets().add("/com/masopust/ondra/java/gui/mainLayout/MainLayoutStyle.css");
-		/*
-		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-
-		primaryStage.setX(screenBounds.getMinX());
-		primaryStage.setY(screenBounds.getMinY());
-		primaryStage.setWidth(screenBounds.getWidth());
-		primaryStage.setHeight(screenBounds.getHeight());
-		 */
 		
 		mainStage.setScene(mainLayoutScene);
 		mainStage.setTitle("Main Layout Testing");

@@ -17,7 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 /**
- * The {@code IPSelectionLayoutController} class wraps the logic behind the
+ * The  <i>IPSelectionLayoutController</i> class wraps the logic behind the
  * IPSelection layout.
  * 
  * @author Ondrej Masopust
@@ -38,12 +38,12 @@ public class IPSelectionLayoutController implements Initializable {
 	Button connectBut;
 
 	/**
-	 * Instance of the {@code Scene} class that is used for this layout.
+	 * Instance of the {@link Scene} class that is used for this layout.
 	 */
 	public static Scene ipSelectionScene;
 
 	/**
-	 * Instance of the {@code IPSelectionLayoutController} class. This variable is
+	 * Instance of the {@link IPSelectionLayoutController} class. This variable is
 	 * used to access non-static methods in this class.
 	 */
 	public static IPSelectionLayoutController ipSelectionLayoutConstroller;
@@ -56,16 +56,16 @@ public class IPSelectionLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code handleCancel} method wraps the code to be executed after the
-	 * <b>Cancel</b> button is pressed.
+	 * The <i>handleCancel</i> method wraps the code to be executed after the
+	 * <i>Cancel</i> button is pressed.
 	 */
 	public void handleCancel() {
 		Main.mainStage.close();
 	}
 
 	/**
-	 * The {@code handleConnect} method wraps the code to be executed after the
-	 * <b>Connect</b> button is pressed.
+	 * The <i>handleConnect</i> method wraps the code to be executed after the
+	 * <i>Connect</i> button is pressed.
 	 */
 	public void handleConnect() throws IOException {
 		RoverConnection.startRoverConnectionThread();
@@ -73,12 +73,12 @@ public class IPSelectionLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code loadIPSelectionScene} method loads the IPSelection layout from the
-	 * IPSelectionLayout.fxml and creates new scene with this layout.
+	 * The <i>loadIPSelectionScene</i> method loads the IPSelection layout from the
+	 * <i>IPSelectionLayout.fxml</i> and creates new scene with this layout.
 	 * 
-	 * @return instance of {@code Scene} with the IPSelection layout
+	 * @return instance of {@link Scene} with the IPSelection layout
 	 * @throws IOException
-	 *             if there is a problem loading the IPSelectionLayout.fxml
+	 *             if there is a problem loading the <i>IPSelectionLayout.fxml</i>
 	 */
 	public static Scene loadIPSelectionScene() throws IOException {
 		ipSelectionLayoutLoader = new FXMLLoader();
@@ -94,14 +94,14 @@ public class IPSelectionLayoutController implements Initializable {
 	}
 
 	/**
-	 * @return ipField instance of {@code TextField}
+	 * @return ipField instance of {@link TextField}
 	 */
 	public TextField getIPField() {
 		return ipField;
 	}
 
 	/**
-	 * @return portField instance of {@code TextField}
+	 * @return portField instance of {@link TextField}
 	 */
 	public TextField getPortField() {
 		return portField;

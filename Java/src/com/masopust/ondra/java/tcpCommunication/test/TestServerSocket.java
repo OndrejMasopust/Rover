@@ -12,8 +12,8 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 /**
- * The {@code TCPCommunication} class was used to test TCP communication with
- * the rover. Server side.
+ * The <i>TestServerSocket</i> class was used to test TCP communication with
+ * the rover. The server side.
  * 
  * @author Ondrej Masopust
  *

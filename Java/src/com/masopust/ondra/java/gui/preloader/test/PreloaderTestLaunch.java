@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * The {@code PreloaderTestLaunch} class is only for testing purposes of the preloader.
+ * The <i>PreloaderTestLaunch</i> class is only for testing purposes of the preloader.
  * 
  * @author Ondrej Maopust
  *

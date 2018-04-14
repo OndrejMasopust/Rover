@@ -111,13 +111,13 @@ public class MainLayoutController implements Initializable {
 	private static int numberOfLines;
 
 	/**
-	 * This {@code double} holds the angle between two neighbor lines in the center
+	 * This double holds the angle between two neighbor lines in the center
 	 * section.
 	 */
 	private static double baseAngle;
 	
 	/**
-	 * This {@code int} contains the index of the dot that is to be refreshed on the screen.
+	 * This int contains the index of the dot that is to be refreshed on the screen.
 	 */
 	private static int dotCounter;
 
@@ -138,7 +138,7 @@ public class MainLayoutController implements Initializable {
 	private static float dotSize;
 
 	/**
-	 * This map connects a {@link Rectangle} from {@code dots} {@link List} and a
+	 * This map connects a {@link Rectangle} from the <i>dots</i> {@link List} and a
 	 * {@link Line} that is between the given dot and the previous dot if visible.
 	 */
 	private static Map<Rectangle, Line> dotLines;
@@ -224,7 +224,7 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code handleSubmit} method wraps code that is executed if the submit
+	 * The <i>handleSubmit</i> method wraps code that is executed if the submit
 	 * button is pressed or enter is hit while in the console text input. The
 	 * message in the input text field (if not empty String) is sent to the rover
 	 * and written to the console output.
@@ -250,7 +250,7 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code localCommands} class wraps static {@link String} constants that
+	 * The <i>localCommands</i> class wraps static {@link String} constants that
 	 * contain the command representation that are used to control the Rover control
 	 * desktop program
 	 * 
@@ -262,7 +262,7 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code receiveMessage} method writes the given message to the console
+	 * The <i>receiveMessage</i> method writes the given message to the console
 	 * output in the main layout aligned to the left side.
 	 * 
 	 * @param input
@@ -307,7 +307,7 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code RoverCommands} class wraps static {@link String} constants that
+	 * The <i>RoverCommands</i> class wraps static {@link String} constants that
 	 * contain the command representation as it is send from the Rover.
 	 * 
 	 * @author Ondrej Masopust
@@ -337,15 +337,20 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code addMessageToConsole} method adds the message given in the
-	 * {@code input} parameter to the console output aligned to the right or left
-	 * depending on the {@code fromPi} {@code boolean}.
+	 * The <i>addMessageToConsole</i> method adds the message given in the
+	 * <i>input</i> parameter to the console output.
 	 * 
 	 * @param fromRover
-	 *            {@code boolean} value that tells if the current message is from
-	 *            the Rover and thus should be aligned left
+	 *            <i>boolean</i> value that tells if the current message is from
+	 *            the Rover and thus should be aligned left. If this parameter is
+	 *            <i>false</i> then the message is aligned to the right.
 	 * @param error
-	 *            {@code boolean} value that tells if the message should be displayed with red background
+	 *            <i>boolean</i> value that tells if the message should be
+	 *            displayed with red background
+	 * 
+	 * @param command
+	 *            <i>boolean</i> value that tells if the text should be displayed in
+	 *            yellow
 	 * 
 	 * @param input
 	 *            {@link String} containing the message
@@ -385,7 +390,7 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code handleZoomIn} method wraps code that is executed when the zoom in
+	 * The <i>handleZoomIn</i> method wraps code that is executed when the zoom in
 	 * button is pressed. The visualization in the center section is zoomed in to.
 	 */
 	public void handleZoomIn() {
@@ -394,7 +399,7 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code handleZoomIn} method wraps code that is executed when the zoom out
+	 * The <i>handleZoomIn</i> method wraps code that is executed when the zoom out
 	 * button is pressed. The visualization in the center section is zoomed out of.
 	 */
 	public void handleZoomOut() {
@@ -405,7 +410,7 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code handleInfo} method wraps code that is executed when the info
+	 * The <i>handleInfo</i> method wraps code that is executed when the info
 	 * button is pressed. The {@link WebView} with the info is brought to the
 	 * front.
 	 */
@@ -434,12 +439,12 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code updatePoint} method moves the point in the {@code dots} list on
-	 * the given {@code index} to the given {@code distance} or sets it invisible if
+	 * The <i>updatePoint</i> method moves the point in the <i>dots</i> {@link List} on
+	 * the given <i>index to the given <i>distance</i> or sets it invisible if
 	 * the distance can not be measured.
 	 * 
 	 * @param index
-	 *            of the point in the {@code dots} list
+	 *            of the point in the <i>dots</i> {@link List}
 	 * @param distance
 	 *            in centimeters, -1 if the sensors can't measure it
 	 */
@@ -472,7 +477,7 @@ public class MainLayoutController implements Initializable {
 
 	/**
 	 * This method initializes the lines and dots in the center section based on the
-	 * {@code numberOfLines} variable.
+	 * <i>numberOfLines</i> variable.
 	 */
 	private static void buildCenterSection() {
 		for (int i = 0; i < numberOfLines; i++) {
@@ -499,13 +504,13 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code updateLineEndPoint} method sets binding of the {@link Line} in the
-	 * {@code lines} {@link List} at the given index to match the given length.
+	 * The <i>updateLineEndPoint</i> method sets binding of the {@link Line} in the
+	 * <i>lines</i> {@link List} at the given index to match the given length.
 	 * 
 	 * @param lineLength
 	 *            in cm
 	 * @param index
-	 *            of the {@link Line} in the {@code lines} {@link List}
+	 *            of the {@link Line} in the <i>lines</i> {@link List}
 	 */
 	private static void updateLineEndPoint(int lineLength, int index) {
 		double xSide = lineLength * -Math.sin(Math.toRadians(baseAngle * index));
@@ -525,7 +530,7 @@ public class MainLayoutController implements Initializable {
 	}
 
 	/**
-	 * The {@code setPercentage} method sets the text of the {@code percentage}
+	 * The <i>setPercentage</i> method sets the text of the <i>percentage</i>
 	 * {@link Text} variable.
 	 * 
 	 * @param value

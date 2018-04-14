@@ -15,7 +15,7 @@ import com.masopust.ondra.java.gui.ipSelectionLayout.IPSelectionLayoutController
 import com.masopust.ondra.java.gui.mainLayout.MainLayoutController;
 
 /**
- * The {@code RoverConnection} class wraps all methods needed to handle the
+ * The <i>RoverConnection</i> class wraps all methods needed to handle the
  * connection between the computer and the Rover.
  * 
  * @author Ondrej Masopust
@@ -25,7 +25,7 @@ import com.masopust.ondra.java.gui.mainLayout.MainLayoutController;
 public class RoverConnection extends Task<String> {
 
 	/**
-	 * Instance of the {@code RoverConnection} class.
+	 * Instance of the {@link RoverConnection} class.
 	 */
 	public static RoverConnection roverConnection;
 
@@ -39,7 +39,7 @@ public class RoverConnection extends Task<String> {
 	private BufferedReader inputTCP;
 
 	/**
-	 * Creates instance of the {@code RoverConnection} class with default values:
+	 * Creates instance of the {@link RoverConnection} class with default values:
 	 * <ul>
 	 * <li>port = 5321</li>
 	 * <li>host = 192.168.0.1</li>
@@ -50,7 +50,7 @@ public class RoverConnection extends Task<String> {
 	}
 
 	/**
-	 * Creates instance of the {@code RoverConnection} class with default value of
+	 * Creates instance of the {@link RoverConnection} class with default value of
 	 * the host IP address:
 	 * <ul>
 	 * <li>host = 192.168.0.1</li>
@@ -65,7 +65,7 @@ public class RoverConnection extends Task<String> {
 	}
 
 	/**
-	 * Creates instance of the {@code RoverConnection} class with default value of
+	 * Creates instance of the {@link RoverConnection} class with default value of
 	 * the port:
 	 * <ul>
 	 * <li>port = 5321</li>
@@ -80,7 +80,7 @@ public class RoverConnection extends Task<String> {
 	}
 
 	/**
-	 * Creates instance of the {@code RoverConnection} class.
+	 * Creates instance of the {@link RoverConnection} class.
 	 * 
 	 * @param host
 	 *            IP address to connect to
@@ -94,7 +94,7 @@ public class RoverConnection extends Task<String> {
 	}
 
 	/**
-	 * The {@code connect} method tries to establish a connection to a host.
+	 * The <i>connect</i> method tries to establish a connection to a host.
 	 */
 	public void connect() {
 		try {
@@ -109,7 +109,7 @@ public class RoverConnection extends Task<String> {
 	}
 
 	/**
-	 * The {@code handleConnectionException} method wraps the code to handle
+	 * The <i>handleConnectionException</i> method wraps the code to handle
 	 * exceptions that are thrown during the attempt to connect to the host.
 	 * 
 	 * @param e
@@ -133,8 +133,8 @@ public class RoverConnection extends Task<String> {
 	}
 
 	/**
-	 * The {@code startRoverConnectionThread} method creates new instance of the
-	 * {@code RoverConnection} class and starts a new thread with this instance.
+	 * The <i>startRoverConnectionThread</i> method creates new instance of the
+	 * {@link RoverConnection} class and starts a new thread with this instance.
 	 */
 	public static void startRoverConnectionThread() {
 		roverConnection = new RoverConnection(
@@ -168,7 +168,7 @@ public class RoverConnection extends Task<String> {
 	}
 
 	/**
-	 * The {@code sendData} method sends message to the Rover
+	 * The <i>sendData</i> method sends message to the Rover
 	 * 
 	 * @param message
 	 *            {@link String} that is to be sent
@@ -178,7 +178,7 @@ public class RoverConnection extends Task<String> {
 	}
 
 	/**
-	 * The {@code readLine} method reads a line from the Rover. For more info, see
+	 * The <i>readLine</i> method reads a line from the Rover. For more info, see
 	 * {@link BufferedReader}.readLine.
 	 * 
 	 * @return {@link String} containing the received line

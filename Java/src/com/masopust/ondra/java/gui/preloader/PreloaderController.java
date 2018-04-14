@@ -46,7 +46,7 @@ public class PreloaderController implements Initializable {
 	}
 	
 	/**
-	 * The {@code handleCancel} method wraps the code to be executed after the
+	 * The  <i>handleCance</i> method wraps the code to be executed after the
 	 * <b>Cancel</b> button is pressed.
 	 */
 	public void handleCancel() {
