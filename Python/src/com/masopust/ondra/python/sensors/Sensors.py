@@ -89,23 +89,23 @@ class Sensors (threading.Thread):
         '''This method receives information form the sensor for one rotation'''
         for index in range(0, self.resolution):
             startTime = time.time()
-            #print("startTime = " + str(startTime))
+            # print("startTime = " + str(startTime))
             # if the sensor didn't finish the rotation earlier
             if self.sensorState.is_set():
-                print("index = " + str(index))
+                # print("index = " + str(index))
                 break
-            #print("after sensorState check: " + str(time.time()))
+            # print("after sensorState check: " + str(time.time()))
             message = "dt" + str(self.measure())
-            #print("after measuring: " + str(time.time()))
+            # print("after measuring: " + str(time.time()))
             try:
                 self.tcpCommunication.sendToHost(message)
             except BrokenPipeError as err:
                 break
             endTime = time.time()
-            #print("endTime = " + str(endTime))
+            # print("endTime = " + str(endTime))
             # wait for next conversion
             sleepTime = self.CONVERSIONTIME - (endTime - startTime)
-            #print("sleepTime = " + str(sleepTime) + "\n")
+            # print("sleepTime = " + str(sleepTime) + "\n")
             while endTime + sleepTime > time.time():
                 pass
     
@@ -122,8 +122,8 @@ class Sensors (threading.Thread):
             self.running = True
             # wait() blocks the flow of the program if Event is not set
             self.sensorState.wait()
-            print("broke")
-            print("initSens() -> self.rotationTime = " + str(self.rotationTime))
+            # print("broke")
+            # print("initSens() -> self.rotationTime = " + str(self.rotationTime))
             self.resolution = round(self.rotationTime / self.CONVERSIONTIME)
             if not self.halt.is_set():
                 self.tcpCommunication.sendToHost("rd")
@@ -179,8 +179,8 @@ class Sensors (threading.Thread):
         # condition - to clean the undesired interrupts
         self.rotationTime = time.time() - self.lastInterruptClock
         if self.rotationTime > 1.3:
-            print("\nnow")
-            print("self.rotationTime = " + str(self.rotationTime))
+            # print("\nnow")
+            # print("self.rotationTime = " + str(self.rotationTime))
             self.lastInterruptClock = time.time()
             # this is needed when initializing the sensor. The sensor motor makes some free
             # rotations to examine how fast it rotates.
