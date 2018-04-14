@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.masopust.ondra.java.gui.Main;
-import com.masopust.ondra.java.gui.mainLayout.batteryPercentage.BatteryPercentageManager;
 import com.masopust.ondra.java.tcpCommunication.RoverConnection;
 
 import javafx.fxml.FXML;
@@ -144,12 +143,6 @@ public class MainLayoutController implements Initializable {
 	 */
 	private static Map<Rectangle, Line> dotLines;
 
-	/**
-	 * This variable is instance of the {@link BatteryPercentageManager} class and
-	 * is used to write and read data from the <b>BatteryPercentage.txt</b> file.
-	 */
-	private static BatteryPercentageManager percentageFile;
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		consoleOutputTextBox = consoleOutputTextBoxFXML;
@@ -228,17 +221,6 @@ public class MainLayoutController implements Initializable {
 		});
 
 		webView.getEngine().load(getClass().getResource("Info.html").toExternalForm());
-		
-		initPercentage();
-	}
-
-	/**
-	 * The {@code initPercentage} method is used to load data from the file that
-	 * stores the percentage and sets it in the application.
-	 */
-	private void initPercentage() {
-		percentageFile = new BatteryPercentageManager();
-		setPercentage(percentageFile.read());
 	}
 
 	/**
@@ -550,6 +532,5 @@ public class MainLayoutController implements Initializable {
 	 */
 	private static void setPercentage(int value) {
 		percentage.setText(Integer.toString(value) + "%");
-		percentageFile.write(value);
 	}
 }
