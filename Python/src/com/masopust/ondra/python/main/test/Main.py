@@ -1,9 +1,9 @@
 '''
- Created on Aug 3, 2017
- 
-+This module is just to test the communication over TCP.
-+
- @author: Ondrej Masopust
+Created on Aug 3, 2017
+
+This module is just to test the communication over TCP.
+
+@author: Ondrej Masopust
 '''
 import sys
 sys.path.append('/Users/Ondra/Documents/Programming/Maturita/Project/Python/src/')

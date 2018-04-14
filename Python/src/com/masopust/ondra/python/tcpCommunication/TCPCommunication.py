@@ -2,7 +2,8 @@
 '''
 Created on Jul 12, 2017
 
-This module contains the TCPCommunication class. The Main() function is used to test. It is not the main function of the Rover program.
+This module contains the TCPCommunication class. The Main() function is used just for testing purposes.
+It is not the main function of the Rover program.
 
 @author: Ondrej Masopust
 '''

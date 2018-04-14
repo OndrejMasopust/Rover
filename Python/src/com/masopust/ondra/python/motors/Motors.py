@@ -94,7 +94,8 @@ class Motors(object):
                 if self.pwmRunning:
                     self.pwm.ChangeDutyCycle(self.currentDutyCycle + increment)
             else:
-                raise ValueError("Motors.speedUp(): Argument not legal. Must be: (self.currentDutyCycle + increment) >= 0 or 100 >= (self.currentDutyCycle + increment), was: " + self.currentDutyCycle + " + " + increment)
+                raise ValueError("Motors.speedUp(): Argument not legal. Must be: (self.currentDutyCycle + increment) >= 0\
+                    or 100 >= (self.currentDutyCycle + increment), was: " + self.currentDutyCycle + " + " + increment)
         except ValueError as err:
             print(err)
             self.tcpCommunication.sendToHost('er' + err)

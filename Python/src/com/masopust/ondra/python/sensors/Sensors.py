@@ -134,6 +134,10 @@ class Sensors (threading.Thread):
         self.running = False
         
     def kill(self):
+        '''
+        This method stops the direction sensing. It is used when the program is
+        closed because of a KeyboardInterrupt.
+        '''
         self.running = False
         self.sensorMotor.stop()
         self.sensorMotor.clean()
