@@ -184,7 +184,7 @@ public class MainLayoutController implements Initializable {
 			case RIGHT:
 				if (!consoleInput.isFocused()) {
 					// send turn command
-					RoverConnection.roverConnection.sendData("tr1500");
+					RoverConnection.roverConnection.sendData("tr1430");
 					keyEvent.consume();
 				}
 				break;
@@ -211,7 +211,7 @@ public class MainLayoutController implements Initializable {
 				break;
 			case RIGHT:
 				if (!consoleInput.isFocused()) {
-					RoverConnection.roverConnection.sendData("tr1380");
+					RoverConnection.roverConnection.sendData("tr1200");
 					keyEvent.consume();
 				}
 				break;
