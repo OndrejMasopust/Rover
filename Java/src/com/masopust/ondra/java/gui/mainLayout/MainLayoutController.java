@@ -464,6 +464,7 @@ public class MainLayoutController implements Initializable {
 				line.startYProperty().bind(prevDot.yProperty().add((double) dotSize / 2));
 				line.endXProperty().bind(dot.xProperty().add((double) dotSize / 2));
 				line.endYProperty().bind(dot.yProperty().add((double) dotSize / 2));
+				line.setStroke(Color.web("#F0F0F0"));
 				centerSectionGroup.getChildren().add(dotLines.get(dot));
 			}
 		}
@@ -487,7 +488,7 @@ public class MainLayoutController implements Initializable {
 			line.setVisible(false);
 			centerSectionGroup.getChildren().add(line);
 
-			dots.add(new Rectangle(dotSize, dotSize, Color.web("#0092CC")));
+			dots.add(new Rectangle(dotSize, dotSize, Color.web("#DCD427")));
 			Rectangle dot = dots.get(i);
 
 			dot.setVisible(false);
