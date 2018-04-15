@@ -4,6 +4,29 @@ Created on Sep 4, 2017
 
 This module contains only the Sensors class.
 
+MIT License
+
+Copyright (c) 2018 Ondřej Masopust; Gymnázium Praha 6, Nad Alejí 1952
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
 @author: Ondrej Masopust
 '''
 
@@ -69,12 +92,16 @@ class Sensors (threading.Thread):
         '''This method is called when this thread is started by the start() method in the Main class.'''
         self.initSens()
         while not self.halt.is_set() and self.running:
-            # wait() blocks the flow of the program if necessary until the Event is set
-            self.sensorState.wait()
-            self.sensorState.clear()
-            # send the RESETDOTCOUNTER command
-            self.tcpCommunication.sendToHost("rc")
-            self.sensOneRotation()
+            startTime = time.time()
+            message = "dt" + str(self.measure())
+            try:
+                self.tcpCommunication.sendToHost(message)
+            except BrokenPipeError as err:
+                break
+            endTime = time.time()
+            sleepTime = self.CONVERSIONTIME - (endTime - startTime)
+            while endTime + sleepTime > time.time():
+                pass
         # stop sensor motor
         self.sensorMotor.stop()
 
@@ -84,30 +111,6 @@ class Sensors (threading.Thread):
             self.sensorMotor.clean()
             # send ACK back to the main thread
             self.halt.clear()
-
-    def sensOneRotation(self):
-        '''This method receives information form the sensor for one rotation'''
-        for index in range(0, self.resolution):
-            startTime = time.time()
-            # print("startTime = " + str(startTime))
-            # if the sensor didn't finish the rotation earlier
-            if self.sensorState.is_set():
-                # print("index = " + str(index))
-                break
-            # print("after sensorState check: " + str(time.time()))
-            message = "dt" + str(self.measure())
-            # print("after measuring: " + str(time.time()))
-            try:
-                self.tcpCommunication.sendToHost(message)
-            except BrokenPipeError as err:
-                break
-            endTime = time.time()
-            # print("endTime = " + str(endTime))
-            # wait for next conversion
-            sleepTime = self.CONVERSIONTIME - (endTime - startTime)
-            # print("sleepTime = " + str(sleepTime) + "\n")
-            while endTime + sleepTime > time.time():
-                pass
     
     def initSens(self):
         '''
@@ -182,11 +185,14 @@ class Sensors (threading.Thread):
             # print("\nnow")
             # print("self.rotationTime = " + str(self.rotationTime))
             self.lastInterruptClock = time.time()
+            if self.rotationCounter == 2:
+                # tell, that the sensor thread should start sensing
+                self.sensorState.set()
             # this is needed when initializing the sensor. The sensor motor makes some free
             # rotations to examine how fast it rotates.
             if self.rotationCounter < 3:
                 self.rotationCounter += 1
             else:
-                # tell, that the sensor thread should start another sensing rotation
-                self.sensorState.set()
+                # send the RESETDOTCOUNTER command
+                self.tcpCommunication.sendToHost("rc")
             
