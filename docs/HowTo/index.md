@@ -66,7 +66,7 @@ kterým přišroubujete samotný senzor - tento kus musí být dost velký na to
 Přesné rozměry záleží na velikosti senzoru.    
 ![disk](howTo-imgs/disk.jpg)
 ![triangle](howTo-imgs/triangle.jpg)
-![mount](howTo-imgs/sensor-mount.jpg)   
+![mount](howTo-imgs/sensor-mount.jpg)
 ![holder1](howTo-imgs/holder1.jpg)
 ![holder2](howTo-imgs/holder2.jpg)
 1. V převodu (najdete ho v balíčku převodů v odkazu výše) udělejte větší díru   

@@ -4,8 +4,6 @@ Rover je dálkově řízené autíčko s otočným lidarem. Ovládací aplikace 
 ## Autíčko
 Hlavní konstrukce autíčka je setavená z lego kotiček. Návod na sestavení můžete najít [zde](https://ondrejmasopust.github.io/Rover/HowTo/index.html). K sestavení je nutná znalost pájení.
 
-Důležité upozornění: Nesahejte na jakýkoliv plošný spoj na autíčku po jeho sestavení. Může dojít k poškození statickou elektřinou, zkratu a dalšímu poškození.
-
 Autíčko se zapne přepnutím přepínače vedle baterie. V tu chvíli by měly indikační LED diody na Raspberry Pi začít blikat. Je nutné chvíli počkat, než se Raspberry Pi načte a poté je možné
 se k autíčku připojit přes Wi-Fi (stejně, jako byste se připojovali k běžné Wi-Fi např. u vás doma). V tuto chvíli ovšem není ještě možné autíčko ovládat. Je nutné spustit danou aplikaci, která
 má běžet na Raspberry Pi. Toho se docílí tak, že se připojíte k Raspberry Pi přes `ssh` pomocí příkazové řádky:
@@ -30,7 +28,7 @@ Connection from ('192.168.0.6', 54710) was successful
 ```
 
 ## Aplikace
-Ovládací aplikace je napsána v Javě. Pro tvorbu uživatelského rozhraní bylo použito API JavaFx. Aplikace obstarává vizualizaci dat ze senzoru a bezdrátové ovádání pohybu autíčka. Aplikaci
+Ovládací aplikace obstarává vizualizaci dat ze senzoru a bezdrátové ovádání pohybu autíčka. Aplikaci
 lze spustit dojklikem na soubor `RoverControlPanel.jar`, který lze stáhnout [zde](FIXME). Po spuštění aplikace budete vyzvání k zadání IP adresy autíčka a portu, přes který se chcete zkusit
 k Raspberry Pi připojit. Pokud neznáte IP adresu autíčka, lze zadat `raspberrypi.local`. To by mělo též fungovat. Jako port uveďte číslo `5321`, pokud jste toto číslo nezměnili v programu, který
 běží na Raspberry Pi. Po zadání hodnot stiskěte tlačítko `Connect`, nebo stiskněte `Enter` na vaší klávesnici. Pokud chcete program zavřít, stiskněte tlačítko `Cancel`, nebo křížek.   
@@ -60,3 +58,12 @@ Vizualizace dat ze senzoru může vypadat například takto:
 Na vizualizaci můžeme jasně rozpoznat roh vpravo, u kterého se Rover nachází.
 
 Aplikaci můžete zavřít křížkem. Program v Roveru se poté sám ukončí, jelikož dojde k přerušení komunikace.
+
+## Technická upozornění
+- Nesahejte na jakýkoliv plošný spoj na autíčku po jeho sestavení. Může dojít k poškození statickou elektřinou, zkratu a dalšímu poškození!
+- Baterie typu Li-pol jsou výborný sluha v dobrých rukou. Jsou schopné dávat velké proudy a jsou hojně využívány v modelářství. Pokud ovšem nejste seznámeni s jejich riziky,
+může dojít ke katastrofě. Pokud jste je nikdy nepoužívali, vysoce doporučuji si o nich přečíst něco na internetu, abyste věděli, do čeho jdete.
+- Pokud se ručička serva z nějakého důvodu najednou rychle vychýlí na jednu stranu bez vnějšího signálu (zmáčknutí šipky na klávesnici), je nutné servo hned odpojit z plošného spoje. Pravděpodobně
+byla datová linka uzemněna a hrozí poškození serva.
+- Pokud se halvní motor netočí po stisknutí šiply na klávesnici a připojení nebylo přerušeno, je pravděpodobně Rover v pozici, kdy je pro motor nemožné se roztočit pro kladený odpor. Nezkoušejte
+v takovém případě dále mačkat šipky na klávesnici. Hrozí poškození motoru.
