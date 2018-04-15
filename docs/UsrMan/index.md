@@ -2,7 +2,7 @@
 Rover je dálkově řízené autíčko s otočným lidarem. Ovládací aplikace umožňuje vizualizaci dat ze senzoru a ovládání autíčka.
 
 ## Autíčko
-Hlavní konstrukce autíčka je setavená z lego kotiček. Návod na sestavení můžete najít [zde](https://ondrejmasopust.github.io/Rover/HowTo/index.html). K sestavení je nutná znalost pájení.
+Hlavní konstrukce autíčka je sestavená z lego kostiček. Návod na sestavení můžete najít [zde](https://ondrejmasopust.github.io/Rover/HowTo/index.html). K sestavení je nutná znalost pájení.
 
 Autíčko se zapne přepnutím přepínače vedle baterie. V tu chvíli by měly indikační LED diody na Raspberry Pi začít blikat. Je nutné chvíli počkat, než se Raspberry Pi načte a poté je možné
 se k autíčku připojit přes Wi-Fi (stejně, jako byste se připojovali k běžné Wi-Fi např. u vás doma). V tuto chvíli ovšem není ještě možné autíčko ovládat. Je nutné spustit danou aplikaci, která
@@ -28,10 +28,10 @@ Connection from ('192.168.0.6', 54710) was successful
 ```
 
 ## Aplikace
-Ovládací aplikace obstarává vizualizaci dat ze senzoru a bezdrátové ovádání pohybu autíčka. Aplikaci
+Ovládací aplikace obstarává vizualizaci dat ze senzoru a bezdrátové ovládání pohybu autíčka. Aplikaci
 lze spustit dojklikem na soubor `RoverControlPanel.jar`, který lze stáhnout [zde](FIXME). Po spuštění aplikace budete vyzvání k zadání IP adresy autíčka a portu, přes který se chcete zkusit
 k Raspberry Pi připojit. Pokud neznáte IP adresu autíčka, lze zadat `raspberrypi.local`. To by mělo též fungovat. Jako port uveďte číslo `5321`, pokud jste toto číslo nezměnili v programu, který
-běží na Raspberry Pi. Po zadání hodnot stiskěte tlačítko `Connect`, nebo stiskněte `Enter` na vaší klávesnici. Pokud chcete program zavřít, stiskněte tlačítko `Cancel`, nebo křížek.   
+běží na Raspberry Pi. Po zadání hodnot stiskněte tlačítko `Connect`, nebo stiskněte `Enter` na vaší klávesnici. Pokud chcete program zavřít, stiskněte tlačítko `Cancel`, nebo křížek.   
 ![ipPrompt](usrMan-imgs/ipPrompt.tiff)   
 Dále se zobrazí okno, které zobrazuje stav připojování k Roveru. Pokud vše probíhá hladce, neobjeví se žádná hláška v černém obdélníku:   
 ![connecting-wo-error](usrMan-imgs/connecting-wo-error.tiff)   
@@ -41,12 +41,12 @@ Pokud se vám podaří připojit úspěšně k autíčku, dostanete se do hlavn�
 ![mainWindow](usrMan-imgs/mainWindow.tiff)   
 Uprostřed okna se zobrazí malý obrázek tanku, který symbolizuje váš Rover.
 
-Nyní můžete ovládat Rover dle libosti. Mačkáním šipek můžete uvádět Rover do pohybu (vzad i vpřed) a zatáčet. Příkazi lze zadávat přes konzoli v levé části okna. Do textového pole v levém dolním
+Nyní můžete ovládat Rover dle libosti. Mačkáním šipek můžete uvádět Rover do pohybu (vzad i vpřed) a zatáčet. Příkazy lze zadávat přes konzoli v levé části okna. Do textového pole v levém dolním
 rohu napište zprávu, kterou chcete odeslat a poté stiskněte `Enter`, nebo myší stiskněte šipku vpravo od textového pole. Vámi zadaná zpráva se objeví v konzoli zarovnaná doprava, což značí, že
-jste zprávu odelali vy. Pokud se objeví zpráva zarovnaná doleva, je to zpráva od autíčka. Příkazy poslané od vás autíčku, které vyvolají nějakou akci se v bublině zobrazí žlutým fontem. Lze tak
+jste zprávu odeslali vy. Pokud se objeví zpráva zarovnaná doleva, je to zpráva od autíčka. Příkazy poslané od vás autíčku, které vyvolají nějakou akci se v bublině zobrazí žlutým fontem. Lze tak
 ověřit správné napsání příkazu.
 
-Pokud Roveru odešlte přes konzoli příkaz `startMeasure`, spustí se
+Pokud Roveru odešlete přes konzoli příkaz `startMeasure`, spustí se
 snímání okolí senzorem. Snímání lze zastavit odesláním příkazu `stopMeasure` stejným způsobem. Také lze poslat Roveru příkaz `check`. Tím lze ověřit připojení. Pokud Rover ihned odpoví
 zprávou se zněním `check`, spojení je v pořádku. Pokud ne, je někde problém a spojení s autíčkem bylo z nějakého důvodu přerušeno. Další funkce jsou popsány na obrázku:   
 ![mainWindow-w-desc](usrMan-imgs/mainWindow-w-desc.tiff)   
@@ -65,5 +65,5 @@ Aplikaci můžete zavřít křížkem. Program v Roveru se poté sám ukončí, 
 může dojít ke katastrofě. Pokud jste je nikdy nepoužívali, vysoce doporučuji si o nich přečíst něco na internetu, abyste věděli, do čeho jdete.
 - Pokud se ručička serva z nějakého důvodu najednou rychle vychýlí na jednu stranu bez vnějšího signálu (zmáčknutí šipky na klávesnici), je nutné servo hned odpojit z plošného spoje. Pravděpodobně
 byla datová linka uzemněna a hrozí poškození serva.
-- Pokud se halvní motor netočí po stisknutí šiply na klávesnici a připojení nebylo přerušeno, je pravděpodobně Rover v pozici, kdy je pro motor nemožné se roztočit pro kladený odpor. Nezkoušejte
+- Pokud se hlavní motor netočí po stisknutí šipky na klávesnici a připojení nebylo přerušeno, je pravděpodobně Rover v pozici, kdy je pro motor nemožné se roztočit pro kladený odpor. Nezkoušejte
 v takovém případě dále mačkat šipky na klávesnici. Hrozí poškození motoru.
