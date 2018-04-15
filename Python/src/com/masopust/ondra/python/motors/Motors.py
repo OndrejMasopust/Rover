@@ -130,7 +130,6 @@ class Motors(object):
         :param direction: Direction to be applied. An enum *Direction* should be used. 
         :type direction: boolean
         '''
-        # FIXME check if this setup works
         if direction:
             gpio.output(self.directionOut[0], gpio.HIGH)
             gpio.output(self.directionOut[1], gpio.LOW)

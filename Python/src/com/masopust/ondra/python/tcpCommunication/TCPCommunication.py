@@ -54,7 +54,7 @@ class TCPCommunication:
         prints it's information and sends him acknowledging message. 
         '''
         serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        serverSocket.bind(('', self.port)) # FIXME on RPi, maybe the '' would need to change to socket.gethostname()
+        serverSocket.bind(('', self.port))
         serverSocket.listen(1)
         self.clientSocket, clientAddress = serverSocket.accept()
         self.clientSocket.setblocking(0)

@@ -3,9 +3,9 @@
 [Python dokumentace](PythonDoc/index.html)   
 [C dokumentace](CDoc/index.html)
 
-`Jar` soubor s řídící aplikací je možné najít na [tomto odkazu](FIXME).   
-Program pro Raspberry Pi lze nají [zde](FIXME) (složky s názvem `test` nejsou pro běh programu nutné).   
-Firmware pro ATMega 168 je na [tomto odkazu](FIXME).
+`Jar` soubor s řídící aplikací je možné najít na [tomto odkazu](https://github.com/OndrejMasopust/Rover/blob/master/Java/build/dist/RoverControlPanel.jar).   
+Program pro Raspberry Pi lze nají v [této složce](https://github.com/OndrejMasopust/Rover/tree/master/Python/src) (složky s názvem `test` nejsou pro běh programu nutné).   
+Firmware pro ATMega 168 je na [tomto odkazu](https://github.com/OndrejMasopust/Rover/tree/master/AVR/firmware).
 
 # Popis fungování
 
@@ -29,7 +29,7 @@ práci vyzáří ve formě tepla. Proto jsem se rozhodl pro spínaný zdroj opro
 ### Zatáčení
 Zatáčecí mechanismus je řešen servem od firmy Hitec. Mechanismus zatáčení jsem okopíroval z Lego stavebnice
 ["Dump Truck"](https://www.lego.com/en-us/service/buildinginstructions/search?initialsearch=8415#?text=8415). Servo je ovládáno z Raspberry Pi pomocí tzv. PWM (pulse width modulation). Jelikož je
-pro ovládání serva potřeba velké preciznosti signálu, zvolil jsem pro tento účel knihovnu [pigpio](http://abyz.me.uk/rpi/pigpio/), jejíž autorem je FIXME. Tato knihovna poskytuje API, které umožňuje
+pro ovládání serva potřeba velké preciznosti signálu, zvolil jsem pro tento účel knihovnu [pigpio](http://abyz.me.uk/rpi/pigpio/). Tato knihovna poskytuje API, které umožňuje
 snadné ovládání serva zadáním délky služebního cyklu (duty cycle). Pro hodnotu `1500` se ručička serva nastaví do střední polohy. Bezpečné meze otáčení z hlediska serva je interval <1000; 2000>.
 Ovšem pro konkrétní potřeby Roveru je tento interval omezen.
 

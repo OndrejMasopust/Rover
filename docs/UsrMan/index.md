@@ -29,7 +29,7 @@ Connection from ('192.168.0.6', 54710) was successful
 
 ## Aplikace
 Ovládací aplikace obstarává vizualizaci dat ze senzoru a bezdrátové ovládání pohybu autíčka. Aplikaci
-lze spustit dojklikem na soubor `RoverControlPanel.jar`, který lze stáhnout [zde](FIXME). Po spuštění aplikace budete vyzvání k zadání IP adresy autíčka a portu, přes který se chcete zkusit
+lze spustit dojklikem na soubor `RoverControlPanel.jar`, který lze stáhnout [zde](https://github.com/OndrejMasopust/Rover/blob/master/Java/build/dist/RoverControlPanel.jar). Po spuštění aplikace budete vyzvání k zadání IP adresy autíčka a portu, přes který se chcete zkusit
 k Raspberry Pi připojit. Pokud neznáte IP adresu autíčka, lze zadat `raspberrypi.local`. To by mělo též fungovat. Jako port uveďte číslo `5321`, pokud jste toto číslo nezměnili v programu, který
 běží na Raspberry Pi. Po zadání hodnot stiskněte tlačítko `Connect`, nebo stiskněte `Enter` na vaší klávesnici. Pokud chcete program zavřít, stiskněte tlačítko `Cancel`, nebo křížek.   
 ![ipPrompt](usrMan-imgs/ipPrompt.tiff)   
