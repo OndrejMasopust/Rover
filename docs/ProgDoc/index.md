@@ -164,6 +164,9 @@ Uvedeny pouze ty "nejvíce klíčové" pro můj projekt.
 ### Barvy grafického rozhraní
 - [Blackberry pallete](https://developer.blackberry.com/design/bb10/color.html)
 
+### Webová stránka
+Použito služby [GitHub Pages](https://pages.github.com)
+
 ### Obrázky
 #### Odesílací šipka v hlavním okně řídící aplikace
 <div>Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
