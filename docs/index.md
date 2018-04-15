@@ -2,3 +2,4 @@
 [Uživatelský manuál](UsrMan/index.html)  
 [Programátorská dokumentace](ProgDoc/index.html)   
 ![Rover](HowTo/howTo-imgs/rover3.jpg)
+![main-Screen-w-data](docs/UsrMan/usrMan-imgs/mainWindow-w-data.tiff)
