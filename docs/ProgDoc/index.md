@@ -174,7 +174,9 @@ Použito služby [GitHub Pages](https://pages.github.com)
 #### Obrázek tanku v hlavní okně řídící aplikace
 Autor nevyžaduje být uveden. Uvedu tedy alespoň [odkaz na webovou stránku](http://2dgameartforfree.blogspot.cz/2014/09/top-down-extras-2-tank.html), kde lze obrázek stáhnout.
 
-### "Lidské" zdroje
+### Ostatní zdroje
 Se schématem plošného spoje mi pomohl Ondřej Dvorský.   
 S vyladěním programu pro Raspberry Pi mi pomohl vedoucí práce Vojtěch Horký.   
 Oběma patří velké poděkování.
+
+Výrobu plošného spoje obstarala firma [JLCPCB](https://jlcpcb.com).
