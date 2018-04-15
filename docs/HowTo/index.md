@@ -1,18 +1,18 @@
 # Stručný návod, jak postavit Rover
 
-#### 1. Zaktualizujte si svoje Raspberry Pi a nainstalujte si nejnovější verzi Python
+#### 1. Zaktualizujte si svoje Raspberry Pi
 
 #### 2. Nastavte si AP na svém Pi
 Podle tohoto [tutoriálu](https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md).
 
-#### 3. Nainstalujte si tyto balíčky na svém Pi
-V terminálu pusťte tento příkaz:   
+#### 3. Nainstalujte si tento balíček na svém Pi
+V terminálu spusťte tento příkaz:   
 ```
-sudo apt-get install build-essential python-dev
+sudo apt-get install python-dev
 ```
 
 #### 4. Povolte I<sup>2</sup>C na Pi
-V terminálu pusťte tento příkaz:
+V terminálu spusťte tento příkaz:
 ```
 sudo raspi-config
 ```
@@ -20,13 +20,13 @@ V "Interafcing Options" vyberte I<sup>2</sup>C a potvrďte to.
 Po tomto kroku je potřeba Pi restartovat. (budete vyzváni)
 
 #### 5. Nainstalujte balíček Python smbus2
-V terminálu pusťte tento příkaz:
+V terminálu spusťte tento příkaz:
 ```
 sudo pip3 install smbus2
 ```
 
 #### 6. Nainstalujte knihovnu pigpio
-V terminálu pusťte tyto příkazy:
+V terminálu spusťte tyto příkazy:
 ```
 wget abyz.co.uk/rpi/pigpio/pigpio.zip
 unzip pigpio.zip

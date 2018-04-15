@@ -1,9 +1,9 @@
 var classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication =
 [
-    [ "__init__", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#a621976ebd9429899b7adb57c7665fada", null ],
-    [ "closeSocket", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#a96b1dda9831efd5dfca93c2746b150d2", null ],
-    [ "establishTCPConnection", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#a34ab95a55c9c41921bbd238a3c9fb395", null ],
-    [ "handleRecvAndSend", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#a18ece2c25e65fc9a05ab9a504e056268", null ],
-    [ "sendToHost", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#ad02e4b190c6727aa7caae2f8be482745", null ],
-    [ "port", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#a4f1e8d727ba678f0d5906b09af93981e", null ]
+    [ "__init__", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#acc93d7462d3d6f0f223ef5e249382a07", null ],
+    [ "closeSocket", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#ac27477e26b0bf70f70ce4ba78dd6fbb6", null ],
+    [ "establishTCPConnection", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#a081cc1db29f78af8090a47884865f197", null ],
+    [ "handleRecvAndSend", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#a01469bd062d2ca1a837e2e9efbce6239", null ],
+    [ "sendToHost", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#a15492b931cb630d5848499eca75d0e34", null ],
+    [ "port", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1tcp_communication_1_1_t_c_p_communication_1_1_t_c_p_communication.html#af8fb0f45ee0195c7422a49e6a8d72369", null ]
 ];

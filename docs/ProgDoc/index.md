@@ -140,6 +140,7 @@ V aplikaci je v pravém dolním rohu tlačítko s otazníkem. To slouží ke zob
 ### Knihovny nestandardní pro použité programovací jazyky
 - [Pigpio](http://abyz.me.uk/rpi/pigpio/)
 - [smbus2](https://pypi.python.org/pypi/smbus2/0.2.0)
+- [RPi.GPIO](https://pypi.python.org/pypi/RPi.GPIO)
 
 ### Programy
 - [Eclipse IDE](https://www.eclipse.org)

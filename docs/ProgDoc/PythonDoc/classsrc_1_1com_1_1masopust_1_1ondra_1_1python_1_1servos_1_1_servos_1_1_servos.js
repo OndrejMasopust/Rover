@@ -1,9 +1,9 @@
 var classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos =
 [
-    [ "__init__", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#ae4f0e3be1b494f02f523b75934535bfc", null ],
-    [ "clean", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#ac9208b5ac1d0c54d3efd4c388be127b3", null ],
-    [ "setPosition", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#ab5a06273fc329b9ca167b6019f9dd4cc", null ],
-    [ "myPigpio", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#ab231bbb27bfb0117d0a4e4677fdd1528", null ],
-    [ "pwmOut", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#ad257ec3099cd245db91d3cad4b6ebea3", null ],
-    [ "tcpCommunication", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#adbfbe8bdb187c0e192f7f1d950bd5f72", null ]
+    [ "__init__", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#a29c1adc100c67e69f4ffc7857b575d43", null ],
+    [ "clean", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#a9f5d98e8bd835c38f6775a9e8e39c7c2", null ],
+    [ "setPosition", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#ad3ed976baeaba4b7f841786bb8dfed24", null ],
+    [ "myPigpio", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#a9e274cfa834cc8f6a2b6045b8f6915d9", null ],
+    [ "pwmOut", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#ac8a18a8ee4245767eaf4846bd8be44b7", null ],
+    [ "tcpCommunication", "classsrc_1_1com_1_1masopust_1_1ondra_1_1python_1_1servos_1_1_servos_1_1_servos.html#ad8c3fbf03c39495ec0b68bbce86587e7", null ]
 ];
